@@ -38,25 +38,30 @@
         </div>
         <div class="row contact-block">
             <div class="col-md-7 contact-right">
-                <form action="/contact/saveMsg" method="post" class="signin-form">
+                <ul>
+                    <c:forEach items="${errors}" var="error" >
+                        <li class="alert alert-danger" role="alert"><c:out value="${error.getDefaultMessage()}"/></li>
+                    </c:forEach>
+                </ul>
+                <form action="/contact/saveMsg" method="post" class="signin-form" >
                     <div class="input-grids">
                         <div class="row">
                             <div class="col-sm-6">
                                 <input type="text" name="name" id="name" placeholder="Your Name"
-                                       class="contact-input"/>
+                                       class="contact-input" value="${contact.getName()}" required/>
                             </div>
                             <div class="col-sm-6">
                                 <input type="text" name="mobileNum" id="mobileNum" placeholder="Your Mobile Number"
-                                       class="contact-input"/>
+                                       class="contact-input" value="${contact.getMobileNum()}"/>
                             </div>
                         </div>
-                        <input type="text" name="email" id="email" placeholder="Your Email"
-                               class="contact-input"/>
+                        <input type="email" name="email" id="email" placeholder="Your Email"
+                               class="contact-input" value="${contact.getEmail()}" required/>
                         <input type="text" name="subject" id="subject" placeholder="Subject"
-                               class="contact-input"/>
+                               class="contact-input" value="${contact.getSubject()}"/>
                     </div>
                     <div class="form-input">
-                        <textarea name="message" id="message" placeholder="Type your message here"></textarea>
+                        <textarea name="message" id="message" placeholder="Type your message here">${contact.getMessage()}</textarea>
                     </div>
                     <div class="text-start">
                         <button class="btn btn-style btn-style-3">Send Message</button>
