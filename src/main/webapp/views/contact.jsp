@@ -3,7 +3,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>School Management</title>
+    <title>PASSIO High School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
@@ -40,7 +40,7 @@
             <div class="col-md-7 contact-right">
                 <ul>
                     <c:forEach items="${errors}" var="error" >
-                        <li class="alert alert-danger" role="alert"><c:out value="${error.getDefaultMessage()}"/></li>
+                        <li class="alert alert-danger" ><c:out value="${error.getDefaultMessage()}"/></li>
                     </c:forEach>
                 </ul>
                 <form action="/contact/saveMsg" method="post" class="signin-form" >

@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <title>Passio High School</title>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -28,7 +29,7 @@
 
                         <p>the page you are looking for not avaible!</p>
 
-                        <a href="" class="link_404">Go to Home</a>
+                        <a href="/" class="link_404">Go to Home</a>
                     </div>
                 </div>
             </div>

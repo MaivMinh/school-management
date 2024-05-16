@@ -1,86 +1,64 @@
 <%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>Passio High School</title>
+    <title>PASSIO High School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style-starter.css">
 </head>
-<body>
 
+<body>
 <%@include file="header.jsp" %>
 
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-4 pb-sm-4">
-            <h4 class="inner-text-title pt-5">Holidays</h4>
+            <h4 class="inner-text-title pt-5">LogIn</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Holidays</li>
+                <li class="active"><i class="fas fa-angle-right"></i>LogIn</li>
             </ul>
         </div>
     </div>
 </section>
 <!-- //inner banner -->
 
-<!-- Holidays -->
-<section class="w3l-timeline-1 py-5">
-    <div class="container py-lg-5 py-4">
-        <div class="title-heading-w3 text-center mb-sm-5 mb-4">
-            <h5 class="title-small">Eazy School</h5>
-            <h3 class="title-style">Awesome Holidays</h3>
+<!-- login block -->
+<section class="w3l-contact py-5" id="contact">
+    <div class="container py-md-5 py-4">
+        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
+            <h3 class="title-style">LogIn</h3>
         </div>
-        <div class="row">
-            <c:if test="${festival}">
-                <div class="col-lg-6">
-                    <h5 class="sub-title-timeline"><i class="fas fa-snowman"></i> Festival Holidays</h5>
-                    <div class="timeline">
-                        <div class="timeline">
-                            <div class="column">
-                                <c:forEach var="holiday" items="${FESTIVAL}">
-                                    <div class="title">
-                                        <h2>${holiday.reason}</h2>
-                                    </div>
-                                    <div class="description">
-                                        <h6 class="fas fa-calendar-alt">${holiday.day}<i
-                                                class="fas fa-calendar-alt"></i></h6>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
+        <div class="row login-block">
+            <div class="col-md-6 login-center">
+                <form action="/login" method="post" class="signin-form">
+                    <div class="col-md-8 login-center input-grids">
+                        <c:if test="${error != null}">
+                            <li class="alert alert-danger">${error}</li>
+                        </c:if>
+                        <c:if test="${message != null}">
+                            <li class="alert alert-success">${message}</li>
+                        </c:if>
+                        <input type="text" name="username" id="username" placeholder="Username" autofocus
+                               class="login-input"/>
+                        <input type="password" name="password" id="password" placeholder="Password"
+                               class="login-input"/>
                     </div>
-                </div>
-            </c:if>
-            <c:if test="${federal}">
-                <div class="col-lg-6">
-                    <h5 class="sub-title-timeline"><i class="fas fa-snowman"></i> Federal Holidays</h5>
-                    <div class="timeline">
-                        <div class="timeline">
-                            <div class="column">
-                                <c:forEach var="holiday" items="${FEDERAL}">
-                                    <div class="title">
-                                        <h2>${holiday.reason}</h2>
-                                    </div>
-                                    <div class="description">
-                                        <h6 class="fas fa-calendar-alt">${holiday.day}<i
-                                                class="fas fa-calendar-alt"></i></h6>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
+                    <div class="col-md-8 login-center text-start">
+                        <button class="btn btn-style btn-style-3 text-left">Log In</button>
+                        <a class="new-user text-right" href="">New User ?</a>
                     </div>
-                </div>
-            </c:if>
+                </form>
+            </div>
         </div>
     </div>
 </section>
-
-<!-- // Holidays -->
+<!-- //login block -->
 
 <!-- footer block -->
 <%@include file="footer.jsp" %>
@@ -116,10 +94,6 @@
 <!-- common jquery plugin -->
 <script src="../assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
-
-<!-- counter-->
-<script src="../assets/js/counter.js"></script>
-<!-- //counter-->
 
 <!-- theme switch js (light and dark)-->
 <script src="../assets/js/theme-change.js"></script>

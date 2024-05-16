@@ -1,3 +1,4 @@
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!-- header -->
 <header id="site-header" class="fixed-top">
     <div class="container">
@@ -21,6 +22,21 @@
                     <li class="nav-item">
                         <a href="/contact" class="nav-link">Contact</a>
                     </li>
+                    <security:authorize access="isAuthenticated()">
+                        <li class="nav-item">
+                            <a href="/dashboard" class="nav-link">Dashboard</a>
+                        </li>
+                    </security:authorize>
+                    <security:authorize access="isAnonymous()">
+                        <li class="nav-item">
+                            <a href="/login" class="nav-link">Login</a>
+                        </li>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <li class="nav-item">
+                            <a href="/logout" class="nav-link">Logout</a>
+                        </li>
+                    </security:authorize>
                 </ul>
             </div>
             <!-- toggle switch for light and dark theme -->

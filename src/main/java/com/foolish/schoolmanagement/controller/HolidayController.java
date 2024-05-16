@@ -38,6 +38,7 @@ public class HolidayController {
       model.addAttribute(type.toString(),
               (holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
     }
+    model.addAttribute("username", null);
     return "holidays";
   }
 
@@ -60,6 +61,7 @@ public class HolidayController {
       model.addAttribute(type.toString(),
               (holidays.stream().filter(holiday -> holiday.getType().equals(type)).collect(Collectors.toList())));
     }
+    model.addAttribute("username", null);
     return "holidays";
   }
 }
