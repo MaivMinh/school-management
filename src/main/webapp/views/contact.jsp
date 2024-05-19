@@ -59,6 +59,7 @@
                                class="contact-input" value="${contact.getEmail()}" required/>
                         <input type="text" name="subject" id="subject" placeholder="Subject"
                                class="contact-input" value="${contact.getSubject()}"/>
+                        <security:csrfInput/>
                     </div>
                     <div class="form-input">
                         <textarea name="message" id="message" placeholder="Type your message here">${contact.getMessage()}</textarea>

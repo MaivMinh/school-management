@@ -53,6 +53,7 @@
                         <button class="btn btn-style btn-style-3 text-left">Log In</button>
                         <a class="new-user text-right" href="">New User ?</a>
                     </div>
+                    <security:csrfInput/>
                 </form>
             </div>
         </div>
