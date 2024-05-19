@@ -16,9 +16,7 @@ public class ProjectSecurityConfig {
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests((authorize) -> authorize
-                    .requestMatchers("/dashboard", "/dashboard/**").authenticated()
-                    .requestMatchers("/holidays", "/holidays/**").authenticated()
-                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/dashboard").authenticated()
                     .anyRequest().permitAll()
             )
             .formLogin(loginConfig -> loginConfig.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true").permitAll())

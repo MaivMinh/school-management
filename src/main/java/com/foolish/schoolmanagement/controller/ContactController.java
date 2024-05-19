@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
 
 @Slf4j
 @Controller
@@ -49,10 +52,5 @@ public class ContactController {
     service.saveMessageDetails(contact);
     model.addAttribute("errors", null);
     return "redirect:/contact";
-  }
-
-  @RequestMapping(value = {"/", "/{something}"})
-  public String displayNotFoundPage() {
-    return "404";
   }
 }
