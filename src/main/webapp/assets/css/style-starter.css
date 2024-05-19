@@ -19104,7 +19104,12 @@ header.nav-fixed {
   color: var(--heading-color);
 }
 
-/* //serach */
+.nav-item > form > button {
+  background-color: unset;
+  border: none;
+}
+
+/* //search */
 @media only screen and (max-width: 991px) {
   header.nav-fixed {
     height: auto;

@@ -34,7 +34,12 @@
                     </security:authorize>
                     <security:authorize access="isAuthenticated()">
                         <li class="nav-item">
-                            <a href="/logout" class="nav-link">Logout</a>
+                            <%--    Spring Security's LogoutFilter sẽ block GET Method /logout. Nó chỉ xử lý POST Method /logout.--%>
+                            <form action="/logout" method="POST">
+                                <button type="submit" class="nav-link">Logout</button>
+                                    <%--    Tạo csrf token giúp tăng tính bảo mật cho endpoint này, vì khi đó cần phải có JSESSIONID + csrf token mới có thể đăng xuất thành công.--%>
+                                <security:csrfInput/>
+                            </form>
                         </li>
                     </security:authorize>
                 </ul>
