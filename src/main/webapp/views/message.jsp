@@ -1,7 +1,7 @@
 <%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <title>PASSIO School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,77 +10,75 @@
           rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style-starter.css">
 </head>
+
 <body>
 
+<!-- header -->
 <%@include file="header.jsp" %>
+<!-- //header -->
 
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-4 pb-sm-4">
-            <h4 class="inner-text-title pt-5">Holidays</h4>
+            <h4 class="inner-text-title pt-5">Contact Messages</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Holidays</li>
+                <li class="active"><i class="fas fa-angle-right"></i>Messages</li>
             </ul>
         </div>
     </div>
 </section>
 <!-- //inner banner -->
 
-<!-- Holidays -->
-<section class="w3l-timeline-1 py-5">
-    <div class="container py-lg-5 py-4">
-        <div class="title-heading-w3 text-center mb-sm-5 mb-4">
-            <h5 class="title-small">Eazy School</h5>
-            <h3 class="title-style">Awesome Holidays</h3>
-        </div>
-        <div class="row">
-            <c:if test="${festival}">
-                <div class="col-lg-6">
-                    <h5 class="sub-title-timeline"><i class="fas fa-snowman"></i> Festival Holidays</h5>
-                    <div class="timeline">
-                        <div class="timeline">
-                            <div class="column">
-                                <c:forEach var="holiday" items="${FESTIVAL}">
-                                    <div class="title">
-                                        <h2>${holiday.reason}</h2>
-                                    </div>
-                                    <div class="description">
-                                        <h6 class="fas fa-calendar-alt">${holiday.day}<i
-                                                class="fas fa-calendar-alt"></i></h6>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-            <c:if test="${federal}">
-                <div class="col-lg-6">
-                    <h5 class="sub-title-timeline"><i class="fas fa-snowman"></i> Federal Holidays</h5>
-                    <div class="timeline">
-                        <div class="timeline">
-                            <div class="column">
-                                <c:forEach var="holiday" items="${FEDERAL}">
-                                    <div class="title">
-                                        <h2>${holiday.reason}</h2>
-                                    </div>
-                                    <div class="description">
-                                        <h6 class="fas fa-calendar-alt">${holiday.day}<i
-                                                class="fas fa-calendar-alt"></i></h6>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </c:if>
-        </div>
-    </div>
-</section>
+<div class="site-section">
 
-<!-- // Holidays -->
+    <div class="table-responsive-md">
+        <div class="row mb-4">
+            <div class="col-md-7">
+                <h3 class="heading-21921">Open Contact Messages</h3>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Mobile Num</th>
+                <th scope="col">Email</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Message</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${contactMsg}" var="msg">
+                <tr>
+                    <td>${msg.name}</td>
+                    <td>${msg.mobileNum}</td>
+                    <td>${msg.email}</td>
+                    <td>${msg.subject}</td>
+                    <td>${msg.message}</td>
+                    <c:if test="${msg.status.equalsIgnoreCase('open')}">
+                        <td>
+                            <a href="/close-msg?contact_id=${msg.contact_id}" class="btn btn-style btn-style-3">CLOSE</a>
+                        </td>
+                    </c:if>
+                    <c:if test="${msg.status.equalsIgnoreCase('close')}">
+                        <td>
+                            <button style="color: red" type="button" class="btn" data-bs-toggle="button">CLOSED</button>
+                        </td>
+                    </c:if>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-2 login-center text-start">
+        <a href="/dashboard">
+            <button class="btn btn-style btn-style-3 text-left">BACK</button>
+        </a>
+    </div>
+</div>
 
 <!-- footer block -->
 <%@include file="footer.jsp" %>
@@ -116,10 +114,6 @@
 <!-- common jquery plugin -->
 <script src="../assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
-
-<!-- counter-->
-<script src="../assets/js/counter.js"></script>
-<!-- //counter-->
 
 <!-- theme switch js (light and dark)-->
 <script src="../assets/js/theme-change.js"></script>

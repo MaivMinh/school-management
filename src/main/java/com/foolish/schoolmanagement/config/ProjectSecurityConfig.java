@@ -15,7 +15,7 @@ public class ProjectSecurityConfig {
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.ignoringRequestMatchers(PathRequest.toH2Console()))  // Bắt buộc phải có.
+    http
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/dashboard", "/contact").authenticated()
                     .anyRequest().permitAll()
@@ -23,7 +23,6 @@ public class ProjectSecurityConfig {
             .formLogin(loginConfig -> loginConfig.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true").permitAll())
             .logout(logoutConfig -> logoutConfig.logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll())
             .httpBasic(Customizer.withDefaults());
-    http.headers().frameOptions().disable();
     return http.build();
   }
 

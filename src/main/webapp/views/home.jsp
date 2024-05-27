@@ -1,9 +1,10 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; UTF-8" %>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Passio High School</title>
+    <title>PASSIO School</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"

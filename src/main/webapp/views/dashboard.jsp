@@ -1,16 +1,16 @@
-<%@page contentType="text/html; ISO-8859-1" pageEncoding="UTF-8" %>
+<%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PASSIO High School</title>
-    <!-- Google fonts -->
-    <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Template CSS Style link -->
+    <title>PASSIO School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style-starter.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
 </head>
 
 <body>
@@ -30,20 +30,46 @@
 </section>
 <!-- //inner banner -->
 
-<!-- login block -->
+<!-- welcome block -->
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <h3 class="title-style" >Welcome ${username}</h3>
-            <p class="" >You logged in as - ${roles}</p>
+            <h3 class="title-style">Welcome ${username}</h3>
+            <p class="">You logged in as - ${roles}</p>
         </div>
 
     </div>
 </section>
-<!-- //login block -->
+<!-- //welcome block -->
 
+<div class="container py-md-5 py-4">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <security:authorize access="hasRole('ROLE_ADMIN')">
+                <div class="row m-t-25">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="/contact-msg">
+                            <div class="overview-item overview-item--c3">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>Messages</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </security:authorize>
+        </div>
+    </div>
+</div>
 <!-- footer block -->
-<%@ include file="footer.jsp"%>
+<%@ include file="footer.jsp" %>
 <!-- //footer block -->
 
 <!-- Js scripts -->
