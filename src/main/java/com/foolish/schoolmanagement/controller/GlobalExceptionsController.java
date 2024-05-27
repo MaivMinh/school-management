@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 @ControllerAdvice // Sử dụng kiến thức của String AOP để tạo ra một Advice cho toàn bộ ứng dụng.
+// Vì các Exception cũng là một cross cutting concern xuyên suốt quá trình chạy ứng dụng.
+// Nên việc sử dụng ControllerAdvice để handle Exception tỏ ra hiệu quả.
 public class GlobalExceptionsController {
 
   @ExceptionHandler(DataAccessException.class)
