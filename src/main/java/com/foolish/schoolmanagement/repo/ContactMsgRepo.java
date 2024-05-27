@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -53,9 +54,10 @@ public class ContactMsgRepo {
     return jdbcTemplate.query(sql, contactRowMapper, status);
   }
 
-  public List<ContactMsg> closeContactMsg(int contact_id) {
-    String sql  = "UPDATE contact_msg SET status = 'CLOSE' WHERE contact_id = ?";
-    jdbcTemplate.update(sql, contact_id);
+  public List<ContactMsg> closeContactMsg(int contact_id, String username) {
+    Date current = new Date();
+    String sql  = "UPDATE contact_msg SET status = 'CLOSE', updated_by=?, updated_at=? WHERE contact_id = ?";
+    jdbcTemplate.update(sql, username, current, contact_id);
     return this.findAll();
   }
 }

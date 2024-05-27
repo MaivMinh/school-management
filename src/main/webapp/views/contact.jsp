@@ -43,7 +43,7 @@
                         <li class="alert alert-danger" ><c:out value="${error.getDefaultMessage()}"/></li>
                     </c:forEach>
                 </ul>
-                <form action="/saveMsg" method="post" class="signin-form" >
+                <form action="/save-msg" method="post" class="signin-form" >
                     <div class="input-grids">
                         <div class="row">
                             <div class="col-sm-6">

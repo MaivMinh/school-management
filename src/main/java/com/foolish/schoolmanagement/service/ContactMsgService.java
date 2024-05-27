@@ -35,7 +35,7 @@ public class ContactMsgService {
     return repo.findMessageWithStatus(status);
   }
 
-  public List<ContactMsg> closeContactMsg(int contact_id) {
-    return repo.closeContactMsg(contact_id);
+  public List<ContactMsg> closeContactMsg(int contact_id, String username) {
+    return repo.closeContactMsg(contact_id, username);
   }
 }

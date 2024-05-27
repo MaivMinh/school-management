@@ -43,7 +43,7 @@ public class ContactMsgController {
     return "contact";
   }
 
-  @PostMapping(value = "/saveMsg")
+  @PostMapping(value = "/save-msg")
   public String saveMessage(@Valid ContactMsg contact, Errors errors, Model model) {
     if (errors.hasErrors()) {
       log.info("ContactMsg validation failed due to: " + errors.toString());
@@ -58,7 +58,7 @@ public class ContactMsgController {
   }
 
 
-  @GetMapping(value = {"/contact-msg"})
+  @GetMapping(value = {"/display-msg"})
   public String displayContactMessage(@RequestParam(value = "status", required = false) String status , Model model, Authentication authentication) {
     List<ContactMsg> result = null;
     if (status != null) {
@@ -77,7 +77,7 @@ public class ContactMsgController {
   @GetMapping(value = {"/close-msg"})
   public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model, Authentication auth) {
     int contact_id = Integer.parseInt(id);
-    List<ContactMsg> result = service.closeContactMsg(contact_id);
+    List<ContactMsg> result = service.closeContactMsg(contact_id, auth.getName());
     model.addAttribute("contactMsg", result);
     return "message";
   }

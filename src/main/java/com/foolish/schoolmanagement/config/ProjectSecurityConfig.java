@@ -17,7 +17,9 @@ public class ProjectSecurityConfig {
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     http
             .authorizeHttpRequests((authorize) -> authorize
-                    .requestMatchers("/dashboard", "/contact").authenticated()
+                    .requestMatchers("/dashboard").authenticated()
+                    .requestMatchers("/display-msg").hasRole("ADMIN")
+                    .requestMatchers("/close-msg/**").hasRole("ADMIN")
                     .anyRequest().permitAll()
             )
             .formLogin(loginConfig -> loginConfig.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true").permitAll())
@@ -33,11 +35,16 @@ public class ProjectSecurityConfig {
             .password("Minh@2000")
             .roles("USER")
             .build();
-    UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin")
+    UserDetails admin_1 = User.withDefaultPasswordEncoder()
+            .username("admin1")
             .password("Minh@2000")
             .roles("USER", "ADMIN")
             .build();
-    return new InMemoryUserDetailsManager(user, admin);
+    UserDetails admin_2 = User.withDefaultPasswordEncoder()
+            .username("admin2")
+            .password("Minh@2000")
+            .roles("USER", "ADMIN")
+            .build();
+    return new InMemoryUserDetailsManager(user, admin_1, admin_2);
   }
 }
