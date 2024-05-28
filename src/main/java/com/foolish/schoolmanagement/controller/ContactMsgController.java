@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -62,9 +64,9 @@ public class ContactMsgController {
     List<ContactMsg> result = null;
     if (status != null) {
       if (status.equalsIgnoreCase("open"))  {
-        result = service.findAllByStatus("open");
+        result = service.findAllByStatus("OPEN");
       } else if (status.equalsIgnoreCase("close"))  {
-        result = service.findAllByStatus("close");
+        result = service.findAllByStatus("CLOSED");
       }
     } else {
       result = service.findAll();
@@ -75,7 +77,12 @@ public class ContactMsgController {
 
   @GetMapping(value = {"/close-msg"})
   public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model, Authentication auth) {
-    int contact_id = Integer.parseInt(id);
+    int contact_id = Integer.parseInt(id);  // Có được ID của message.
+    ContactMsg message = service.findByContactID(contact_id);
+    message.setStatus("CLOSED");
+    message.setUpdated_by(auth.getName());
+    message.setUpdated_at(LocalDateTime.now());
+    service.save(message);
     model.addAttribute("contactMsg", service.findAll());
     return "message";
   }

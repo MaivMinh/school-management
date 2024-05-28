@@ -60,10 +60,10 @@
                     <td>${msg.message}</td>
                     <c:if test="${msg.status.equalsIgnoreCase('open')}">
                         <td>
-                            <a href="/close-msg?contact_id=${msg.contact_id}" class="btn btn-style btn-style-3">CLOSE</a>
+                            <a href="/close-msg?contact_id=${msg.contactID}" class="btn btn-style btn-style-3">CLOSE</a>
                         </td>
                     </c:if>
-                    <c:if test="${msg.status.equalsIgnoreCase('close')}">
+                    <c:if test="${msg.status.equalsIgnoreCase('closed')}">
                         <td>
                             <button style="color: red" type="button" class="btn" data-bs-toggle="button">CLOSED</button>
                         </td>

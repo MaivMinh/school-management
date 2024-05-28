@@ -13,9 +13,9 @@ import org.hibernate.annotations.GenericGenerator;
 public class ContactMsg extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name="native")
-  private int contact_id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "contact_id")
+  private int contactID;
 
   @NotBlank(message = "* Name is required")
   @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only characters and length between 3 and 25")

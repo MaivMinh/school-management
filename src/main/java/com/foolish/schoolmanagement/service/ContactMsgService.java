@@ -23,6 +23,10 @@ public class ContactMsgService {
     return repo.findAll();
   }
 
+  public ContactMsg findByContactID(int id) {
+    return repo.findByContactID(id);
+  }
+
   public ContactMsg save(ContactMsg message) {
     return repo.save(message);
   }
@@ -30,5 +34,4 @@ public class ContactMsgService {
   public List<ContactMsg> findAllByStatus(String status) {
     return repo.findAllByStatus(status);
   }
-
 }
