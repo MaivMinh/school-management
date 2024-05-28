@@ -1,10 +1,20 @@
 package com.foolish.schoolmanagement.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
+@Table(name="contact_msg")
 public class ContactMsg extends BaseEntity {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+  @GenericGenerator(name="native")
   private int contact_id;
 
   @NotBlank(message = "* Name is required")
@@ -13,6 +23,7 @@ public class ContactMsg extends BaseEntity {
 
   @NotBlank(message = "* Mobile number is required")
   @Pattern(regexp = "^$|[0-9]{10}$", message = "* Mobile number must be 10 digits")
+  @Column(name="mobile_num")
   private String mobileNum;
 
   @NotBlank(message = "* Email is required")

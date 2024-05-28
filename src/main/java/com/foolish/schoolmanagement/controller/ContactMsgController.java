@@ -51,8 +51,7 @@ public class ContactMsgController {
       model.addAttribute("contact", contact);
       return "contact";
     }
-    ContactMsg result = service.saveMessageDetails(contact);
-    System.out.println(result);
+    ContactMsg result = service.save(contact);
     model.addAttribute("errors", null);
     return "redirect:/contact";
   }
@@ -63,9 +62,9 @@ public class ContactMsgController {
     List<ContactMsg> result = null;
     if (status != null) {
       if (status.equalsIgnoreCase("open"))  {
-        result = service.findMessageWithStatus("open");
+        result = service.findAllByStatus("open");
       } else if (status.equalsIgnoreCase("close"))  {
-        result = service.findMessageWithStatus("close");
+        result = service.findAllByStatus("close");
       }
     } else {
       result = service.findAll();
@@ -77,8 +76,7 @@ public class ContactMsgController {
   @GetMapping(value = {"/close-msg"})
   public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model, Authentication auth) {
     int contact_id = Integer.parseInt(id);
-    List<ContactMsg> result = service.closeContactMsg(contact_id, auth.getName());
-    model.addAttribute("contactMsg", result);
+    model.addAttribute("contactMsg", service.findAll());
     return "message";
   }
 

@@ -19,23 +19,16 @@ public class ContactMsgService {
     this.repo = repo;
   }
 
-  public ContactMsg saveMessageDetails(ContactMsg contact) {
-    return repo.saveMessageDetails(contact);
-  }
-
-  public ContactMsg getContactById(int id) {
-    return repo.getContact(id);
-  }
-
   public List<ContactMsg> findAll() {
     return repo.findAll();
   }
 
-  public List<ContactMsg> findMessageWithStatus(String status) {
-    return repo.findMessageWithStatus(status);
+  public ContactMsg save(ContactMsg message) {
+    return repo.save(message);
   }
 
-  public List<ContactMsg> closeContactMsg(int contact_id, String username) {
-    return repo.closeContactMsg(contact_id, username);
+  public List<ContactMsg> findAllByStatus(String status) {
+    return repo.findAllByStatus(status);
   }
+
 }

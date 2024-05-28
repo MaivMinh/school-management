@@ -20,4 +20,8 @@ public class HolidayService {
   public List<Holiday> findAll() {
     return repo.findAll();
   }
+
+  public List<Holiday> findAllByType(Holiday.Type type) {
+    return repo.findAllByType(type);
+  }
 }
