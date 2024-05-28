@@ -24,3 +24,9 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 - Trong trường hợp này, thì Spring Security sẽ xử lý tất cả các HTTP POST, PUT and DELETE Request từ Client cho dù đó có là Login Form đi nữa.
 - Khi đó, nếu như trong Form không duy trì một CSRF TOKEN hợp lệ và JSESSIONID hợp lệ thì tất cả các request này sẽ trả về 403 Forbidden hết.
 - Lưu ý thêm trường hợp LOGGING OUT ở phía bên trên.
+
+
+======================================== SPRING DATA JPA ========================================
+1. Về tổng quan thì mọi subproject của Spring Data đều dựa trên Repository interface(contract)
+2. Spring data jpa là một subproject của Spring Data mà trong đó nó triển khai JPA Specification và triển khai luôn cả ORM dựa trên việc sử dụng Hibernate là framework chính hoạt động với nhiệm vụ thực hiện ORM. 
+3. Bên cạnh đó, điểm mạnh và quan trọng nhất của Spring Data JPA đó là việc có thêm tính năng Derived Query Method giúp cho developer có thể thực hiện truy vấn đối tượng thông qua Custome các Query Method - Là method tạo ra tử việc đặt tên dựa vào Query như findById, findByUsername....
