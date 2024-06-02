@@ -27,6 +27,9 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 
 
 ======================================== SPRING DATA JPA ========================================
-1. Về tổng quan thì mọi subproject của Spring Data đều dựa trên Repository interface(contract)
+1. Persistance Repository hay Persistance Layer là lớp mà nó thực hiện việc tương tác với cơ sở dữ liệu. Sau này chúng ta sẽ phải học thêm phần Caching.
+2. Về tổng quan thì mọi subproject của Spring Data đều dựa trên Repository interface(contract)
 2. Spring data jpa là một subproject của Spring Data mà trong đó nó triển khai JPA Specification và triển khai luôn cả ORM dựa trên việc sử dụng Hibernate là framework chính hoạt động với nhiệm vụ thực hiện ORM. 
-3. Bên cạnh đó, điểm mạnh và quan trọng nhất của Spring Data JPA đó là việc có thêm tính năng Derived Query Method giúp cho developer có thể thực hiện truy vấn đối tượng thông qua Custome các Query Method - Là method tạo ra tử việc đặt tên dựa vào Query như findById, findByUsername....
+3. Bên cạnh đó, điểm mạnh và quan trọng nhất của Spring Data JPA đó là việc có thêm tính năng Derived Query Method giúp cho developer có thể thực hiện truy vấn đối tượng thông qua Custom các Query Method - Là method tạo ra từ việc đặt tên dựa vào Query như findById, findByUsername....
+
+

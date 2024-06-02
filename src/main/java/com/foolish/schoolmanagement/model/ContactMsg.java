@@ -2,9 +2,12 @@ package com.foolish.schoolmanagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -13,7 +16,8 @@ import org.hibernate.annotations.GenericGenerator;
 public class ContactMsg extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
+  @GenericGenerator(name = "native")
   @Column(name = "contact_id")
   private int contactID;
 
@@ -38,5 +42,5 @@ public class ContactMsg extends BaseEntity {
   @Size(min = 3, message = "* Message must be at least 3 characters")
   private String message;
 
-  private String status;
+  private String status = "OPEN";
 }

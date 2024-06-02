@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ContactMsgController {
 
   @GetMapping(value = {"/contact"})
   public String displayContactPage(Model model) {
-    model.addAttribute("errors",null);
+    model.addAttribute("errors", null);
     model.addAttribute("contact", new ContactMsg());
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     model.addAttribute("username", auth.getName());
@@ -60,12 +61,12 @@ public class ContactMsgController {
 
 
   @GetMapping(value = {"/display-msg"})
-  public String displayContactMessage(@RequestParam(value = "status", required = false) String status , Model model, Authentication authentication) {
+  public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, Authentication authentication) {
     List<ContactMsg> result = null;
     if (status != null) {
-      if (status.equalsIgnoreCase("open"))  {
+      if (status.equalsIgnoreCase("open")) {
         result = service.findAllByStatus("OPEN");
-      } else if (status.equalsIgnoreCase("close"))  {
+      } else if (status.equalsIgnoreCase("close")) {
         result = service.findAllByStatus("CLOSED");
       }
     } else {
@@ -76,15 +77,16 @@ public class ContactMsgController {
   }
 
   @GetMapping(value = {"/close-msg"})
-  public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model, Authentication auth) {
+  public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model) {
     int contact_id = Integer.parseInt(id);  // Có được ID của message.
-    ContactMsg message = service.findByContactID(contact_id);
-    message.setStatus("CLOSED");
-    message.setUpdated_by(auth.getName());
-    message.setUpdated_at(LocalDateTime.now());
-    service.save(message);
+    try {
+      ContactMsg message = service.findByContactID(contact_id);
+      message.setStatus("CLOSED");
+      service.save(message);
+    } catch (RuntimeException e )  {
+      throw new RuntimeException(e);
+    }
     model.addAttribute("contactMsg", service.findAll());
     return "message";
   }
-
 }
