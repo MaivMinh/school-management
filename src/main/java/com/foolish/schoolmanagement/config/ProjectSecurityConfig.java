@@ -20,6 +20,7 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/dashboard").authenticated()
                     .requestMatchers("/display-msg").hasRole("ADMIN")
                     .requestMatchers("/close-msg/**").hasRole("ADMIN")
+                    .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )
             .formLogin(loginConfig -> loginConfig.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true").permitAll())
