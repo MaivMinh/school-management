@@ -23,7 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
                 )
         }
 )
-public class User extends BaseEntity {
+public class Users extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name="native")
@@ -54,7 +54,7 @@ public class User extends BaseEntity {
 
   @Override
   public String toString() {
-    return "User{" +
+    return "Users{" +
             "userId=" + userId +
             ", name='" + name + '\'' +
             ", mobileNum='" + mobileNum + '\'' +
