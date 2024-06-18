@@ -2,12 +2,9 @@ package com.foolish.schoolmanagement.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

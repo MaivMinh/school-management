@@ -24,6 +24,7 @@
                             Look like you're lost
                         </h3>
                         <p>Error Message: <span style="color: #00c16e; font-weight: bold">${message}</span></p>
+                        <p>Caused by: <span style="color: #00c16e; font-weight: bold">${cause}</span></p>
                         <a href="/" class="link_404">Go to Home</a>
                     </div>
                 </div>

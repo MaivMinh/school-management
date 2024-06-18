@@ -50,31 +50,31 @@
                     <div class="input-grids">
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="text" name="name" placeholder="Name"
+                                <input type="text" name="name" value="${user.getName()}" placeholder="Name"
                                        class="contact-input"/>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" name="mobileNum" placeholder="Mobile Number"
-                                       class="contact-input"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <input type="text" name="email" placeholder="Email"
-                                       class="contact-input"/>
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="text" name="confirmEmail" placeholder="Confirm Email"
+                                <input type="text" name="mobileNum" value="${user.getMobileNum()}" placeholder="Mobile Number"
                                        class="contact-input"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="password" name="password" placeholder="Password"
+                                <input type="text" name="email" value="${user.getEmail()}" placeholder="Email"
                                        class="contact-input"/>
                             </div>
                             <div class="col-sm-6">
-                                <input type="password" name="confirmPassword" placeholder="Confirm Password"
+                                <input type="text" name="confirmEmail" value="${user.getConfirmEmail()}" placeholder="Confirm Email"
+                                       class="contact-input"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="password" name="password" value="${user.getPassword()}" placeholder="Password"
+                                       class="contact-input"/>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" name="confirmPassword" value="${user.getConfirmPassword()}" placeholder="Confirm Password"
                                        class="contact-input"/>
                             </div>
                         </div>
