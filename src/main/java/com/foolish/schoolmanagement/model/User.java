@@ -5,8 +5,10 @@ import com.foolish.schoolmanagement.annotations.PasswordValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @FieldsValueMatch.List(
@@ -23,7 +25,8 @@ import org.hibernate.annotations.GenericGenerator;
                 )
         }
 )
-public class Users extends BaseEntity {
+@Table(name = "Users")
+public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name="native")
@@ -35,6 +38,7 @@ public class Users extends BaseEntity {
 
   @NotBlank
   @Pattern(regexp = "^$|[0-9]{10}$", message = "* Mobile number must be 10 digits")
+  @Column(name = "mobile_number")
   private String mobileNum;
 
   @NotBlank(message = "* Email must not be blank")
@@ -52,9 +56,18 @@ public class Users extends BaseEntity {
   @Transient
   private String confirmPassword;
 
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, targetEntity = Roles.class)
+  @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+  private Roles roles;
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, targetEntity = Address.class)
+  @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
+  private Address address;
+
   @Override
   public String toString() {
-    return "Users{" +
+    return "User{" +
             "userId=" + userId +
             ", name='" + name + '\'' +
             ", mobileNum='" + mobileNum + '\'' +

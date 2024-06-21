@@ -18,34 +18,15 @@ public class ProjectSecurityConfig {
     http
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/dashboard").authenticated()
-                    .requestMatchers("/display-msg").hasRole("ADMIN")
-                    .requestMatchers("/close-msg/**").hasRole("ADMIN")
+                    .requestMatchers("/display-msg").hasRole("ROLE_ADMIN")
+                    .requestMatchers("/close-msg/**").hasRole("ROLE_ADMIN")
                     .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )
-            .formLogin(loginConfig -> loginConfig.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login?error=true").permitAll())
-            .logout(logoutConfig -> logoutConfig.logoutSuccessUrl("/login?logout=true").invalidateHttpSession(true).permitAll())
+            .formLogin(loginConfig -> loginConfig.loginPage("/public/login").defaultSuccessUrl("/").failureUrl("/public/login?error=true").permitAll())
+            .logout(logoutConfig -> logoutConfig.logoutSuccessUrl("/public/login?logout=true").invalidateHttpSession(true).permitAll())
             .httpBasic(Customizer.withDefaults());
     return http.build();
   }
 
-  @Bean
-  public InMemoryUserDetailsManager userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user")
-            .password("Minh@2000")
-            .roles("USER")
-            .build();
-    UserDetails admin_1 = User.withDefaultPasswordEncoder()
-            .username("admin1")
-            .password("Minh@2000")
-            .roles("USER", "ADMIN")
-            .build();
-    UserDetails admin_2 = User.withDefaultPasswordEncoder()
-            .username("admin2")
-            .password("Minh@2000")
-            .roles("USER", "ADMIN")
-            .build();
-    return new InMemoryUserDetailsManager(user, admin_1, admin_2);
-  }
 }

@@ -29,7 +29,7 @@
                     </security:authorize>
                     <security:authorize access="isAnonymous()">
                         <li class="nav-item">
-                            <a href="/login" class="nav-link">Login</a>
+                            <a href="/public/login" class="nav-link">Login</a>
                         </li>
                     </security:authorize>
                     <security:authorize access="isAuthenticated()">

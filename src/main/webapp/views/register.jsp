@@ -38,15 +38,15 @@
         </div>
         <div class="row login-block">
             <div class="col-md-7 login-center">
+                <c:if test="${error != null}">
+                    <li class="alert alert-danger">${error}</li>
+                </c:if>
                 <ul>
-                    <c:forEach items="${errors}" var="error" >
-                        <li class="alert alert-danger" ><c:out value="${error.getDefaultMessage()}"/></li>
+                    <c:forEach items="${errors}" var="error">
+                        <li class="alert alert-danger"><c:out value="${error.getDefaultMessage()}"/></li>
                     </c:forEach>
                 </ul>
                 <form action="/public/create-user" method="post" class="signin-form">
-                    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-                        <p class="text-uppercase">Personal Details</p>
-                    </div>
                     <div class="input-grids">
                         <div class="row">
                             <div class="col-sm-6">
@@ -54,7 +54,8 @@
                                        class="contact-input"/>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" name="mobileNum" value="${user.getMobileNum()}" placeholder="Mobile Number"
+                                <input type="text" name="mobileNum" value="${user.getMobileNum()}"
+                                       placeholder="Mobile Number"
                                        class="contact-input"/>
                             </div>
                         </div>
@@ -64,17 +65,20 @@
                                        class="contact-input"/>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" name="confirmEmail" value="${user.getConfirmEmail()}" placeholder="Confirm Email"
+                                <input type="text" name="confirmEmail" value="${user.getConfirmEmail()}"
+                                       placeholder="Confirm Email"
                                        class="contact-input"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="password" name="password" value="${user.getPassword()}" placeholder="Password"
+                                <input type="password" name="password" value="${user.getPassword()}"
+                                       placeholder="Password"
                                        class="contact-input"/>
                             </div>
                             <div class="col-sm-6">
-                                <input type="password" name="confirmPassword" value="${user.getConfirmPassword()}" placeholder="Confirm Password"
+                                <input type="password" name="confirmPassword" value="${user.getConfirmPassword()}"
+                                       placeholder="Confirm Password"
                                        class="contact-input"/>
                             </div>
                         </div>

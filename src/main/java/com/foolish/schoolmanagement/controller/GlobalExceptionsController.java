@@ -16,6 +16,7 @@ public class GlobalExceptionsController {
   public String handleDataAccessException(DataAccessException e, Model model) {
     model.addAttribute("message",e.getMessage());
     model.addAttribute("cause",e.getCause());
+    e.printStackTrace();
     return "error";
   }
 

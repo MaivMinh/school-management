@@ -2,15 +2,16 @@ package com.foolish.schoolmanagement.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 public class Address extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name="native")
-  @Column(name = "address_id")
   private int addressId;
 
   @Column(name = "address_1")
