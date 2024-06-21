@@ -18,8 +18,8 @@ public class ProjectSecurityConfig {
     http
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/dashboard").authenticated()
-                    .requestMatchers("/display-msg").hasRole("ROLE_ADMIN")
-                    .requestMatchers("/close-msg/**").hasRole("ROLE_ADMIN")
+                    .requestMatchers("/display-msg").hasRole("ADMIN")
+                    .requestMatchers("/close-msg/**").hasRole("ADMIN")
                     .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )

@@ -29,9 +29,7 @@
 <!-- //inner banner -->
 
 <!-- login block -->
-<section class="w3l-contact py-5" id="contact"><c:if test="${error != null}">
-    <li class="alert alert-danger">${error}</li>
-</c:if>
+<section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
             <h3 class="title-style">LogIn</h3>
@@ -40,6 +38,9 @@
             <div class="col-md-6 login-center">
                 <form action="/public/login" method="post" class="signin-form">
                     <div class="col-md-8 login-center input-grids">
+                        <c:if test="${error != null}">
+                            <li class="alert alert-danger">${error}</li>
+                        </c:if>
                         <c:if test="${message != null}">
                             <li class="alert alert-success">${message}</li>
                         </c:if>

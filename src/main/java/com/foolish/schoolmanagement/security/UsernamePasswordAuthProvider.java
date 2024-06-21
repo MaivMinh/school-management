@@ -33,9 +33,9 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
     String email = authentication.getName();
     String password = authentication.getCredentials().toString();
     User user = userRepo.getUserByEmail(email);
-    if (user != null && user.getUserId() > 0 && password.equals(user.getPassword()))
-      return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(user.getRoles()));  // Có thể đặt password là null.
-    else {
+    if (user != null && user.getUserId() > 0 && password.equals(user.getPassword())) {
+      return new UsernamePasswordAuthenticationToken(user.getName(), null, getGrantedAuthorities(user.getRoles()));
+    } else {
       throw new BadCredentialsException("Invalid credentials!");
     }
   }
