@@ -29,4 +29,9 @@ public class AuthController {
     }
     return "login";
   }
+
+  @GetMapping(value = "/change-password")
+  public String displayChangePasswordPage(Model model) {
+    return "login";
+  }
 }

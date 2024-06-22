@@ -7,6 +7,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -18,15 +20,21 @@ public class ProjectSecurityConfig {
     http
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/dashboard").authenticated()
-                    .requestMatchers("/display-msg").hasRole("ROLE_ADMIN")
-                    .requestMatchers("/close-msg/**").hasRole("ROLE_ADMIN")
+                    .requestMatchers("/display-msg").hasRole("ADMIN")
+                    .requestMatchers("/close-msg/**").hasRole("ADMIN")
                     .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )
+            .passwordManagement(Customizer.withDefaults())
             .formLogin(loginConfig -> loginConfig.loginPage("/public/login").defaultSuccessUrl("/").failureUrl("/public/login?error=true").permitAll())
             .logout(logoutConfig -> logoutConfig.logoutSuccessUrl("/public/login?logout=true").invalidateHttpSession(true).permitAll())
             .httpBasic(Customizer.withDefaults());
     return http.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(16);
   }
 
 }

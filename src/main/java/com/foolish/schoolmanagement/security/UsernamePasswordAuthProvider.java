@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,21 +22,24 @@ import java.util.List;
 public class UsernamePasswordAuthProvider implements AuthenticationProvider {
 
   private final UserRepo userRepo;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsernamePasswordAuthProvider(UserRepo _userRepo) {
+  public UsernamePasswordAuthProvider(UserRepo _userRepo, PasswordEncoder _passwordEncoder) {
     super();
     this.userRepo = _userRepo;
+    this.passwordEncoder = _passwordEncoder;
   }
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String email = authentication.getName();
     String password = authentication.getCredentials().toString();
+
     User user = userRepo.getUserByEmail(email);
-    if (user != null && user.getUserId() > 0 && password.equals(user.getPassword()))
-      return new UsernamePasswordAuthenticationToken(email, null, getGrantedAuthorities(user.getRoles()));  // Có thể đặt password là null.
-    else {
+    if (user != null && user.getUserId() > 0 && passwordEncoder.matches(password, user.getPassword())) {
+      return new UsernamePasswordAuthenticationToken(user.getName(), null, getGrantedAuthorities(user.getRoles()));
+    } else {
       throw new BadCredentialsException("Invalid credentials!");
     }
   }

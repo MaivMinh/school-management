@@ -37,7 +37,11 @@ public class ContactMsgController {
   }
 
   @GetMapping(value = {"/contact"})
-  public String displayContactPage(Model model) {
+  public String displayContactPage(@RequestParam(name = "success", required = false) boolean success, Model model) {
+    if (success)  {
+      model.addAttribute("message", "You submitted successfully!");
+      return "contact";
+    }
     model.addAttribute("errors", null);
     model.addAttribute("contact", new ContactMsg());
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -56,7 +60,7 @@ public class ContactMsgController {
     }
     ContactMsg result = service.save(contact);
     model.addAttribute("errors", null);
-    return "redirect:/contact";
+    return "redirect:/contact?success=true";
   }
 
 

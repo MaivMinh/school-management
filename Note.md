@@ -33,3 +33,7 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 3. Bên cạnh đó, điểm mạnh và quan trọng nhất của Spring Data JPA đó là việc có thêm tính năng Derived Query Method giúp cho developer có thể thực hiện truy vấn đối tượng thông qua Custom các Query Method - Là method tạo ra từ việc đặt tên dựa vào Query như findById, findByUsername....
 
 
+======================================== CREATE NEW USER ========================================
+1. Do trong đối tượng User chúng ta có sử dụng Entity annotation nên khi chúng ta thực hiện phương thức save() của Data JPA thì khi đó đối tượng này sẽ được validation lại một lần nữa. Điều đó dẫn tới việc password != confirmPassword mà User họ cung cấp trước đó. Điều này sẽ dẫn tới lỗi khi thực hiện kiểm tra xem password - confirmPassword có khớp hay không.
+2. Chúng ta đã sử dụng giải pháp tạm thời là dùng thêm câu lệnh "passwordEncoder.matchs((String)fieldMatchValue, (String)fieldValue)" để khắc phục vấn đề này. Xem lại ở commit phía trước.
+3. Ngoài ra chúng ta có thể sử dụng: spring.jpa

@@ -5,15 +5,18 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch, Object> {
   private String field;
   private String fieldMatch;
+  private BCryptPasswordEncoder passwordEncoder;
 
   @Override
   public void initialize(FieldsValueMatch constraintAnnotation) {
     this.field = constraintAnnotation.field();
     this.fieldMatch = constraintAnnotation.fieldMatch();
+    this.passwordEncoder = new BCryptPasswordEncoder(16);
   }
 
   @Override
