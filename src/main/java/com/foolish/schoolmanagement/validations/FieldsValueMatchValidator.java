@@ -26,7 +26,7 @@ public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValu
     Object fieldMatchValue = new BeanWrapperImpl(value)
             .getPropertyValue(fieldMatch);
     if (fieldValue != null) {
-      return fieldValue.equals(fieldMatchValue) || passwordEncoder.matches((String) fieldMatchValue, (String) fieldValue);
+      return fieldValue.equals(fieldMatchValue);
     } else {
       return fieldMatchValue == null;
     }

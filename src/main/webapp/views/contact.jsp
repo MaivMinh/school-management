@@ -42,6 +42,9 @@
                     <c:forEach items="${errors}" var="error" >
                         <li class="alert alert-danger" ><c:out value="${error.getDefaultMessage()}"/></li>
                     </c:forEach>
+                    <c:if test="${message != null}">
+                        <li class="alert alert-success">${message}</li>
+                    </c:if>
                 </ul>
                 <form action="/save-msg" method="post" class="signin-form" >
                     <div class="input-grids">
