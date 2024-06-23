@@ -24,7 +24,7 @@ public class ContactMsgService {
   }
 
   public ContactMsg findByContactID(int id) {
-    return repo.findByContactID(id);
+    return repo.findByContactId(id);
   }
 
   public ContactMsg save(ContactMsg message) {

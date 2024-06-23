@@ -15,15 +15,13 @@ public class GlobalExceptionsController {
   @ExceptionHandler(DataAccessException.class)
   public String handleDataAccessException(DataAccessException e, Model model) {
     model.addAttribute("message",e.getMessage());
-    model.addAttribute("cause",e.getCause());
     e.printStackTrace();
     return "error";
   }
 
   @ExceptionHandler({RuntimeException.class, Exception.class})  // Dùng chon toàn bộ exception xảy ra bên trong ứng dụng.
-  public String handleException(RuntimeException exception, Model model) {
+  public String handleRuntimeException(RuntimeException exception, Model model) {
     model.addAttribute("message", exception.getMessage());
-    model.addAttribute("cause", exception.getCause());
     exception.printStackTrace();
     return "error";
   }

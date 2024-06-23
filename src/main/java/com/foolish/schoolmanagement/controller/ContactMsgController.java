@@ -65,7 +65,7 @@ public class ContactMsgController {
 
 
   @GetMapping(value = {"/display-msg"})
-  public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, Authentication authentication) {
+  public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model) {
     List<ContactMsg> result = null;
     if (status != null) {
       if (status.equalsIgnoreCase("open")) {

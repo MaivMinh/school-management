@@ -27,7 +27,7 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 
 
 ======================================== SPRING DATA JPA ========================================
-1. Persistance Repository hay Persistance Layer là lớp mà nó thực hiện việc tương tác với cơ sở dữ liệu. Sau này chúng ta sẽ phải học thêm phần Caching.
+1. Persistence Repository hay Persistence Layer là lớp mà nó thực hiện việc tương tác với cơ sở dữ liệu. Sau này chúng ta sẽ phải học thêm phần Caching.
 2. Về tổng quan thì mọi subproject của Spring Data đều dựa trên Repository interface(contract)
 2. Spring data jpa là một subproject của Spring Data mà trong đó nó triển khai JPA Specification và triển khai luôn cả ORM dựa trên việc sử dụng Hibernate là framework chính hoạt động với nhiệm vụ thực hiện ORM. 
 3. Bên cạnh đó, điểm mạnh và quan trọng nhất của Spring Data JPA đó là việc có thêm tính năng Derived Query Method giúp cho developer có thể thực hiện truy vấn đối tượng thông qua Custom các Query Method - Là method tạo ra từ việc đặt tên dựa vào Query như findById, findByUsername....
@@ -37,3 +37,7 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 1. Do trong đối tượng User chúng ta có sử dụng Entity annotation nên khi chúng ta thực hiện phương thức save() của Data JPA thì khi đó đối tượng này sẽ được validation lại một lần nữa. Điều đó dẫn tới việc password != confirmPassword mà User họ cung cấp trước đó. Điều này sẽ dẫn tới lỗi khi thực hiện kiểm tra xem password - confirmPassword có khớp hay không.
 2. Chúng ta đã sử dụng giải pháp tạm thời là dùng thêm câu lệnh "passwordEncoder.matchs((String)fieldMatchValue, (String)fieldValue)" để khắc phục vấn đề này. Xem lại ở commit phía trước.
 3. Ngoài ra chúng ta có thể sử dụng: spring.jpa
+
+======================================== @Valid ANNOTATION. ========================================
+1. _@Valid_ chỉ sử dụng cho _@Entity_ class.
+2. Nếu gặp class chỉ là @Data thì chúng ta phải sử dụng _Validator_ của _jakartar.validation_. Và thực hiện validate ở bên trong phương thức chứ không thực hiện thêm bất kì annotation nào giống như khi làm với @Valid. (Xem chi tiết cách sử dụng Validator ở _ProfileController.java_).
