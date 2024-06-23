@@ -21518,3 +21518,9 @@ label {
 .table-responsive-md {
   margin: 50px;
 }
+
+.control-label:before {
+  content: "* ";
+  color: red;
+  font-size: 1.2rem;
+}

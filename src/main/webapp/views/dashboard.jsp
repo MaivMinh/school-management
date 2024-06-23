@@ -34,7 +34,7 @@
 <section class="w3l-contact py-5" id="contact">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <h3 class="title-style">Welcome ${username}</h3>
+            <h3 class="title-style">Welcome ${email}</h3>
             <p class="">You logged in as - ${roles}</p>
         </div>
 
@@ -45,8 +45,24 @@
 <div class="container py-md-5 py-4">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
-            <security:authorize access="hasRole('ROLE_ADMIN')">
-                <div class="row m-t-25">
+            <div class="row m-t-25">
+                <div class="col-sm-6 col-lg-3">
+                    <a href="/display-profile">
+                        <div class="overview-item overview-item--c4">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="fas fa-id-card"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h2>Profile</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <security:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="col-sm-6 col-lg-3">
                         <a href="/display-msg">
                             <div class="overview-item overview-item--c3">
@@ -63,8 +79,8 @@
                             </div>
                         </a>
                     </div>
-                </div>
-            </security:authorize>
+                </security:authorize>
+            </div>
         </div>
     </div>
 </div>

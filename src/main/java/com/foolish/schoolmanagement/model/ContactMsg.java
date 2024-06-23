@@ -15,11 +15,10 @@ public class ContactMsg extends BaseEntity {
   @Id
   @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
   @GenericGenerator(name = "native")
-  @Column(name = "contact_id")
-  private int contactID;
+  private int contactId;
 
   @NotBlank(message = "* Name is required")
-  @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only characters and length between 3 and 25")
+  @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only ASCII characters and length between 3 and 25")
   private String name;
 
   @NotBlank(message = "* Mobile number is required")

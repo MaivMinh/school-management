@@ -2,13 +2,10 @@ package com.foolish.schoolmanagement.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 public class Roles extends BaseEntity {

@@ -18,21 +18,20 @@ public class BaseEntity {
   * insertable=false có nghĩa rằng khi chúng ta sử dụng câu lệnh SQL INSERT thì không được phép có chứa 2 trường là updated_at và updated_by, vì đơn giản nếu có chứa 2 trường này thì dữ liệu updated_at và updated_by sẽ có giá trị rồi trong khi chưa có thao tác update nào xảy ra trước.
   * updatable=false có nghĩa rằng khi chúng ta sử dụng câu lệnh SQL UPDATE thì không được phép có chứa 2 trường là created_at và created_by, vì đơn giản nếu có chứa 2 trường này thì dữ liệu created_at và created_by sẽ được cập nhật và sẽ không biết ai là người tạo ra dòng dữ liệu này.
   * */
-
   @CreatedDate
-  @Column(name="created_at", updatable = false)
-  protected LocalDateTime created_at;
+  @Column(updatable = false)
+  protected LocalDateTime createdAt;
 
   @CreatedBy
-  @Column(updatable = false, name = "created_by")
-  protected String created_by;
+  @Column(updatable = false)
+  protected String createdBy;
 
   @LastModifiedDate
   @Column(insertable = false)
-  protected LocalDateTime updated_at;
+  protected LocalDateTime updatedAt;
 
   @LastModifiedBy
   @Column(insertable = false)
-  protected String updated_by;
+  protected String updatedBy;
 
 }

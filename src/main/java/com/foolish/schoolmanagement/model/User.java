@@ -33,7 +33,7 @@ public class User extends BaseEntity {
   private Integer userId;
 
   @NotBlank
-  @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only characters and length between 3 and 25")
+  @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only ASCII characters and length between 3 and 25")
   private String name;
 
   @NotBlank
@@ -57,12 +57,12 @@ public class User extends BaseEntity {
   private String confirmPassword;
 
 
-  @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, targetEntity = Roles.class)
-  @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+  @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST, targetEntity = Roles.class)
+  @JoinColumn(name = "role_id", referencedColumnName = "roleId",nullable = false)
   private Roles roles;
 
-  @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, targetEntity = Address.class)
-  @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
+  @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
+  @JoinColumn(name = "address_id", referencedColumnName = "addressId",nullable = true)
   private Address address;
 
   @Override

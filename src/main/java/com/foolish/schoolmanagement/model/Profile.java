@@ -1,33 +1,34 @@
 package com.foolish.schoolmanagement.model;
 
-import jakarta.persistence.*;
+import lombok.Data;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity
-public class Address extends BaseEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name="native")
-  private int addressId;
+public class Profile {
+
+  @NotBlank(message="Name must not be blank")
+  @Size(min=3, message="Name must be at least 3 characters long")
+  private String name;
+
+  @NotBlank(message="Mobile number must not be blank")
+  @Pattern(regexp="(^$|[0-9]{10})",message = "Mobile number must be 10 digits")
+  private String mobileNum;
+
+  @NotBlank(message="Email must not be blank")
+  @Email(message = "Please provide a valid email address" )
+  private String email;
 
   @NotBlank(message="Address1 must not be blank")
   @Size(min=5, message="Address1 must be at least 5 characters long")
-  @Column(name = "address_1")
   private String address1;
 
-  @Column(name = "address_2")
   private String address2;
 
   @NotBlank(message="City must not be blank")
   @Size(min=5, message="City must be at least 5 characters long")
-  @Column(name = "city")
   private String city;
 
   @NotBlank(message="State must not be blank")
