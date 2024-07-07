@@ -29,7 +29,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name="native")
+  @GenericGenerator(name="native", strategy = "native")
   private Integer userId;
 
   @NotBlank
@@ -64,6 +64,10 @@ public class User extends BaseEntity {
   @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
   @JoinColumn(name = "address_id", referencedColumnName = "addressId",nullable = true)
   private Address address;
+
+  @ManyToOne(fetch = FetchType.EAGER, optional = true)
+  @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
+  private Class aClass;
 
   @Override
   public String toString() {

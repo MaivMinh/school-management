@@ -1,14 +1,13 @@
 <%@include file="header.jsp" %>
-<!-- //header -->
 
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-4 pb-sm-4">
-            <h4 class="inner-text-title pt-5">Contact Messages</h4>
+            <h4 class="inner-text-title pt-5">Class Details</h4>
             <ul class="breadcrumbs-custom-path">
-                <li><a href="/home">Home</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Messages</li>
+                <li><a th:href="/home">Home</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>Classes</li>
             </ul>
         </div>
     </div>
@@ -17,43 +16,64 @@
 
 <div class="site-section">
 
-    <div class="table-responsive-md">
+    <div class="table-responsive-class">
+
         <div class="row mb-4">
-            <div class="col-md-7">
-                <h3 class="heading-21921">Open Contact Messages</h3>
+            <div class="overview-wrap">
+                <h3 class="heading-21921">PASSIO Class Details</h3>
+                <button class="btn btn-style btn-style-3 text-left" type="button"
+                        data-bs-toggle="modal" data-bs-target="#createClass">ADD CLASS
+                </button>
+
+            </div>
+        </div>
+        <div class="modal fade login-block" id="createClass" tabindex="-1" role="dialog"
+             aria-labelledby="createClassModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title" id="createClassLabel">Create New Class</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/admin/add-new-class}" method="POST" class="signin-form">
+                        <div class="modal-body">
+                            <div class="input-grids">
+                                <label class="control-label" for="className">Class Name</label>
+                                <input type="text" class="form-control" name="className" id="className"
+                                       required placeholder="Enter class name">
+                            </div>
+                        </div>
+                        <div class="modal-footer border-top-0 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-style btn-style-3">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <table class="table table-striped table-hover">
             <thead class="table-dark">
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Mobile Num</th>
-                <th scope="col">Email</th>
-                <th scope="col">Subject</th>
-                <th scope="col">Message</th>
+                <th scope="col">Class ID</th>
+                <th scope="col">Class Name</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${contactMsg}" var="msg">
-                <tr>
-                    <td>${msg.name}</td>
-                    <td>${msg.mobileNum}</td>
-                    <td>${msg.email}</td>
-                    <td>${msg.subject}</td>
-                    <td>${msg.message}</td>
-                    <c:if test="${msg.status.equalsIgnoreCase('open')}">
-                        <td>
-                            <a href="/close-msg?contact_id=${msg.contactId}" class="btn btn-style btn-style-3">CLOSE</a>
-                        </td>
-                    </c:if>
-                    <c:if test="${msg.status.equalsIgnoreCase('closed')}">
-                        <td>
-                            <button style="color: red" type="button" class="btn" data-bs-toggle="button">CLOSED</button>
-                        </td>
-                    </c:if>
-                </tr>
-            </c:forEach>
+            <c:if test="${classes != null}">
+                <c:forEach items="classes" var="class">
+                    <td>${class.classId}</td>
+                    <dt>${class.name}</dt>
+                    <td>
+                        <a href="/admin/display-student?classId=${class.classId}" class="btn btn-success">VIEW</a>
+                    </td>
+                    <td>
+                        <a href="/admin/delete-class?id=${eazyClass.classId}" class="btn btn-warning">DELETE</a>
+                    </td>
+                </c:forEach>
+            </c:if>
             </tbody>
         </table>
     </div>
@@ -65,7 +85,7 @@
 </div>
 
 <!-- footer block -->
-<%@include file="footer.jsp" %>
+<%@include file="header.jsp" %>
 <!-- //footer block -->
 
 <!-- Js scripts -->
@@ -147,5 +167,4 @@
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
-
 </html>

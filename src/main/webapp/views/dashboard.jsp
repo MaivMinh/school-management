@@ -1,21 +1,4 @@
-<%@page pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <title>PASSIO School</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style-starter.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
-</head>
-
-<body>
 <%@include file="header.jsp" %>
-
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
@@ -73,6 +56,42 @@
                                         </div>
                                         <div class="text">
                                             <h2>Messages</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </security:authorize>
+                <security:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="/admin/display-classes">
+                            <div class="overview-item overview-item--c1">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>Classes</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </security:authorize>
+                <security:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="/admin/display-courses">
+                            <div class="overview-item overview-item--c2">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>Courses</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -167,5 +186,4 @@
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
-
 </html>

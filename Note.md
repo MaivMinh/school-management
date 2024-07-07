@@ -34,10 +34,14 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 
 
 ======================================== CREATE NEW USER ========================================
-1. Do trong đối tượng User chúng ta có sử dụng Entity annotation nên khi chúng ta thực hiện phương thức save() của Data JPA thì khi đó đối tượng này sẽ được validation lại một lần nữa. Điều đó dẫn tới việc password != confirmPassword mà User họ cung cấp trước đó. Điều này sẽ dẫn tới lỗi khi thực hiện kiểm tra xem password - confirmPassword có khớp hay không.
+1. Do trong đối tượng User chúng ta có sử dụng Entity annotation nên khi chúng ta thực hiện phương thức save() của Data JPA thì khi đó đối tượng này sẽ được validation lại một lần nữa. Điều đó dẫn tới việc password != confirmPassword(_Xem cụ thể bên trong UserService.createNewUser()_) mà User họ cung cấp trước đó. Điều này sẽ dẫn tới lỗi khi thực hiện kiểm tra xem password - confirmPassword có khớp hay không.
 2. Chúng ta đã sử dụng giải pháp tạm thời là dùng thêm câu lệnh "passwordEncoder.matchs((String)fieldMatchValue, (String)fieldValue)" để khắc phục vấn đề này. Xem lại ở commit phía trước.
 3. Ngoài ra chúng ta có thể sử dụng: spring.jpa
 
 ======================================== @Valid ANNOTATION. ========================================
 1. _@Valid_ chỉ sử dụng cho _@Entity_ class.
 2. Nếu gặp class chỉ là @Data thì chúng ta phải sử dụng _Validator_ của _jakartar.validation_. Và thực hiện validate ở bên trong phương thức chứ không thực hiện thêm bất kì annotation nào giống như khi làm với @Valid. (Xem chi tiết cách sử dụng Validator ở _ProfileController.java_).
+
+======================================== optional AND nullable in @ManyToOne. ========================================
+1. Khi sử dụng optional=true, điều này có nghĩa là mối quan hệ giữa User và Class là mối quan hệ luôn tồn tại. Nếu như chúng ta tạo một Object User mà không liên kết chúng với bất kì Object Class nào lúc khởi tạo thì sẽ gây ra lỗi.
+2. Sử dụng nullable=true là một lựa chọn gần giống với optional phía bên trên. Khi cho nullable=true thì khi đó khoá ngoại được tham chiêếu này sẽ có thể là NULL, khi đó Object User được tạo ra có thể không cần tham chiếu tới bất kì đối tượng Class nào khác.
