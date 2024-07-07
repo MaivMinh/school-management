@@ -67,7 +67,7 @@ public class User extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
-  private Class aClass;
+  private PassioClass aPassioClass;
 
   @Override
   public String toString() {

@@ -115,7 +115,7 @@
         }
     });
 
-    //Main navigation Active Class Add Remove
+    //Main navigation Active PassioClass Add Remove
     $(".navbar-toggler").on("click", function () {
         $("header").toggleClass("active");
     });

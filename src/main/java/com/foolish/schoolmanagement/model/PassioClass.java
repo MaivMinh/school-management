@@ -12,7 +12,8 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class Class extends BaseEntity{
+@Table(name = "class")
+public class PassioClass extends BaseEntity{
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name = "native", strategy = "native")
@@ -20,9 +21,10 @@ public class Class extends BaseEntity{
 
   @NotBlank(message = "Name must not be blank")
   @Size(min = 3, message = "Name must be at least 3 characters")
+  @Column(unique = true)
   private String name;
 
-  @OneToMany(mappedBy = "aClass", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = User.class)
+  @OneToMany(mappedBy = "aPassioClass", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = User.class)
   private Set<User> students;
 
 }

@@ -18,7 +18,7 @@
 <header id="site-header" class="fixed-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="/" class="navbar-brand"><i class="fas fa-graduation-cap"></i>Eazy School
+            <a href="/" class="navbar-brand"><i class="fas fa-graduation-cap"></i>PASSIO School
             </a>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
