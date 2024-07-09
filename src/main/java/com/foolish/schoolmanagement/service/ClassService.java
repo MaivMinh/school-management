@@ -24,4 +24,8 @@ public class ClassService {
   public List<PassioClass> findAll() {
     return repo.findAll();
   }
+
+  public PassioClass findAllByName(String name) {
+    return repo.findAllByName(name);
+  }
 }

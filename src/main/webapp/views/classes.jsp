@@ -25,6 +25,13 @@
             </c:if>
         </ul>
     </c:if>
+    <c:if test="${existed != null}">
+        <ul>
+            <c:if test="${existed == true}">
+                <li class="alert alert-warning">Class name has already existed. Please choose another name!</li>
+            </c:if>
+        </ul>
+    </c:if>
     <div class="table-responsive-class">
         <div class="row mb-4">
             <div class="overview-wrap">

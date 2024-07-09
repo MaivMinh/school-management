@@ -33,27 +33,34 @@ public class AdminController {
   }
 
   @GetMapping("display-classes")
-  public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success) {
+  public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "existed", required = false) String existed) {
     model.addAttribute("classes", service.findAll());
     if (success != null && success.equalsIgnoreCase("true")) {
       model.addAttribute("success", true);
     } else if (success != null && success.equalsIgnoreCase("false")) {
       model.addAttribute("success", false);
+    } else if (existed != null && existed.equalsIgnoreCase("true")) {
+      model.addAttribute("existed", true);
     }
     return "classes";
   }
 
   @PostMapping("create-new-class")
   public String createNewClass(Model model, PassioClass instance) {
+    String className = instance.getName();
+    PassioClass object = service.findAllByName(className);
+    if (object != null && object.getClassId() > 0) {
+      return "redirect:/admin/display-classes?existed=true";
+    }
     PassioClass addedInstance = service.createNewClass(instance);
     List<PassioClass> classes = service.findAll();
     model.addAttribute("classes", classes);
     if (addedInstance != null && addedInstance.getClassId() > 0) {
       // success.
-      return "redirect:/display-classes?success=true";
+      return "redirect:/admin/display-classes?success=true";
     }
     // error
-    return "redirect:/display-classes?success=false";
+    return "redirect:/admin/display-classes?success=false";
   }
 
 
