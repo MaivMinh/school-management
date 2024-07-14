@@ -35,7 +35,6 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String email = authentication.getName();
     String password = authentication.getCredentials().toString();
-
     User user = userRepo.getUserByEmail(email);
     if (user != null && user.getUserId() > 0 && passwordEncoder.matches(password, user.getPassword())) {
       return new UsernamePasswordAuthenticationToken(user.getEmail(), null, getGrantedAuthorities(user.getRoles()));
