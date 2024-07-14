@@ -18,14 +18,18 @@
 <header id="site-header" class="fixed-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="/" class="navbar-brand"><i class="fas fa-graduation-cap"></i>PASSIO School
-            </a>
+            <a href="/" class="navbar-brand"><i class="fas fa-graduation-cap"></i>PASSIO</a>
+
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
                 <span class="navbar-toggler-icon fa icon-close fa-times"></span>
             </button>
+            <form class="w-100 me-3 ms-3" role="search" action="/public/search" method="post" >
+                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <security:csrfInput/>
+            </form>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll">
                     <li class="nav-item">

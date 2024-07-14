@@ -15,9 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan("com.foolish.schoolmanagement.model")
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 public class SchoolManagementApplication {
-
   public static void main(String[] args) {
     SpringApplication.run(SchoolManagementApplication.class, args);
   }
-
 }

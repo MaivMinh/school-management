@@ -60,7 +60,7 @@ public class ProfileController {
     Set<ConstraintViolation<Profile>> result = validator.validate(profile);
     if (!result.isEmpty()) {
       List<String> errors = new ArrayList<>();
-      for (ConstraintViolation<Profile> constraint: result) {
+      for (ConstraintViolation<Profile> constraint : result) {
         errors.add(constraint.getMessage());
       }
       model.addAttribute("profile", profile);
@@ -85,5 +85,4 @@ public class ProfileController {
     httpSession.setAttribute("user", user);
     return "redirect:/display-profile?success=true";
   }
-
 }

@@ -32,4 +32,16 @@ public class UserService {
       return true;
     return false;
   }
+
+  public User getUserByEmail(String email) {
+    return userRepo.getUserByEmail(email);
+  }
+
+  public User save(User user) {
+    return userRepo.save(user);
+  }
+
+  public User findUserByUserId(Integer userId) {
+    return userRepo.findUserByUserId(userId);
+  }
 }

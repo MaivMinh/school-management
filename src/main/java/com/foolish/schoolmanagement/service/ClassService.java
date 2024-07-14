@@ -32,4 +32,8 @@ public class ClassService {
   public PassioClass findByClassId(int id) {
     return repo.findByClassId(id);
   }
+
+  public PassioClass save(PassioClass pClass) {
+    return repo.save(pClass);
+  }
 }

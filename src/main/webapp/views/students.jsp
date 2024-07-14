@@ -6,7 +6,9 @@
             <h4 class="inner-text-title pt-5">Students Details</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
-                <li class="active"><i class="fas fa-angle-right"></i>Students</li>
+                <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/admin/display-classes">Classes</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>${passioClass.name}</li>
             </ul>
         </div>
     </div>
@@ -19,6 +21,18 @@
 
         <div class="row mb-4">
             <ul>
+                <c:if test="${success != null && success == true}">
+                    <li class="alert alert-success">You have added student successfully</li>
+                </c:if>
+                <c:if test="${error != null && error == true}">
+                    <li class="alert alert-danger">Failure to add student into class!</li>
+                </c:if>
+                <c:if test="${deleted != null && deleted == true}">
+                    <li class="alert alert-success">You have deleted student successfully!</li>
+                </c:if>
+                <c:if test="${deleted != null && deleted == false}">
+                    <li class="alert alert-danger">Failure to delete student from class!</li>
+                </c:if>
             </ul>
             <div class="overview-wrap">
                 <h3 class="heading-21921">${passioClass.name} Students Details</h3>
@@ -38,6 +52,7 @@
                         </button>
                     </div>
                     <form action="/admin/add-student" method="post" class="signin-form">
+                        <input type="text" name="id" value="${passioClass.classId}" hidden/>
                         <div class="modal-body">
                             <div class="input-grids">
                                 <label class="control-label" for="email">Student Email </label>
@@ -48,6 +63,7 @@
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
                             <button type="submit" class="btn btn-style btn-style-3">Submit</button>
                         </div>
+                        <security:csrfInput/>
                     </form>
                 </div>
             </div>
@@ -63,18 +79,22 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <c:if test="${students != null}>">
-                    <c:forEach items="students" var="student">
-                        <td>${student.name}></td>
-                        <td>${student.email}></td>
-                        <td>${student.mobileNumber}></td>
+            <c:if test="${students != null}">
+                <c:forEach items="${students}" var="student">
+                    <tr>
+                        <td>${student.name}</td>
+                        <td>${student.email}</td>
+                        <td>${student.mobileNum}</td>
                         <td>
-                            <a href="/admin/delete-student?userId=${student.userId}" class="btn btn-warning">DELETE</a>
+                            <form action="/admin/delete-student" method="post">
+                                <input type="text" name="userId" value="${student.userId}" hidden>
+                                <button type="submit" class="btn btn-warning">DELETE</button>
+                                <security:csrfInput/>
+                            </form>
                         </td>
-                    </c:forEach>
-                </c:if>
-            </tr>
+                    </tr>
+                </c:forEach>
+            </c:if>
             </tbody>
         </table>
     </div>

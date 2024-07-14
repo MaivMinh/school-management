@@ -40,4 +40,9 @@ public class PublicController {
     }
     return "redirect:/public/register";
   }
+
+  @PostMapping("search")
+  public String searching() {
+    return "redirect:/";
+  }
 }

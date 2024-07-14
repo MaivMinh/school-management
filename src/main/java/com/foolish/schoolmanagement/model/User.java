@@ -6,10 +6,18 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import java.lang.annotation.Documented;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Getter
+@Setter
 @Entity
 @FieldsValueMatch.List(
         {
@@ -30,7 +38,7 @@ public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name="native", strategy = "native")
-  private Integer userId;
+  private int userId;
 
   @NotBlank
   @Pattern(regexp = "^$|[a-zA-Z ]{3,25}$", message = "* Name must be only ASCII characters and length between 3 and 25")
@@ -68,6 +76,14 @@ public class User extends BaseEntity {
   @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
   private PassioClass aPassioClass;
+
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+  @JoinTable(name = "user_courses",
+          joinColumns = {
+                  @JoinColumn(name = "user_id", referencedColumnName = "userId")},
+          inverseJoinColumns = {
+                  @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
+  private Set<Courses> courses = new HashSet<>();
 
   @Override
   public String toString() {
