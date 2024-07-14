@@ -30,6 +30,11 @@ public class DashBoardController {
     httpSession.setAttribute("user", user);
     model.addAttribute("email", authentication.getName());
     model.addAttribute("roles", authentication.getAuthorities().toString());
+    if (user.getAPassioClass() != null && user.getAPassioClass().getName() != null) {
+      model.addAttribute("enrolledClass", user.getAPassioClass().getName());
+    }
     return "dashboard";
   }
+
+
 }

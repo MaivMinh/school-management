@@ -1,17 +1,21 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.PassioClass;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.service.ClassService;
+import com.foolish.schoolmanagement.service.CoursesService;
 import com.foolish.schoolmanagement.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -20,17 +24,14 @@ import java.util.List;
 public class AdminController {
   private final ClassService classService;
   private final UserService userService;
+  private final CoursesService coursesService;
 
   @Autowired
-  public AdminController(ClassService classService, UserService userService) {
+  public AdminController(ClassService classService, UserService userService, CoursesService coursesService) {
     super();
     this.classService = classService;
     this.userService = userService;
-  }
-
-  @GetMapping("display-courses")
-  public String displayCourses() {
-    return "courses";
+    this.coursesService = coursesService;
   }
 
   @GetMapping("display-classes")
@@ -108,5 +109,72 @@ public class AdminController {
     if (user != null && user.getUserId() > 0)
       return ("redirect:/admin/display-classes/" + pClass.getClassId() + "?deleted=true");
     return ("redirect:/admin/display-classes/" + pClass.getClassId() + "?deleted=false");
+  }
+
+  @GetMapping("display-courses")
+  public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added) {
+    List<Courses> courses = coursesService.findAll();
+    model.addAttribute("courses", courses);
+    if (added != null) model.addAttribute("added", added.equalsIgnoreCase("true"));
+    return "courses_admin";
+  }
+
+  @PostMapping("add-new-course")
+  public String addNewCourse(Model model, Courses courses) {
+    courses = coursesService.save(courses);
+    if (courses != null && courses.getCourseId() > 0) {
+      // success.
+      return "redirect:/admin/display-courses?added=true";
+    }
+    return "redirect:/admin/display-courses?added=false";
+  }
+
+  @GetMapping("view-students")
+  public String displayStudentsInCourse(Model model, @RequestParam(value = "courseId", required = true) String courseId, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "enrolled", required = false) String enrolled, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error) {
+    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
+    System.out.println(courses.getUsers());
+    model.addAttribute("courses", courses);
+    if (added != null)  model.addAttribute("added", added.equalsIgnoreCase("true"));
+    if (enrolled != null)  model.addAttribute("enrolled", enrolled.equalsIgnoreCase("true"));
+    if (existed != null)  model.addAttribute("existed", existed.equalsIgnoreCase("true"));
+    if (success != null)  model.addAttribute("success", success.equalsIgnoreCase("true"));
+    if (error != null)  model.addAttribute("error", error.equalsIgnoreCase("true"));
+    return "course_students";
+  }
+
+  @PostMapping("add-student-to-course")
+  public String addStudentToCourse(User user, @RequestParam(value = "courseId", required = true) String courseId) {
+    user = userService.getUserByEmail(user.getEmail());
+    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
+    if (user != null && user.getUserId() > 0) {
+      // user existed.
+      if (courses != null && courses.getCourseId() > 0) {
+        // courses existed.
+        if (courses.getUsers().contains(user))  return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
+        courses.getUsers().add(user);
+        user.getCourses().add(courses);
+        coursesService.save(courses);
+        return "redirect:/admin/view-students?courseId=" + courseId + "&added=true";
+      }
+    } else return "redirect:/admin/view-students?courseId=" + courseId + "&existed=false";
+    return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
+  }
+
+  @PostMapping("delete-student-from-course")
+  public String deleteStudentFromCourse(@RequestParam(value = "userId", required = true) String userId, @RequestParam(value = "courseId", required = true) String courseId) {
+    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
+    User user = userService.findUserByUserId(Integer.parseInt(userId));
+    if (courses != null && courses.getCourseId() > 0) {
+      // course existed.
+      if (user != null && user.getUserId() > 0) {
+        // user existed.
+        if (!courses.getUsers().contains(user) || !user.getCourses().contains(courses)) return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
+        courses.getUsers().remove(user);
+        user.getCourses().remove(courses);
+        coursesService.save(courses);
+        return "redirect:/admin/view-students?courseId=" + courseId + "&success=true";
+      }
+    }
+    return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
   }
 }

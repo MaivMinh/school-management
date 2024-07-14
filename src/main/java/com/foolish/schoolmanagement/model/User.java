@@ -77,7 +77,7 @@ public class User extends BaseEntity {
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
   private PassioClass aPassioClass;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   @JoinTable(name = "user_courses",
           joinColumns = {
                   @JoinColumn(name = "user_id", referencedColumnName = "userId")},

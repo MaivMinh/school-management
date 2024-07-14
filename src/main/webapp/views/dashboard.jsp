@@ -19,6 +19,7 @@
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
             <h3 class="title-style">Welcome ${email}</h3>
             <p class="">You logged in as - ${roles}</p>
+            <p class="">Your assigned class is - ${enrolledClass}</p>
         </div>
 
     </div>
@@ -85,6 +86,24 @@
                     <div class="col-sm-6 col-lg-3">
                         <a href="/admin/display-courses">
                             <div class="overview-item overview-item--c2">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>Courses</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </security:authorize>
+                <security:authorize access="hasRole('ROLE_STUDENT')">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="/student/display-courses">
+                            <div class="overview-item overview-item--c3">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
                                         <div class="icon">

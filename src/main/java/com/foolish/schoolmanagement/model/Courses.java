@@ -27,4 +27,13 @@ public class Courses extends BaseEntity {
 
   @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Set<User> users = new HashSet<>();
+
+  @Override
+  public String toString() {
+    return "Courses{" +
+            "courseId=" + courseId +
+            ", name='" + name + '\'' +
+            ", fees='" + fees + '\'' +
+            '}';
+  }
 }

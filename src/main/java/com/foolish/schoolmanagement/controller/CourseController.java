@@ -10,6 +10,6 @@ public class CourseController {
 
   @GetMapping(value = {""})
   public String displayCourses() {
-    return "courses";
+    return "courses_user";
   }
 }

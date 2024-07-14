@@ -29,5 +29,4 @@ public class PassioClass extends BaseEntity{
 
   @OneToMany(mappedBy = "aPassioClass", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, targetEntity = User.class)
   private Set<User> students = new HashSet<>();
-
 }

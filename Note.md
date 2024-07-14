@@ -45,3 +45,12 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 ======================================== optional AND nullable in @ManyToOne. ========================================
 1. Khi sử dụng optional=true, điều này có nghĩa là mối quan hệ giữa User và Class là mối quan hệ luôn tồn tại. Nếu như chúng ta tạo một Object User mà không liên kết chúng với bất kì Object Class nào lúc khởi tạo thì sẽ gây ra lỗi.
 2. Sử dụng nullable=true là một lựa chọn gần giống với optional phía bên trên. Khi cho nullable=true thì khi đó khoá ngoại được tham chiêếu này sẽ có thể là NULL, khi đó Object User được tạo ra có thể không cần tham chiếu tới bất kì đối tượng Class nào khác.
+
+======================================== KIẾN THỨC QUAN TRỌNG VỀ CascadeType.PERSIST. ========================================
+1. Cho ví dụ về một mối quan hệ Many-to-Many như sau:
+   courses.getUsers().add(user);
+   user.getCourses().add(courses);
+   courses = coursesService.save(courses);
+2. Đoạn code trên có được trong _AdminController_ dòng 151 gì đó, thể hiện việc thêm một User vào Course và ngược lại. Đoạn code này và những đoạn phía dưới không hề chứa thêm bất kì thao tác save(user) nào. Vì sao lại như thế: 
+   - Nguyên nhân là bởi vì CascadeType.PERSIST nó vừa có thể tạo một đối tượng mới nếu chúng được tạo mới hoàn toàn, hoặc nó có thể _UPDATE_ chinh đối tượng hiện có nếu chúng vừa cập nhật một giá trị mới nào ở trong fields của chúng. 
+   - Ở đoạn code trên chúng ta có thể thấy rằng đối tượng _user_ đã cập nhật thêm một Course vào trong danh sách, nên đó trở thành đối tuợng vừa cập nhật mới các giá trị. Do đó, nên khi chúng ta save(courses) thì CascadeType.PERSIST cũng sẽ hoạt động để update lại giá trị cho user ở phía dưới _DATABASE_. Và vì thế chúng ta không cần có thêm đoạn code _userService.save(user)_ dư thừa này.
