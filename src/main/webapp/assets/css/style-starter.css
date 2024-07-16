@@ -1,15 +1,5 @@
 @charset "UTF-8";
 
-/*--
-Author: W3layouts
-Author URL: http://w3layouts.com
---*/
-/*!
- * Bootstrap v5.0.1 (https://getbootstrap.com/)
- * Copyright 2011-2021 The Bootstrap Authors
- * Copyright 2011-2021 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
 :root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
@@ -723,7 +713,6 @@ progress {
     width: 100%;
     max-width: 100%;
     padding-right: calc(var(--bs-gutter-x) / 2);
-    padding-left: calc(var(--bs-gutter-x) / 2);
     margin-top: var(--bs-gutter-y);
 }
 
@@ -2008,7 +1997,7 @@ progress {
 .table {
     --bs-table-bg: transparent;
     --bs-table-accent-bg: transparent;
-    --bs-table-striped-color: #212529;
+    --bs-table-striped-color: var(--heading-color);
     --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
     --bs-table-active-color: #212529;
     --bs-table-active-bg: rgba(0, 0, 0, 0.1);
@@ -2016,7 +2005,7 @@ progress {
     --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
     width: 100%;
     margin-bottom: 1rem;
-    color: #212529;
+    color: var(--heading-color);
     vertical-align: top;
     border-color: #dee2e6;
 }
@@ -19074,12 +19063,7 @@ header.nav-fixed {
     color: var(--heading-color);
 }
 
-.nav-item > form > button {
-    background-color: unset;
-    border: none;
-}
-
-/* //search */
+/* //serach */
 @media only screen and (max-width: 991px) {
     header.nav-fixed {
         height: auto;
@@ -21190,9 +21174,37 @@ h4.inner-text-title {
 }
 
 /* //login section */
-#contact {
-    padding-top: 0 !important;
+
+/* //error section */
+.page_404 img {
+    width: 100%;
 }
+
+.four_zero_four_bg {
+    background-image: url(/assets/images/dribbble.gif);
+    height: 400px;
+    background-position: center;
+}
+
+.four_zero_four_bg h1 {
+    font-size: 80px;
+}
+
+.four_zero_four_bg h3 {
+    font-size: 80px;
+}
+
+.link_404 {
+    padding: 10px 20px;
+    margin: 20px 0;
+    display: inline-block;
+}
+
+.contant_box_404 {
+    margin-top: -50px;
+}
+
+/* //error section */
 
 /* team block */
 .w3l-team-13 .left-side h4 {
@@ -21257,7 +21269,6 @@ h4.inner-text-title {
 }
 
 /* //team block */
-
 
 /* ----- Overview ----- */
 
@@ -21491,16 +21502,121 @@ label {
     margin: 50px;
 }
 
-.control-label:before {
-    content: "* ";
-    color: red;
-    font-size: 1.2rem;
+.table-responsive-class {
+    margin: auto;
+    width: 50% !important;
 }
 
+.control-label:after {
+    content: "*";
+    color: red;
+}
 
-/* STYLING FOR CLASSES PAGE*/
-body > div.site-section {
-    width: 1200px;
-    min-width: 1200px;
+.close:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+table.dataTable > thead > tr > th:not(.sorting_disabled),
+table.dataTable > thead > tr > td:not(.sorting_disabled) {
+    padding-right: 30px;
+}
+
+table.dataTable > thead .sorting,
+table.dataTable > thead .sorting_asc,
+table.dataTable > thead .sorting_desc,
+table.dataTable > thead .sorting_asc_disabled,
+table.dataTable > thead .sorting_desc_disabled {
+    cursor: pointer;
+    position: relative;
+}
+
+table.dataTable > thead .sorting:before, table.dataTable > thead .sorting:after,
+table.dataTable > thead .sorting_asc:before,
+table.dataTable > thead .sorting_asc:after,
+table.dataTable > thead .sorting_desc:before,
+table.dataTable > thead .sorting_desc:after,
+table.dataTable > thead .sorting_asc_disabled:before,
+table.dataTable > thead .sorting_asc_disabled:after,
+table.dataTable > thead .sorting_desc_disabled:before,
+table.dataTable > thead .sorting_desc_disabled:after {
+    position: absolute;
+    bottom: 0.5em;
+    display: block;
+    opacity: 0.3;
+}
+
+table.dataTable > thead .sorting:before,
+table.dataTable > thead .sorting_asc:before,
+table.dataTable > thead .sorting_desc:before,
+table.dataTable > thead .sorting_asc_disabled:before,
+table.dataTable > thead .sorting_desc_disabled:before {
+    right: 1em;
+    content: "↑";
+}
+
+table.dataTable > thead .sorting:after,
+table.dataTable > thead .sorting_asc:after,
+table.dataTable > thead .sorting_desc:after,
+table.dataTable > thead .sorting_asc_disabled:after,
+table.dataTable > thead .sorting_desc_disabled:after {
+    right: 0.5em;
+    content: "↓";
+}
+
+table.dataTable > thead .sorting_asc:before,
+table.dataTable > thead .sorting_desc:after {
+    opacity: 1;
+}
+
+table.dataTable > thead .sorting_asc_disabled:before,
+table.dataTable > thead .sorting_desc_disabled:after {
+    opacity: 0;
+}
+
+th > a {
+    color: #fff;
+    text-decoration: underline;
+    background-color: transparent;
+}
+
+th > a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+#navbarScroll > ul > li:nth-child(5) > form > button {
+    border: none;
+    background: none;
+}
+
+body > div.site-section > div.col-md-2.login-center.text-start > a > button {
+    display: block;
     margin: auto;
+    margin-top: 2rem;
+}
+
+body > div.site-section {
+    padding-top: 0px;
 }

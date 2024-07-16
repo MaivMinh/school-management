@@ -62,35 +62,4 @@ public class ContactMsgController {
     model.addAttribute("errors", null);
     return "redirect:/contact?success=true";
   }
-
-
-  @GetMapping(value = {"/display-msg"})
-  public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model) {
-    List<ContactMsg> result = null;
-    if (status != null) {
-      if (status.equalsIgnoreCase("open")) {
-        result = service.findAllByStatus("OPEN");
-      } else if (status.equalsIgnoreCase("close")) {
-        result = service.findAllByStatus("CLOSED");
-      }
-    } else {
-      result = service.findAll();
-    }
-    model.addAttribute("contactMsg", result);
-    return "message";
-  }
-
-  @GetMapping(value = {"/close-msg"})
-  public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model) {
-    int contact_id = Integer.parseInt(id);  // Có được ID của message.
-    try {
-      ContactMsg message = service.findByContactID(contact_id);
-      message.setStatus("CLOSED");
-      service.save(message);
-    } catch (RuntimeException e )  {
-      throw new RuntimeException(e);
-    }
-    model.addAttribute("contactMsg", service.findAll());
-    return "message";
-  }
 }

@@ -48,7 +48,7 @@
                 </div>
                 <security:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="col-sm-6 col-lg-3">
-                        <a href="/display-msg">
+                        <a href="/admin/display-msg">
                             <div class="overview-item overview-item--c3">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">

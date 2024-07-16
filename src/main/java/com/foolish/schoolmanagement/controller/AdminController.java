@@ -1,15 +1,22 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.model.ContactMsg;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.PassioClass;
 import com.foolish.schoolmanagement.model.User;
+import com.foolish.schoolmanagement.repo.CoursesRepo;
 import com.foolish.schoolmanagement.service.ClassService;
+import com.foolish.schoolmanagement.service.ContactMsgService;
 import com.foolish.schoolmanagement.service.CoursesService;
 import com.foolish.schoolmanagement.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +32,15 @@ public class AdminController {
   private final ClassService classService;
   private final UserService userService;
   private final CoursesService coursesService;
+  private final ContactMsgService contactMsgService;
 
   @Autowired
-  public AdminController(ClassService classService, UserService userService, CoursesService coursesService) {
+  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService) {
     super();
     this.classService = classService;
     this.userService = userService;
     this.coursesService = coursesService;
+    this.contactMsgService = contactMsgService;
   }
 
   @GetMapping("display-classes")
@@ -113,8 +122,10 @@ public class AdminController {
 
   @GetMapping("display-courses")
   public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added) {
-    List<Courses> courses = coursesService.findAll();
-    model.addAttribute("courses", courses);
+    Pageable pageable = PageRequest.of(1, 5, Sort.by("courseId").descending());
+    Page<Courses> courses = coursesService.findAll(pageable);
+    System.out.println(courses.getNumber());
+    model.addAttribute("courses", courses.getContent());
     if (added != null) model.addAttribute("added", added.equalsIgnoreCase("true"));
     return "courses_admin";
   }
@@ -176,5 +187,40 @@ public class AdminController {
       }
     }
     return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
+  }
+
+
+  @GetMapping(value = {"display-msg"})
+  public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
+    // [currentPage, totalPages] ; [sortDir; reverseSortDir]; sortField; contactMsgs;
+    int pageNum = Integer.parseInt((page != null) ? (page): ("1"));
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize): "10");
+    String field = sortField != null ? sortField: "name";
+    String dir = sortDir != null ? sortDir: "asc";
+    status = (status != null) ? status: "OPEN";
+
+    Page<ContactMsg> result = contactMsgService.findAllByStatus(pageNum, pageSizeNum, status, field, dir);
+
+    model.addAttribute("page", result.getNumber() + 1);
+    model.addAttribute("totalPages", result.getTotalPages());
+    model.addAttribute("sortDir", dir);
+    model.addAttribute("sortField", field);
+    model.addAttribute("reverseSortDir", (dir.equalsIgnoreCase("asc") ? "desc": "asc"));
+    model.addAttribute("contactMsgs", result.getContent());
+    return "message";
+  }
+
+  @GetMapping(value = {"close-msg"})
+  public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model) {
+    int contact_id = Integer.parseInt(id);  // Có được ID của message.
+    try {
+      ContactMsg message = contactMsgService.findByContactID(contact_id);
+      message.setStatus("CLOSED");
+      contactMsgService.save(message);
+    } catch (RuntimeException e )  {
+      throw new RuntimeException(e);
+    }
+    model.addAttribute("contactMsg", contactMsgService.findAll());
+    return "message";
   }
 }
