@@ -20,7 +20,7 @@ public class StudentController {
     this.coursesService = coursesService;
   }
 
-  @GetMapping("display-courses")
+  @GetMapping("courses")
   public String displayCourses(Model model, HttpSession session) {
     User user = (User) session.getAttribute("user");
     model.addAttribute("user", user);

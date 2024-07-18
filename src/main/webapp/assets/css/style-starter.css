@@ -20014,7 +20014,7 @@ p.count-text {
     align-items: stretch;
 }
 
-/* pagination blog page */
+/* pagination.jsp blog page */
 .pagination-style {
     display: block;
 }
@@ -20063,7 +20063,7 @@ p.count-text {
     color: #c3c2c2;
 }
 
-/* //pagination blog page */
+/* //pagination.jsp blog page */
 @media all and (max-width: 1200px) {
     .section-heading p.lead {
         font-size: 1.1rem;

@@ -4,7 +4,6 @@ import com.foolish.schoolmanagement.model.ContactMsg;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.PassioClass;
 import com.foolish.schoolmanagement.model.User;
-import com.foolish.schoolmanagement.repo.CoursesRepo;
 import com.foolish.schoolmanagement.service.ClassService;
 import com.foolish.schoolmanagement.service.ContactMsgService;
 import com.foolish.schoolmanagement.service.CoursesService;
@@ -12,7 +11,6 @@ import com.foolish.schoolmanagement.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Controller
@@ -43,9 +40,24 @@ public class AdminController {
     this.contactMsgService = contactMsgService;
   }
 
-  @GetMapping("display-classes")
-  public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "existed", required = false) String existed) {
-    model.addAttribute("classes", classService.findAll());
+  @GetMapping("classes")
+  public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
+
+    int pageNum = Integer.parseInt((page != null) ? page: "1");
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? pageSize: "10");
+    String dir = (sortDir != null) ? sortDir: "asc";
+    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
+    String field = (sortField != null) ? sortField: "classId";
+    Page<PassioClass> result = classService.findAll(pageNum, pageSizeNum, field, dir);
+
+    model.addAttribute("classes", result.getContent());
+    model.addAttribute("page", pageNum);
+    model.addAttribute("pageSize", pageSizeNum);
+    model.addAttribute("totalPages", result.getTotalPages());
+    model.addAttribute("sortDir", dir);
+    model.addAttribute("sortField", field);
+    model.addAttribute("reverseSortDir", reverseDir);
+
     if (success != null && success.equalsIgnoreCase("true")) {
       model.addAttribute("success", true);
     } else if (success != null && success.equalsIgnoreCase("false")) {
@@ -56,11 +68,30 @@ public class AdminController {
     return "classes";
   }
 
-  @GetMapping("display-classes/{classId}")
-  public String displayStudentInClassWithClassId(Model model, @PathVariable("classId") String classId, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "deleted", required = false) String deleted) {
+  @GetMapping("classes/{classId}")
+  public String displayStudentInClassWithClassId(Model model, @PathVariable("classId") String classId, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "deleted", required = false) String deleted, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
+
+    int pageNum = Integer.parseInt((page != null ? page: "1"));
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: "10"));
+    String dir = (sortDir != null ? sortDir: "asc");
+    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
+    String field = (sortField != null ? sortField: "name");
+
     PassioClass passioClass = classService.findByClassId(Integer.parseInt(classId));
+    if (passioClass == null || passioClass.getClassId() <= 0) {
+      return "error";
+    }
+    Page<User> result = userService.findUsersByPassioClass(passioClass, pageNum, pageSizeNum, dir, field);
+    System.out.println("A number of student = " + result.getContent().size());
     model.addAttribute("passioClass", passioClass);
-    model.addAttribute("students", passioClass.getStudents());
+    model.addAttribute("students", result.getContent());
+    model.addAttribute("page", pageNum);
+    model.addAttribute("pageSize", pageSizeNum);
+    model.addAttribute("totalPages", result.getTotalPages());
+    model.addAttribute("sortField",field);
+    model.addAttribute("sortDir", dir);
+    model.addAttribute("reverseSortDir", reverseDir);
+
     if (success != null && success.equalsIgnoreCase("true")) {
       model.addAttribute("success", true);
     }
@@ -80,52 +111,62 @@ public class AdminController {
     String className = instance.getName();
     PassioClass object = classService.findAllByName(className);
     if (object != null && object.getClassId() > 0) {
-      return "redirect:/admin/display-classes?existed=true";
+      return "redirect:/admin/classes?existed=true";
     }
     PassioClass addedInstance = classService.createNewClass(instance);
     List<PassioClass> classes = classService.findAll();
     model.addAttribute("classes", classes);
     if (addedInstance != null && addedInstance.getClassId() > 0) {
       // success.
-      return "redirect:/admin/display-classes?success=true";
+      return "redirect:/admin/classes?success=true";
     }
     // error
-    return "redirect:/admin/display-classes?success=false";
+    return "redirect:/admin/classes?success=false";
   }
 
   @PostMapping("add-student")
   public String addStudentIntoClass(Model model, User user, @RequestParam("id") String id) {
     user = userService.getUserByEmail(user.getEmail());
-    if (user != null && user.getUserId() > 0 && user.getAPassioClass() == null) {
+    if (user != null && user.getUserId() > 0 && user.getPassioClass() == null) {
       PassioClass pClass = classService.findByClassId(Integer.parseInt(id));
       if (pClass != null && pClass.getClassId() > 0) {
         pClass.getStudents().add(user); // Thêm student vào class.
-        user.setAPassioClass(pClass); // Thêm class vào student.
+        user.setPassioClass(pClass); // Thêm class vào student.
         userService.save(user);
         classService.save(pClass);
-      } else return ("redirect:/admin/display-classes/" + id + "?error=true");
-    } else return ("redirect:/admin/display-classes/" + id + "?error=true");
-    return ("redirect:/admin/display-classes/" + id + "?success=true");
+      } else return ("redirect:/admin/classes/" + id + "?error=true");
+    } else return ("redirect:/admin/classes/" + id + "?error=true");
+    return ("redirect:/admin/classes/" + id + "?success=true");
   }
 
   @PostMapping("delete-student")
   public String deleteStudentFromClass(Model model, @RequestParam("userId") String userId) {
     User user = userService.findUserByUserId(Integer.parseInt(userId));
-    PassioClass pClass = user.getAPassioClass();
+    PassioClass pClass = user.getPassioClass();
     // Tiến hành loại bỏ thông tin ở trong student and class.
-    user.setAPassioClass(null);
+    user.setPassioClass(null);
     user = userService.save(user);
     if (user != null && user.getUserId() > 0)
-      return ("redirect:/admin/display-classes/" + pClass.getClassId() + "?deleted=true");
-    return ("redirect:/admin/display-classes/" + pClass.getClassId() + "?deleted=false");
+      return ("redirect:/admin/classes/" + pClass.getClassId() + "?deleted=true");
+    return ("redirect:/admin/classes/" + pClass.getClassId() + "?deleted=false");
   }
 
-  @GetMapping("display-courses")
-  public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added) {
-    Pageable pageable = PageRequest.of(1, 5, Sort.by("courseId").descending());
-    Page<Courses> courses = coursesService.findAll(pageable);
-    System.out.println(courses.getNumber());
-    model.addAttribute("courses", courses.getContent());
+  @GetMapping("courses")
+  public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField ) {
+    int pageNum = Integer.parseInt((page != null) ? page: "1");
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: "10"));
+    String dir = sortDir != null ? sortDir: "asc";
+    String field = sortField != null ? sortField: "courseId";
+    String reverseDir = dir.equalsIgnoreCase("asc") ? "desc" : "asc";
+
+    Page<Courses> result = coursesService.findAll(pageNum, pageSizeNum, field, dir);
+    model.addAttribute("courses", result.getContent());
+    model.addAttribute("page", pageNum);
+    model.addAttribute("pageSize", pageSizeNum);
+    model.addAttribute("totalPages", result.getTotalPages());
+    model.addAttribute("sortDir", dir);
+    model.addAttribute("sortField", field);
+    model.addAttribute("reverseSortDir", reverseDir);
     if (added != null) model.addAttribute("added", added.equalsIgnoreCase("true"));
     return "courses_admin";
   }
@@ -135,9 +176,9 @@ public class AdminController {
     courses = coursesService.save(courses);
     if (courses != null && courses.getCourseId() > 0) {
       // success.
-      return "redirect:/admin/display-courses?added=true";
+      return "redirect:/admin/courses?added=true";
     }
-    return "redirect:/admin/display-courses?added=false";
+    return "redirect:/admin/courses?added=false";
   }
 
   @GetMapping("view-students")
@@ -190,9 +231,8 @@ public class AdminController {
   }
 
 
-  @GetMapping(value = {"display-msg"})
+  @GetMapping(value = {"messages"})
   public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
-    // [currentPage, totalPages] ; [sortDir; reverseSortDir]; sortField; contactMsgs;
     int pageNum = Integer.parseInt((page != null) ? (page): ("1"));
     int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize): "10");
     String field = sortField != null ? sortField: "name";
@@ -210,7 +250,7 @@ public class AdminController {
     return "message";
   }
 
-  @GetMapping(value = {"close-msg"})
+  @GetMapping(value = {"close-message"})
   public String closeContactMessage(@RequestParam(value = "contact_id", required = true) String id, Model model) {
     int contact_id = Integer.parseInt(id);  // Có được ID của message.
     try {

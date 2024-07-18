@@ -16,7 +16,7 @@
 <!-- //inner banner -->
 
 <div class="site-section">
-    <div class="table-responsive-class">
+    <div class="table-responsive-md">
         <c:if test="${added != null}">
             <ul>
                 <c:if test="${added == true}">
@@ -90,6 +90,7 @@
             </tbody>
         </table>
     </div>
+    <%@include file="pagination.jsp"%>
     <div class="col-md-2 login-center text-start">
         <a href="/dashboard">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>

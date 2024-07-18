@@ -7,6 +7,7 @@
             <h4 class="inner-text-title pt-5">Profile</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
                 <li class="active"><i class="fas fa-angle-right"></i>Profile</li>
             </ul>
         </div>

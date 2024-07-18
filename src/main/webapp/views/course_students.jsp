@@ -16,7 +16,7 @@
 
 <div class="site-section">
 
-    <div class="table-responsive-class">
+    <div class="table-responsive-md">
         <ul>
             <c:if test="${added != null}">
                 <c:if test="${added == true}">

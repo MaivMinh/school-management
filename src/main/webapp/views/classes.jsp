@@ -32,7 +32,7 @@
             </c:if>
         </ul>
     </c:if>
-    <div class="table-responsive-class">
+    <div class="table-responsive-md">
         <div class="row mb-4">
             <div class="overview-wrap">
                 <h3 class="heading-21921">PASSIO School Classes Detail</h3>
@@ -67,11 +67,19 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover dataTable">
             <thead class="table-dark">
             <tr>
-                <th scope="col">Class ID</th>
-                <th scope="col">Class Name</th>
+                <th class="sorting" scope="col">
+                    <a href="/admin/classes?page=${page}&pageSize=${pageSize}&sortField=classId&sortDir=${reverseSortDir}">
+                        Class ID
+                    </a>
+                </th>
+                <th class="sorting" scope="col">
+                    <a href="/admin/classes?page=${page}&pageSize=${pageSize}&sortField=name&sortDir=${reverseSortDir}">
+                        Class Name
+                    </a>
+                </th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -83,7 +91,7 @@
                         <td>${element.classId}</td>
                         <td>${element.name}</td>
                         <td>
-                            <a href="/admin/display-classes/${element.classId}" class="btn btn-success">VIEW</a>
+                            <a href="/admin/classes/${element.classId}" class="btn btn-success">VIEW</a>
                         </td>
                         <td>
                             <a href="/admin/delete-classes?classId${element.classId}" class="btn btn-warning">DELETE</a>
@@ -94,6 +102,7 @@
             </tbody>
         </table>
     </div>
+    <%@include file="pagination.jsp"%>
     <div class="col-md-2 login-center text-start">
         <a href="/dashboard">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>

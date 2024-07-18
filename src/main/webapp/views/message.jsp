@@ -8,6 +8,7 @@
             <h4 class="inner-text-title pt-5">Contact Messages</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
                 <li class="active"><i class="fas fa-angle-right"></i>Messages</li>
             </ul>
         </div>
@@ -23,24 +24,24 @@
                 <h3 class="heading-21921">Open Contact Messages</h3>
             </div>
         </div>
-        <table class="table table-striped dataTable">
+        <table class="table table-striped table-hover dataTable">
             <thead class="table-dark">
             <tr>
                 <th class="sorting" scope="col">
-                    <a href="/admin/display-msg?page=${page}&pageSize=10&sortField=name&sortDir=${reverseSortDir}">Name</a>
+                    <a href="/admin/messages?page=${page}&pageSize=10&sortField=name&sortDir=${reverseSortDir}">Name</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a href="/admin/display-msg?page=${page}&pageSize=10&sortField=mobileNum&sortDir=${reverseSortDir}">Mobile
+                    <a href="/admin/messages?page=${page}&pageSize=10&sortField=mobileNum&sortDir=${reverseSortDir}">Mobile
                         Number</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a href="/admin/display-msg?page=${page}&pagePage=10&sortField=email&sortDir=${reverseSortDir}">Email</a>
+                    <a href="/admin/messages?page=${page}&pagePage=10&sortField=email&sortDir=${reverseSortDir}">Email</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a href="/admin/display-msg?page=${page}&pageSize=10&sortField=subject&sortDir=${reverseSortDir}">Subject</a>
+                    <a href="/admin/messages?page=${page}&pageSize=10&sortField=subject&sortDir=${reverseSortDir}">Subject</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a href="/admin/display-msg?page=${page}&pageSize=10&sortField=message&sortDir=${reverseSortDir}">Message</a>
+                    <a href="/admin/messages?page=${page}&pageSize=10&sortField=message&sortDir=${reverseSortDir}">Message</a>
                 </th>
                 <th scope="col"></th>
             </tr>
@@ -68,48 +69,7 @@
             </tbody>
         </table>
     </div>
-    <!-- pagination -->
-    <div class="pagination-style text-center mt-5">
-        <ul>
-            <li>
-                <c:if test="${page > 1}">
-                    <a href="/admin/display-msg?page=${page - 1}&pageSize=10&sortField=${sortField}&sortDir${sortDir}">
-                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-                <c:if test="${page <= 1}">
-                    <a class="not-allowed" disabled="">
-                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-            </li>
-            <span>
-                <c:forEach var="i" begin="1" end="${totalPages}">
-                    <li>
-                        <c:if test="${page == i}">
-                            <a class="active"
-                               href="/admin/display-msg?page=${i}&pageSize=10&sortField${sortField}&sortDir=${sortDir}">${i}</a>
-                        </c:if>
-                        <c:if test="${page != i}">
-                            <a href="/admin/display-msg?page=${i}&pageSize=10&sortField=${sortField}&sortDir=${sortDir}">${i}</a>
-                        </c:if>
-                    </li>
-                </c:forEach>
-            </span>
-            <li>
-                <c:if test="${page < totalPages}">
-                    <a href="/admin/display-msg?page=${page + 1}&sortField=${sortField}&sortDir=${sortDir}">
-                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-                <c:if test="${page >= totalPages}">
-                    <a class="not-allowed" disabled="">
-                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-            </li>
-        </ul>
-    </div>
+    <%@include file="pagination.jsp"%>
     <div class="col-md-2 login-center text-start">
         <a href="/dashboard">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>

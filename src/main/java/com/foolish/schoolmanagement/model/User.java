@@ -4,16 +4,11 @@ import com.foolish.schoolmanagement.annotations.FieldsValueMatch;
 import com.foolish.schoolmanagement.annotations.PasswordValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.elasticsearch.annotations.Document;
 
-import java.lang.annotation.Documented;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -75,7 +70,7 @@ public class User extends BaseEntity {
 
   @ManyToOne(fetch = FetchType.EAGER, optional = true)
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
-  private PassioClass aPassioClass;
+  private PassioClass passioClass;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
   @JoinTable(name = "user_courses",

@@ -10,9 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("/dashboard")
 public class DashBoardController {
@@ -30,8 +27,8 @@ public class DashBoardController {
     httpSession.setAttribute("user", user);
     model.addAttribute("email", authentication.getName());
     model.addAttribute("roles", authentication.getAuthorities().toString());
-    if (user.getAPassioClass() != null && user.getAPassioClass().getName() != null) {
-      model.addAttribute("enrolledClass", user.getAPassioClass().getName());
+    if (user.getPassioClass() != null && user.getPassioClass().getName() != null) {
+      model.addAttribute("enrolledClass", user.getPassioClass().getName());
     }
     return "dashboard";
   }

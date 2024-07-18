@@ -19,7 +19,9 @@
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
             <h3 class="title-style">Welcome ${email}</h3>
             <p class="">You logged in as - ${roles}</p>
-            <p class="">Your assigned class is - ${enrolledClass}</p>
+            <c:if test="${enrolledClass != null}">
+                <p class="">Your assigned class is - ${enrolledClass}</p>
+            </c:if>
         </div>
 
     </div>
@@ -48,7 +50,7 @@
                 </div>
                 <security:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="col-sm-6 col-lg-3">
-                        <a href="/admin/display-msg">
+                        <a href="/admin/messages">
                             <div class="overview-item overview-item--c3">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
@@ -66,7 +68,7 @@
                 </security:authorize>
                 <security:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="col-sm-6 col-lg-3">
-                        <a href="/admin/display-classes">
+                        <a href="/admin/classes">
                             <div class="overview-item overview-item--c1">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
@@ -84,7 +86,7 @@
                 </security:authorize>
                 <security:authorize access="hasRole('ROLE_ADMIN')">
                     <div class="col-sm-6 col-lg-3">
-                        <a href="/admin/display-courses">
+                        <a href="/admin/courses">
                             <div class="overview-item overview-item--c2">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">
@@ -102,7 +104,7 @@
                 </security:authorize>
                 <security:authorize access="hasRole('ROLE_STUDENT')">
                     <div class="col-sm-6 col-lg-3">
-                        <a href="/student/display-courses">
+                        <a href="/student/courses">
                             <div class="overview-item overview-item--c3">
                                 <div class="overview__inner">
                                     <div class="overview-box clearfix">

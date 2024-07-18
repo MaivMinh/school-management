@@ -1,10 +1,15 @@
 package com.foolish.schoolmanagement.service;
 
+import com.foolish.schoolmanagement.model.PassioClass;
 import com.foolish.schoolmanagement.model.Roles;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.repo.RolesRepo;
 import com.foolish.schoolmanagement.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +48,10 @@ public class UserService {
 
   public User findUserByUserId(Integer userId) {
     return userRepo.findUserByUserId(userId);
+  }
+
+  public Page<User> findUsersByPassioClass(PassioClass passioClass, int pageNum, int pageSize, String dir, String field) {
+    Pageable pageable = PageRequest.of(pageNum - 1, pageSize, (dir.equalsIgnoreCase("asc") ? Sort.by(field).ascending() : Sort.by(field).descending()));
+    return userRepo.findAllByPassioClass(passioClass, pageable);
   }
 }

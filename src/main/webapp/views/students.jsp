@@ -7,7 +7,7 @@
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
                 <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
-                <li><i class="fas fa-angle-right"></i><a href="/admin/display-classes">Classes</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/admin/classes">Classes</a></li>
                 <li class="active"><i class="fas fa-angle-right"></i>${passioClass.name}</li>
             </ul>
         </div>
@@ -16,9 +16,7 @@
 <!-- //inner banner -->
 
 <div class="site-section">
-
-    <div class="table-responsive-class">
-
+    <div class="table-responsive-md">
         <div class="row mb-4">
             <ul>
                 <c:if test="${success != null && success == true}">
@@ -68,11 +66,19 @@
                 </div>
             </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped dataTable table-hover">
             <thead class="table-dark">
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
+                <th class="sorting" scope="col">
+                    <a href="/admin/classes/${passioClass.classId}?page=${page}&pageSize=${pageSize}&sortField=${sortField}&sortDir=${reverseSortDir}">
+                        Name
+                    </a>
+                </th>
+                <th class="sorting" scope="col">
+                    <a href="/admin/classes/${passioClass.classId}?page=${page}&pageSize=${pageSize}&sortField=${sortField}&sortDir=${reverseSortDir}">
+                        Email
+                    </a>
+                </th>
                 <th scope="col">Mobile Num</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -98,8 +104,9 @@
             </tbody>
         </table>
     </div>
+    <%@include file="pagination.jsp"%>
     <div class="col-md-2 login-center text-start">
-        <a href="/admin/display-classes">
+        <a href="/admin/classes">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>
         </a>
     </div>

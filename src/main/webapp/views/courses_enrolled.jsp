@@ -15,21 +15,21 @@
     </div>
 </section>
 <!-- //inner banner -->
-<div class="site-section">
+<div class="site-section py-5">
 
-    <div class="table-responsive-class">
+    <div class="table-responsive-md">
 
         <div class="row mb-4">
             <div class="overview-wrap">
                 <h3 class="heading-21921"> ${user.name} Enrolled Courses></h3>
             </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table class="table table-striped dataTable table-hover">
             <thead class="table-dark">
             <tr>
-                <th scope="col">Course ID</th>
-                <th scope="col">Course Name</th>
-                <th scope="col">Fees</th>
+                <th class="sorting" scope="col">Course ID</th>
+                <th class="sorting" scope="col">Course Name</th>
+                <th class="sorting" scope="col">Fees</th>
             </tr>
             </thead>
             <tbody>

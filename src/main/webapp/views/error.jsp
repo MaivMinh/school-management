@@ -23,7 +23,14 @@
                         <h3 class="h2">
                             Look like you're lost
                         </h3>
-                        <p>Error Message: <span style="color: #00c16e; font-weight: bold">${message}</span></p>
+                        <c:if test="${message != null}">
+                            <p>Error Message:
+                                <span style="color: #00c16e; font-weight: bold">${message}</span>
+                            </p>
+                        </c:if>
+                        <c:if test="${message == null}">
+                            <p>404 NOT FOUND!</p>
+                        </c:if>
                         <a href="/" class="link_404">Go to Home</a>
                     </div>
                 </div>
