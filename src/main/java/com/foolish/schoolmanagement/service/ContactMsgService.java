@@ -39,4 +39,9 @@ public class ContactMsgService {
     Pageable pageable = PageRequest.of(page - 1, pageSize, (sortDir.equalsIgnoreCase("asc") ? (Sort.by(sortField).ascending()): (Sort.by(sortField).descending())));
     return repo.findAllByStatus(status, pageable);
   }
+
+  public Page<ContactMsg> findAllByStatus(int page, int pageSize, String status) {
+    Pageable pageable = PageRequest.of(page -1, pageSize);
+    return repo.findAllByStatus(status, pageable);
+  }
 }
