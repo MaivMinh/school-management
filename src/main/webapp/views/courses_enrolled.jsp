@@ -21,7 +21,7 @@
 
         <div class="row mb-4">
             <div class="overview-wrap">
-                <h3 class="heading-21921"> ${user.name} Enrolled Courses></h3>
+                <h3 class="heading-21921"> ${user.name} Enrolled Courses</h3>
             </div>
         </div>
         <table class="table table-striped dataTable table-hover">
