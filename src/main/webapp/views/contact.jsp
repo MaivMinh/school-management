@@ -32,7 +32,7 @@
                         <li class="alert alert-success">${message}</li>
                     </c:if>
                 </ul>
-                <form action="/save-msg" method="post" class="signin-form" >
+                <form action="/public/save-msg" method="post" class="signin-form" >
                     <div class="input-grids">
                         <div class="row">
                             <div class="col-sm-6">
@@ -49,7 +49,6 @@
                         <input type="text" name="subject" id="subject" placeholder="Subject"
                                class="contact-input" value="${contact.getSubject()}"/>
                         <input type="text" name="created_by" value="${username}" hidden="hidden" />
-                        <security:csrfInput/>
                     </div>
                     <div class="form-input">
                         <textarea name="message" id="message" placeholder="Type your message here">${contact.getMessage()}</textarea>
