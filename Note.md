@@ -59,3 +59,10 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 ======================================== VÍ DỤ CHO THẤY SỰ KHÁC NHAU RÕ RỆT GIỮA FetchType.EAGER - FetchType.LAZY. ========================================
 1. Ở _DashBoardController.displayDashboard()_ khi chúng ta sử dụng HttpSession để lưu một đối tượng vào Session thì lúc này nếu chúng ta sử dụng LAZY loading thì khi đó bên trong User của chúng ta sẽ chỉ chứa danh sách Course rỗng. Nguyên nhân là bởi vì chúng ta không có sử dụng User để fetch Course lên trước khi lưu vào Session nên khi đó chúng ta sẽ có danh sách Course rỗng.
 2. Ngược lại, nếu sử dụng EAGER ngay từ đầu chúng ta sẽ có sẵn danh sách Course ngay từ khi tạo ra User, nên do đó, khi chúng ta lấy User từ trong Session ra thì sẽ có luôn danh sách Course.
+
+======================================== CONSUMING ANOTHER REST SERVICE. ========================================
+1. Nếu Service của chúng ta muốn call API tới một REST Service bên ngoài khác thì đây là các lựa chọn: 
+   1. OpenFeign -> Spring Cloud.
+   2. RestTemplate -> Blocking I/O.
+   3. WebClient -> Non-Blocking I/O của Spring Webflux.
+-> 1 và 3 được khuyến khích sử dụng, RestTemplate đã deprecated.
