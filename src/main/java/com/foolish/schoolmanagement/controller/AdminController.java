@@ -25,6 +25,7 @@ import java.util.List;
 @Controller
 @Data
 @RequestMapping("/admin")
+@CrossOrigin(origins = "*")
 public class AdminController {
   private final ClassService classService;
   private final UserService userService;

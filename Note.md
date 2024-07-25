@@ -36,7 +36,7 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 ======================================== CREATE NEW USER ========================================
 1. Do trong đối tượng User chúng ta có sử dụng Entity annotation nên khi chúng ta thực hiện phương thức save() của Data JPA thì khi đó đối tượng này sẽ được validation lại một lần nữa. Điều đó dẫn tới việc password != confirmPassword(_Xem cụ thể bên trong UserService.createNewUser()_) mà User họ cung cấp trước đó. Điều này sẽ dẫn tới lỗi khi thực hiện kiểm tra xem password - confirmPassword có khớp hay không.
 2. Chúng ta đã sử dụng giải pháp tạm thời là dùng thêm câu lệnh "passwordEncoder.matchs((String)fieldMatchValue, (String)fieldValue)" để khắc phục vấn đề này. Xem lại ở commit phía trước.
-3. Ngoài ra chúng ta có thể sử dụng: spring.jpa
+3. Ngoài ra chúng ta có thể sử dụng: spring.jpa.properties.jakarta.persistence.validation.mode=none
 
 ======================================== @Valid ANNOTATION. ========================================
 1. _@Valid_ chỉ sử dụng cho _@Entity_ class.

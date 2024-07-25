@@ -18,8 +18,8 @@ public class ProjectSecurityConfig {
             .authorizeHttpRequests((authorize) -> authorize
                     .requestMatchers("/dashboard").authenticated()
                     .requestMatchers("/display-profile").authenticated()
-                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                    .requestMatchers("/api/student/**").hasRole("STUDENT")
+                    .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/student/**").hasRole("STUDENT")
                     .requestMatchers("/update-profile").authenticated()
                     .requestMatchers("/display-msg").hasRole("ADMIN")
                     .requestMatchers("/admin/**").hasRole("ADMIN")
