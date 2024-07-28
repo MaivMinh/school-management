@@ -1,5 +1,7 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.foolish.schoolmanagement.model.ContactMsg;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.PassioClass;
@@ -20,7 +22,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -33,6 +38,7 @@ public class AdminController {
   private final CoursesService coursesService;
   private final ContactMsgService contactMsgService;
   private final Environment environment;
+
   @Autowired
   public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, Environment environment) {
     super();
@@ -46,11 +52,11 @@ public class AdminController {
   @GetMapping("classes")
   public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
 
-    int pageNum = Integer.parseInt((page != null) ? page: environment.getProperty("page"));
-    int pageSizeNum = Integer.parseInt((pageSize != null) ? pageSize: environment.getProperty("pageSize"));
-    String dir = (sortDir != null) ? sortDir: "asc";
-    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
-    String field = (sortField != null) ? sortField: "classId";
+    int pageNum = Integer.parseInt((page != null) ? page : environment.getProperty("page"));
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? pageSize : environment.getProperty("pageSize"));
+    String dir = (sortDir != null) ? sortDir : "asc";
+    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc" : "asc");
+    String field = (sortField != null) ? sortField : "classId";
     Page<PassioClass> result = classService.findAll(pageNum, pageSizeNum, field, dir);
 
     model.addAttribute("classes", result.getContent());
@@ -74,11 +80,11 @@ public class AdminController {
   @GetMapping("classes/{classId}")
   public String displayStudentInClassWithClassId(Model model, @PathVariable("classId") String classId, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "deleted", required = false) String deleted, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
 
-    int pageNum = Integer.parseInt((page != null ? page: environment.getProperty("page")));
-    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: environment.getProperty("pageSize")));
-    String dir = (sortDir != null ? sortDir: "asc");
-    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
-    String field = (sortField != null ? sortField: "name");
+    int pageNum = Integer.parseInt((page != null ? page : environment.getProperty("page")));
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize : environment.getProperty("pageSize")));
+    String dir = (sortDir != null ? sortDir : "asc");
+    String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc" : "asc");
+    String field = (sortField != null ? sortField : "name");
 
     PassioClass passioClass = classService.findByClassId(Integer.parseInt(classId));
     if (passioClass == null || passioClass.getClassId() <= 0) {
@@ -91,7 +97,7 @@ public class AdminController {
     model.addAttribute("page", pageNum);
     model.addAttribute("pageSize", pageSizeNum);
     model.addAttribute("totalPages", result.getTotalPages());
-    model.addAttribute("sortField",field);
+    model.addAttribute("sortField", field);
     model.addAttribute("sortDir", dir);
     model.addAttribute("reverseSortDir", reverseDir);
 
@@ -155,11 +161,11 @@ public class AdminController {
   }
 
   @GetMapping("courses")
-  public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField ) {
-    int pageNum = Integer.parseInt((page != null) ? page: environment.getProperty("page"));
-    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: environment.getProperty("pageSize")));
-    String dir = sortDir != null ? sortDir: "asc";
-    String field = sortField != null ? sortField: "courseId";
+  public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
+    int pageNum = Integer.parseInt((page != null) ? page : environment.getProperty("page"));
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize : environment.getProperty("pageSize")));
+    String dir = sortDir != null ? sortDir : "asc";
+    String field = sortField != null ? sortField : "courseId";
     String reverseDir = dir.equalsIgnoreCase("asc") ? "desc" : "asc";
 
     Page<Courses> result = coursesService.findAll(pageNum, pageSizeNum, field, dir);
@@ -189,11 +195,11 @@ public class AdminController {
     Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
     System.out.println(courses.getUsers());
     model.addAttribute("courses", courses);
-    if (added != null)  model.addAttribute("added", added.equalsIgnoreCase("true"));
-    if (enrolled != null)  model.addAttribute("enrolled", enrolled.equalsIgnoreCase("true"));
-    if (existed != null)  model.addAttribute("existed", existed.equalsIgnoreCase("true"));
-    if (success != null)  model.addAttribute("success", success.equalsIgnoreCase("true"));
-    if (error != null)  model.addAttribute("error", error.equalsIgnoreCase("true"));
+    if (added != null) model.addAttribute("added", added.equalsIgnoreCase("true"));
+    if (enrolled != null) model.addAttribute("enrolled", enrolled.equalsIgnoreCase("true"));
+    if (existed != null) model.addAttribute("existed", existed.equalsIgnoreCase("true"));
+    if (success != null) model.addAttribute("success", success.equalsIgnoreCase("true"));
+    if (error != null) model.addAttribute("error", error.equalsIgnoreCase("true"));
     return "course_students";
   }
 
@@ -205,7 +211,8 @@ public class AdminController {
       // user existed.
       if (courses != null && courses.getCourseId() > 0) {
         // courses existed.
-        if (courses.getUsers().contains(user))  return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
+        if (courses.getUsers().contains(user))
+          return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
         courses.getUsers().add(user);
         user.getCourses().add(courses);
         coursesService.save(courses);
@@ -223,7 +230,8 @@ public class AdminController {
       // course existed.
       if (user != null && user.getUserId() > 0) {
         // user existed.
-        if (!courses.getUsers().contains(user) || !user.getCourses().contains(courses)) return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
+        if (!courses.getUsers().contains(user) || !user.getCourses().contains(courses))
+          return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
         courses.getUsers().remove(user);
         user.getCourses().remove(courses);
         coursesService.save(courses);
@@ -236,11 +244,11 @@ public class AdminController {
 
   @GetMapping(value = {"messages"})
   public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
-    int pageNum = Integer.parseInt((page != null) ? (page): (environment.getProperty("page")));
-    int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize): environment.getProperty("pageSize"));
-    String field = sortField != null ? sortField: "name";
-    String dir = sortDir != null ? sortDir: "asc";
-    status = (status != null) ? status: "OPEN";
+    int pageNum = Integer.parseInt((page != null) ? (page) : (environment.getProperty("page")));
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize) : environment.getProperty("pageSize"));
+    String field = sortField != null ? sortField : "name";
+    String dir = sortDir != null ? sortDir : "asc";
+    status = (status != null) ? status : "OPEN";
 
     Page<ContactMsg> result = contactMsgService.findAllByStatus(pageNum, pageSizeNum, status, field, dir);
 
@@ -248,7 +256,7 @@ public class AdminController {
     model.addAttribute("totalPages", result.getTotalPages());
     model.addAttribute("sortDir", dir);
     model.addAttribute("sortField", field);
-    model.addAttribute("reverseSortDir", (dir.equalsIgnoreCase("asc") ? "desc": "asc"));
+    model.addAttribute("reverseSortDir", (dir.equalsIgnoreCase("asc") ? "desc" : "asc"));
     model.addAttribute("contactMsgs", result.getContent());
     return "message";
   }
@@ -260,7 +268,7 @@ public class AdminController {
       ContactMsg message = contactMsgService.findByContactID(contact_id);
       message.setStatus("CLOSED");
       contactMsgService.save(message);
-    } catch (RuntimeException e )  {
+    } catch (RuntimeException e) {
       throw new RuntimeException(e);
     }
     model.addAttribute("contactMsg", contactMsgService.findAll());

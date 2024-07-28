@@ -31,13 +31,17 @@
                         <li class="alert alert-success">${message}</li>
                     </c:if>
                 </ul>
-                <form action="/update-profile" method="post" class="signin-form">
-                    <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-                        <h5 class="footer-title-29">Personal Details</h5>
-                    </div>
+                <form action="/update-profile" method="post" class="signin-form" enctype = "multipart/form-data">
                     <div class="input-grids">
-                        <label class="control-label" for="name">Name:</label>
-                        <input type="text" name="name" value="${profile.name}" id="name" class="contact-input"/>
+                        <c:if test="${profile.urlImg != null}">
+                            <div>
+                                <img style="width: 200px; height: 200px; object-fit: cover" src="${profile.urlImg}" class="rounded mx-auto d-block" alt="Image">
+                            </div>
+                        </c:if>
+                        <div>
+                            <label class="control-label" for="name">Name:</label>
+                            <input type="text" name="name" value="${profile.name}" id="name" class="contact-input"/>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <label class="control-label" for="mobileNumber">Mobile Number:</label>
@@ -48,6 +52,10 @@
                                 <label class="control-label" for="email">Email:</label>
                                 <input type="text" value="${profile.email}" name="email" id="email"
                                        class="contact-input"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Image</label>
+                                <input class="form-control" type="file" id="formFile" name="file">
                             </div>
                         </div>
                     </div>
