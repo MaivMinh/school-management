@@ -66,3 +66,8 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
    2. RestTemplate -> Blocking I/O.
    3. WebClient -> Non-Blocking I/O của Spring Webflux.
 -> 1 và 3 được khuyến khích sử dụng, RestTemplate đã deprecated.
+
+======================================== SPRING BOOT PROFILES. ========================================
+1. Mục đích của Spring Boot Profiles là để sử dụng các configurations phù hợp đối với từng môi trường phát triển phù hợp như Dev, UAT, Prod.
+2. Mặc định, _application.properties_ là file cấu hình luôn được load ở trong Spring Boot. Nhưng sau đó, chúng ta sẽ cung cấp các file properties khác nhau phụ thuộc vào môi trường mà chúng ta đang triển khai. Các thuộc tính sẽ override nếu tồn tại.
+3. Chúng ta có thể sử dụng @Profile annotation để cấu hình các Bean có điều kiện. Có thể xem chi tiết tại _UsernamePasswordAuthProvider_ và _NonUsernamePasswordAuthProvider_. 
