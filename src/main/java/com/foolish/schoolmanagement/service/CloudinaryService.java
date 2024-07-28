@@ -24,20 +24,21 @@ public class CloudinaryService {
   public String uploadFile(MultipartFile file) {
     try {
       // Tạo MultipartFile thành một File hoàn chỉnh.
-      File uploadedFile = convertMultiPartToFile(file);
-      Map uploadResult = cloudinary.uploader().upload(uploadedFile, Map.of());
+      File uploadedFile = convertMultiPartToFile(file); // Tạo thành File Image hoàn chỉnh.
+      Map uploadResult = cloudinary.uploader().upload(uploadedFile, Map.of());  // Kết quả sau khi upload.
       boolean isDeleted = uploadedFile.delete();
 
       if (isDeleted){
         System.out.println("File successfully deleted");
       }else
         System.out.println("File doesn't exist");
-      return  uploadResult.get("url").toString();
+      return  uploadResult.get("url").toString(); // Trả về URL được lưu trong MapResult.
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
+  //Hàm thực hiện việc gộp nhiều phần của File thành 1 File Image hoàn chỉnh.
   private File convertMultiPartToFile(MultipartFile file) throws IOException {
     File convFile = new File(file.getOriginalFilename());
     FileOutputStream fos = new FileOutputStream(convFile);
