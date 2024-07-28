@@ -71,3 +71,13 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 1. Mục đích của Spring Boot Profiles là để sử dụng các configurations phù hợp đối với từng môi trường phát triển phù hợp như Dev, UAT, Prod.
 2. Mặc định, _application.properties_ là file cấu hình luôn được load ở trong Spring Boot. Nhưng sau đó, chúng ta sẽ cung cấp các file properties khác nhau phụ thuộc vào môi trường mà chúng ta đang triển khai. Các thuộc tính sẽ override nếu tồn tại.
 3. Chúng ta có thể sử dụng @Profile annotation để cấu hình các Bean có điều kiện. Có thể xem chi tiết tại _UsernamePasswordAuthProvider_ và _NonUsernamePasswordAuthProvider_. 
+
+
+======================================== SỬ DỤNG CLOUDINARY TRONG VIỆC LƯU TRỮ HÌNH ẢNH. ========================================
+1. Nếu muốn bảo mật và các hình ảnh không cần phải truy xuất nhiều thì nên lưu ảnh dưới dạng nhị phân rồi lưu thẳng vào DB. Nhưng cách làm này tốn nhiều thời gian xử lý hơn bởi vì phải tạo các Class cho việc xử lý convert qua lại. Hơn nữa, nếu sử dụng Cloud thì việc truy xuất nhiều như vậy sẽ gây hao phí băng thông.
+2. Do đó, quyết định sử dụng Cloudinary bởi vì thứ nhất đó cũng là một công nghệ phổ biến hiện tại. Hơn nữa, việc chỉ phải lưu URL phía dưới Database và không phải Convert qua lại khiến cho Performance được cải thiện nhiều.
+3. Quá trình làm việc với Cloudinary chỉ bao gồm các bước cơ bản sau:
+   1. Tạo Cloudinary Bean (xem lại trong ProjectConfiguration), truyền vào cloud_name, api_key, api_secret.
+   2. Tạo CloudinaryService có chức năng là uploadFile lên Server, sau khi thực thi xong thì hàm này sẽ trả về cho chúng ta URL.
+   3. Lưu ý, vì Form sẽ trả về MultipartFile, chúng ta phải chuyển đổi nó thành File. Xem lại trong ProjectConfiguration.
+   4. Cuối cùng là lưu URL vào Table users.
