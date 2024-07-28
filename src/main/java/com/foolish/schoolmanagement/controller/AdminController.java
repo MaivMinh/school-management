@@ -11,6 +11,7 @@ import com.foolish.schoolmanagement.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,21 +32,22 @@ public class AdminController {
   private final UserService userService;
   private final CoursesService coursesService;
   private final ContactMsgService contactMsgService;
-
+  private final Environment environment;
   @Autowired
-  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService) {
+  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, Environment environment) {
     super();
     this.classService = classService;
     this.userService = userService;
     this.coursesService = coursesService;
     this.contactMsgService = contactMsgService;
+    this.environment = environment;
   }
 
   @GetMapping("classes")
   public String displayClasses(Model model, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
 
-    int pageNum = Integer.parseInt((page != null) ? page: "1");
-    int pageSizeNum = Integer.parseInt((pageSize != null) ? pageSize: "10");
+    int pageNum = Integer.parseInt((page != null) ? page: environment.getProperty("page"));
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? pageSize: environment.getProperty("pageSize"));
     String dir = (sortDir != null) ? sortDir: "asc";
     String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
     String field = (sortField != null) ? sortField: "classId";
@@ -72,8 +74,8 @@ public class AdminController {
   @GetMapping("classes/{classId}")
   public String displayStudentInClassWithClassId(Model model, @PathVariable("classId") String classId, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "deleted", required = false) String deleted, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
 
-    int pageNum = Integer.parseInt((page != null ? page: "1"));
-    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: "10"));
+    int pageNum = Integer.parseInt((page != null ? page: environment.getProperty("page")));
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: environment.getProperty("pageSize")));
     String dir = (sortDir != null ? sortDir: "asc");
     String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc": "asc");
     String field = (sortField != null ? sortField: "name");
@@ -154,8 +156,8 @@ public class AdminController {
 
   @GetMapping("courses")
   public String displayCourses(Model model, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField ) {
-    int pageNum = Integer.parseInt((page != null) ? page: "1");
-    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: "10"));
+    int pageNum = Integer.parseInt((page != null) ? page: environment.getProperty("page"));
+    int pageSizeNum = Integer.parseInt((pageSize != null ? pageSize: environment.getProperty("pageSize")));
     String dir = sortDir != null ? sortDir: "asc";
     String field = sortField != null ? sortField: "courseId";
     String reverseDir = dir.equalsIgnoreCase("asc") ? "desc" : "asc";
@@ -234,8 +236,8 @@ public class AdminController {
 
   @GetMapping(value = {"messages"})
   public String displayContactMessage(@RequestParam(value = "status", required = false) String status, Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
-    int pageNum = Integer.parseInt((page != null) ? (page): ("1"));
-    int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize): "10");
+    int pageNum = Integer.parseInt((page != null) ? (page): (environment.getProperty("page")));
+    int pageSizeNum = Integer.parseInt((pageSize != null) ? (pageSize): environment.getProperty("pageSize"));
     String field = sortField != null ? sortField: "name";
     String dir = sortDir != null ? sortDir: "asc";
     status = (status != null) ? status: "OPEN";

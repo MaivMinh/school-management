@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +21,19 @@ import java.util.List;
 public class AdminRestController {
   private static final Logger log = LoggerFactory.getLogger(AdminRestController.class);
   private final ContactMsgService contactMsgService;
+  private final Environment environment;
 
   @Autowired
-  public AdminRestController(ContactMsgService contactMsgService) {
+  public AdminRestController(ContactMsgService contactMsgService, Environment environment) {
     super();
     this.contactMsgService = contactMsgService;
+    this.environment = environment;
   }
 
   @GetMapping(value = "/contacts", produces = "application/json", consumes = "application/json")
   public ResponseEntity<List<ContactMsg>> displayContactMessagesByStatus(@RequestParam(value = "status") String status, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize) {
-    int pageNum = Integer.parseInt((page != null ? page : "1"));
-    int pageSizeNum = Integer.parseInt(pageSize != null ? pageSize : "10");
+    int pageNum = Integer.parseInt((page != null ? page : environment.getProperty("page")));
+    int pageSizeNum = Integer.parseInt(pageSize != null ? pageSize : environment.getProperty("pageSize"));
     Page<ContactMsg> result = contactMsgService.findAllByStatus(pageNum, pageSizeNum, status);
     List<ContactMsg> list = result.getContent();
     return ResponseEntity
