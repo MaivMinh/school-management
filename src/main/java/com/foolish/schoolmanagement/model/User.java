@@ -56,6 +56,9 @@ public class User extends BaseEntity {
   @Size(min = 6, message = "Password must be at least 6 characters")
   private String password;
 
+  // store url refer to image saved in cloudinary.
+  private String img;
+
   @Transient
   private String confirmPassword;
 
