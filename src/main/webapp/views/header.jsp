@@ -11,6 +11,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style-starter.css">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/cropped-favicon.webp">
 </head>
 <body>
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>

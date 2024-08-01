@@ -2001,7 +2001,7 @@ progress {
     --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
     --bs-table-active-color: #212529;
     --bs-table-active-bg: rgba(0, 0, 0, 0.1);
-    --bs-table-hover-color: #ffc107;
+    --bs-table-hover-color: #0dcaf0;
     --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
     width: 100%;
     margin-bottom: 1rem;
@@ -11812,7 +11812,7 @@ a {
 }
 
 a:hover {
-    color: var(--primary-color);
+    color: var(--bs-table-hover-color);
     text-decoration: underline;
 }
 
@@ -11823,6 +11823,11 @@ button:hover {
     text-decoration: none;
     transition: .5s all;
     -moz-transition: .5s all;
+}
+
+a:hover {
+    transition: 0.25s all;
+    -moz-transition: 0.25s all;
 }
 
 .clear {
@@ -21619,4 +21624,56 @@ body > div.site-section > div.col-md-2.login-center.text-start > a > button {
 
 body > div.site-section {
     padding-top: 0px;
+}
+
+#addCourse > div {
+    max-width: 700px;
+}
+
+#course-date, #capacity-fee, #name-category, #lecturer-desc {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#course-date > div, #capacity-fee > div, #name-category > div, #lecturer-desc > div {
+    width: 300px;
+}
+
+body > div.site-section > div.row.justify-content-center {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 48px;
+    width: 80%;
+}
+
+body > div.site-section > div.row.justify-content-center > div {
+    width: 100%;
+}
+
+body > div.site-section > div.row.justify-content-center > div .coursecard-single {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: 48px;
+}
+
+body > div.site-section > div.row.justify-content-center .coursecard-single > div:nth-child(1) {
+    width: 200%;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+body > div.site-section > div.row.justify-content-center .coursecard-single > div:nth-child(1):hover #img-hover-zoom {
+    filter: brightness(100%);
+    transform: scale(2.5);
+}
+
+#img-hover-zoom {
+    border-radius: 1rem;
+    transform-origin: 50% 65%;
+    transition: transform 3s, filter 2s ease-in-out;
+    filter: brightness(120%);
 }

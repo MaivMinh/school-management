@@ -1,4 +1,5 @@
 <%@include file="header.jsp" %>
+
 <!-- //header -->
 <!-- inner banner -->
 <section class="inner-banner py-5">
@@ -25,6 +26,9 @@
                 <c:if test="${added == false}">
                     <li class="alert alert-warning">Failure to add new course into the list !</li>
                 </c:if>
+                <c:if test="${message != null}">
+                    <li class="alert alert-warning">${message}</li>
+                </c:if>
             </ul>
         </c:if>
         <div class="row mb-4">
@@ -45,15 +49,62 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="/admin/add-new-course" method="post" class="signin-form">
+                    <form action="/admin/add-new-course" method="post" class="signin-form" enctype = "multipart/form-data">
                         <div class="modal-body">
                             <div class="input-grids">
-                                <label class="control-label" for="courseName">Course Name</label>
-                                <input type="text" class="form-control" name="name" id="courseName"
-                                       required placeholder="Enter Course Name">
-                                <label class="control-label" for="fees">Fees</label>
-                                <input type="text" class="form-control" name="fees" id="fees"
-                                       required placeholder="Enter fees">
+                                <div>
+                                    <label class="control-label" for="courseName">Course Name</label>
+                                    <input type="text" class="form-control" name="name" id="courseName"
+                                           required placeholder="Enter Course Name">
+                                </div>
+                                <div id="name-category">
+                                    <div class="mb-3">
+                                        <label for="formFile" class="form-label">Image</label>
+                                        <input class="form-control" type="file" id="formFile" name="file">
+                                    </div>
+                                    <div>
+                                        <label class="control-label" for="category">Category</label>
+                                        <input type="text" id="category" name="category"
+                                               placeholder="Enter Course Category" required>
+                                    </div>
+                                </div>
+                                <div id="capacity-fee">
+                                    <div>
+                                        <label for="capacity" class="control-label">Capacity</label>
+                                        <input type="text" name="capacity" id="capacity" value="50" required>
+                                    </div>
+                                    <div>
+                                        <label class="control-label" for="fees">Fee</label>
+                                        <input type="text" class="form-control" name="fee" id="fees"
+                                               placeholder="Enter fee" required>
+                                    </div>
+                                </div>
+                                <div id="course-date">
+                                    <div>
+                                        <label for="begin">Begin Date</label>
+                                        <input type="date" id="begin" name="begin" required>
+                                    </div>
+                                    <div>
+                                        <label for="end">End Date</label>
+                                        <input type="date" id="end" name="end" required>
+                                    </div>
+                                </div>
+                                <div id="lecturer-desc">
+                                    <div class="flex flex-column justify-content-between align-items-start">
+                                        <div>
+                                            <label for="lecturer">Lecturer ID</label>
+                                            <input type="text" id="lecturer" name="lecturer" required>
+                                        </div>
+                                        <div>
+                                            <label for="lessons">Lessons</label>
+                                            <input type="text" id="lessons" name="lessons" required>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="desc">Description</label>
+                                        <textarea name="description" id="desc" cols="30" rows="5"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
@@ -69,7 +120,11 @@
             <tr>
                 <th scope="col">Course ID</th>
                 <th scope="col">Course Name</th>
-                <th scope="col">Fees</th>
+                <th scope="col">Fee</th>
+                <th scope="col">Begin Date</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Enrolled</th>
+                <th scope="col">State</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -78,11 +133,21 @@
                 <c:forEach items="${courses}" var="course">
                     <tr>
                         <td>${course.courseId}</td>
-                        <td>${course.name}</td>
-                        <td>${course.fees}</td>
                         <td>
-                            <a href="/admin/view-students?courseId=${course.courseId}" class="btn btn-warning">VIEW
-                                STUDENTS</a>
+                            <a href="/courses/${course.courseId}">${course.name}</a>
+                        </td>
+                        <td>${course.fees}</td>
+                        <td>${course.begin}</td>
+                        <td>${course.end}</td>
+                        <td>${course.attendees}/${course.capacity}</td>
+                        <c:if test="${course.state == 'OPEN'}">
+                            <td><p class="btn btn-success">OPEN</p></td>
+                        </c:if>
+                        <c:if test="${course.state == 'CLOSED'}">
+                            <td><p class="btn btn-danger">CLOSED</p></td>
+                        </c:if>
+                        <td>
+                            <a href="/admin/view-students?courseId=${course.courseId}" class="btn btn-outline-info">DETAIL</a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -167,6 +232,14 @@
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+
+    function toDateInputValue(dateObject) {
+        const local = new Date(dateObject);
+        local.setMinutes(dateObject.getMinutes() - dateObject.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    };
+    document.getElementById("begin").value = toDateInputValue(new Date());
+    document.getElementById("end").value = toDateInputValue(new Date());
 </script>
 <!-- //move top -->
 

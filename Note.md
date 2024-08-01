@@ -1,3 +1,12 @@
+======================================== KIẾN THỨC CỰC KÌ QUAN TRỌNG VỀ MỐI QUAN HỆ @MANYTOONE. ========================================
+1. _@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
+   @JoinColumn(name = "lecturer", referencedColumnName = "userId", nullable = false)
+   private User lecturer;_ 
+   - Bên trên là cấu hình của mối quan hệ nhiều một giữa Course - User. Trong đó, @JoinColumn(name="lecture", referencedColumnName="userId", nullable=false) chúng ta sẽ giải thích cấu hình này như sau:
+     + name="lecture" thể hiện cho việc là property _User lecture_ tương ứng với Course.lecture phía dưới CSDL của chúng ta.
+     + Sau khi xác định được mối liên hệ giữa property trên Class với column dưới Table thì chúng ta cần xác định Column của Table cụ thể nào mà chúng ta đang tham chiếu tới.
+     + referencedColumnName="userId" + User: Thuộc tính kiểu User của lecture thể hiện rằng Courses sẽ phải tham chiếu tới Class User và sau đó hãy tham chiếu tới property có tên là userId. Và từ đó, chúng ta thông qua userId và thấy rằng userId này liên kết với User.user_id phía dưới CSDL.
+
 ======================================== CSRF PROTECTIONS ========================================
 1. Mặc định: Khi chúng ta enable CSRF protection(default) thì khi đó Spring Security sẽ bảo vệ tất cả các POST Method được gửi từ client tới cho Server(Client sẽ nhận được 403 forbidden). Bất kể là client có giữ JSESSIONID hay không. Nên do đó, nếu trong contact.jsp của chúng ta không lưu csrf token thì khi đó chắc chắn chúng ta không thể Submit form tới cho client. Vì vậy, chúng ta phải tạo một nhận vào một csrf token ở contact form, từ đó mới có thể gửi được Request tới cho client.
 

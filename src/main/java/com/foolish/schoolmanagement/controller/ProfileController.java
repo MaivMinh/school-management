@@ -84,7 +84,6 @@ public class ProfileController {
       return "profile";
     }
     User user = (User) httpSession.getAttribute("user");
-    System.out.println(profile.getFile());
     //  Lưu thông tin profile mới cập nhật vào database.
     user.setName(profile.getName());
     user.setEmail(profile.getEmail());
@@ -93,7 +92,6 @@ public class ProfileController {
     MultipartFile file = profile.getFile();
     if (file != null) {
       String url = cloudinaryService.uploadFile(file);
-      System.out.println(url);
       user.setImg(url);
     }
 

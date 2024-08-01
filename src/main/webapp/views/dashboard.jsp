@@ -12,24 +12,8 @@
     </div>
 </section>
 <!-- //inner banner -->
-
-<!-- welcome block -->
-<section class="w3l-contact py-5" id="contact">
-    <div class="container py-md-5 py-4">
-        <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <h3 class="title-style">Welcome ${email}</h3>
-            <p class="">You logged in as - ${roles}</p>
-            <c:if test="${enrolledClass != null}">
-                <p class="">Your assigned class is - ${enrolledClass}</p>
-            </c:if>
-        </div>
-
-    </div>
-</section>
-<!-- //welcome block -->
-
 <div class="container py-md-5 py-4">
-    <div class="section__content section__content--p30">
+    <div class="section__content section__content--p30 pt-5">
         <div class="container-fluid">
             <div class="row m-t-25">
                 <div class="col-sm-6 col-lg-3">
@@ -113,6 +97,24 @@
                                         </div>
                                         <div class="text">
                                             <h2>Courses</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </security:authorize>
+                <security:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="/admin/students">
+                            <div class="overview-item overview-item--c3">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2>Records</h2>
                                         </div>
                                     </div>
                                 </div>

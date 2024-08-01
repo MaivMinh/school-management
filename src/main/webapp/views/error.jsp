@@ -21,7 +21,7 @@
 
                     <div class="contant_box_404">
                         <h3 class="h2">
-                            Look like you're lost
+                            Something went wrong!
                         </h3>
                         <c:if test="${message != null}">
                             <p>Error Message:
