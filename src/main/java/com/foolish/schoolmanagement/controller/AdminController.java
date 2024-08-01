@@ -2,14 +2,10 @@ package com.foolish.schoolmanagement.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.foolish.schoolmanagement.model.ContactMsg;
-import com.foolish.schoolmanagement.model.Courses;
-import com.foolish.schoolmanagement.model.PassioClass;
-import com.foolish.schoolmanagement.model.User;
-import com.foolish.schoolmanagement.service.ClassService;
-import com.foolish.schoolmanagement.service.ContactMsgService;
-import com.foolish.schoolmanagement.service.CoursesService;
-import com.foolish.schoolmanagement.service.UserService;
+import com.foolish.schoolmanagement.model.*;
+import com.foolish.schoolmanagement.service.*;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -38,15 +33,19 @@ public class AdminController {
   private final CoursesService coursesService;
   private final ContactMsgService contactMsgService;
   private final Environment environment;
+  private final CloudinaryService cloudinaryService;
+  private final Validator validator;
 
   @Autowired
-  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, Environment environment) {
+  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, Environment environment, CloudinaryService cloudinaryService, Validator validator) {
     super();
     this.classService = classService;
     this.userService = userService;
     this.coursesService = coursesService;
     this.contactMsgService = contactMsgService;
     this.environment = environment;
+    this.cloudinaryService = cloudinaryService;
+    this.validator = validator;
   }
 
   @GetMapping("classes")
@@ -181,12 +180,36 @@ public class AdminController {
   }
 
   @PostMapping("add-new-course")
-  public String addNewCourse(Model model, Courses courses) {
-    courses = coursesService.save(courses);
-    if (courses != null && courses.getCourseId() > 0) {
-      // success.
-      return "redirect:/admin/courses?added=true";
+  public String addNewCourse(NewCourse newCourse, Model model) {
+    // Hàm thêm mới một khoá học vào danh sách.
+    Courses course = new Courses();
+    course.setName(newCourse.getName());
+    course.setFees(newCourse.getFee());
+    course.setCapacity(newCourse.getCapacity());
+    course.setBegin(newCourse.getBegin());
+    course.setEnd(newCourse.getEnd());
+    course.setDescription(newCourse.getDescription());
+    course.setAttendees(0);
+    course.setLessons(Integer.parseInt(newCourse.getLessons()));
+    course.setCategory(newCourse.getCategory());
+    User user = userService.findUserByUserId(Integer.parseInt(newCourse.getLecturer()));
+    if (user == null || user.getUserId() <= 0) {
+      model.addAttribute("message", "Lecturer doesn't exist !");
+      return "redirect:/admin/course?added=false";
     }
+    course.setLecturer(user);
+    boolean isOpen = new Date().before(course.getBegin());
+    if (isOpen) course.setState("OPEN");
+    else course.setState("CLOSED");
+
+    MultipartFile file = newCourse.getFile();
+    if (file != null) {
+      String url = cloudinaryService.uploadFile(file);
+      course.setImg(url);
+    } else model.addAttribute("message", "Failure to upload course image !");
+    course = coursesService.save(course);
+    if (course != null && course.getCourseId() > 0)
+      return "redirect:/admin/courses?added=true";
     return "redirect:/admin/courses?added=false";
   }
 
@@ -211,9 +234,13 @@ public class AdminController {
       // user existed.
       if (courses != null && courses.getCourseId() > 0) {
         // courses existed.
+        // check number of enrolled in.
+        if (courses.getAttendees() == courses.getCapacity())
+          return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
         if (courses.getUsers().contains(user))
           return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
         courses.getUsers().add(user);
+        courses.setAttendees(courses.getAttendees() + 1);
         user.getCourses().add(courses);
         coursesService.save(courses);
         return "redirect:/admin/view-students?courseId=" + courseId + "&added=true";

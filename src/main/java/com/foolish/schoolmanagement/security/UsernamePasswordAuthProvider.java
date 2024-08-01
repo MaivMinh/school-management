@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-@Profile(value = "prod")
 public class UsernamePasswordAuthProvider implements AuthenticationProvider {
 
   private final UserRepo userRepo;
