@@ -38,8 +38,10 @@ public class Courses extends BaseEntity {
   private String img;
   private java.sql.Date begin;
   private java.sql.Date end;
+  private String introduction;
   private String description;
   private int lessons;
+  private double vote;
   private String state;
 
 

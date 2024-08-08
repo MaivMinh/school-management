@@ -23,8 +23,8 @@ public class DashBoardController {
 
   @GetMapping("")
   public String displayDashboard(Model model, Authentication authentication, HttpSession httpSession) {
-    User user = userRepo.getUserByEmail(authentication.getName());
-    httpSession.setAttribute("user", user);
+    User user = userRepo.getUserByEmail(authentication.getName());  // Ở thời điểm này chúng ta chưa nạp danh sách các khoá học mà User này có tham gia. Bởi vì chúng ta đang sử dụng FetchType.LAZY.
+    httpSession.setAttribute("user", user); // Lúc này, trong đối tượng user ở httpSession không có danh sách Courses
     model.addAttribute("email", authentication.getName());
     model.addAttribute("roles", authentication.getAuthorities().toString());
     if (user.getPassioClass() != null && user.getPassioClass().getName() != null) {

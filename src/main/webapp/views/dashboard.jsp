@@ -96,7 +96,7 @@
                                             <i class="fas fa-envelope-open-text"></i>
                                         </div>
                                         <div class="text">
-                                            <h2>Courses</h2>
+                                            <h2>Enrolled In</h2>
                                         </div>
                                     </div>
                                 </div>

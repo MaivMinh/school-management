@@ -1,25 +1,18 @@
 package com.foolish.schoolmanagement.controller;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.foolish.schoolmanagement.model.*;
 import com.foolish.schoolmanagement.service.*;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -134,7 +127,7 @@ public class AdminController {
 
   @PostMapping("add-student")
   public String addStudentIntoClass(Model model, User user, @RequestParam("id") String id) {
-    user = userService.getUserByEmail(user.getEmail());
+    user = userService.findUserByEmail(user.getEmail());
     if (user != null && user.getUserId() > 0 && user.getPassioClass() == null) {
       PassioClass pClass = classService.findByClassId(Integer.parseInt(id));
       if (pClass != null && pClass.getClassId() > 0) {
@@ -167,7 +160,7 @@ public class AdminController {
     String field = sortField != null ? sortField : "courseId";
     String reverseDir = dir.equalsIgnoreCase("asc") ? "desc" : "asc";
 
-    Page<Courses> result = coursesService.findAll(pageNum, pageSizeNum, field, dir);
+    Page<Courses> result = coursesService.displayCourses(pageNum, pageSizeNum, field, dir);
     model.addAttribute("courses", result.getContent());
     model.addAttribute("page", pageNum);
     model.addAttribute("pageSize", pageSizeNum);
@@ -188,6 +181,7 @@ public class AdminController {
     course.setCapacity(newCourse.getCapacity());
     course.setBegin(newCourse.getBegin());
     course.setEnd(newCourse.getEnd());
+    course.setIntroduction(newCourse.getIntroduction());
     course.setDescription(newCourse.getDescription());
     course.setAttendees(0);
     course.setLessons(Integer.parseInt(newCourse.getLessons()));
@@ -213,6 +207,32 @@ public class AdminController {
     return "redirect:/admin/courses?added=false";
   }
 
+  @PostMapping(value = "/update-course")
+  public String updateCourse(NewCourse newCourse) {
+    // Thực hiện cập nhật khoá học.
+    int id = newCourse.getCourseId();
+    Courses course = coursesService.findByCourseId(id);
+    course.setName(newCourse.getName());
+    course.setLessons(Integer.parseInt(newCourse.getLessons()));
+    course.setVote(Double.parseDouble(newCourse.getVote()));
+    course.setIntroduction(newCourse.getIntroduction());
+    course.setDescription(newCourse.getDescription());
+
+    User lecturer = userService.findUserByUserId(Integer.parseInt(newCourse.getLecturer()));
+    if (lecturer == null || lecturer.getUserId() <= 0)
+      return "redirect:/courses/" + id + "?update=false";
+    course.setLecturer(lecturer);
+    MultipartFile file = newCourse.getFile();
+    if (file != null && !file.isEmpty()) {
+      String url = cloudinaryService.uploadFile(file);
+      course.setImg(url);
+    }
+    course = coursesService.save(course);
+    if (course == null || course.getCourseId() <= 0)
+      return "redirect:/couses/" + id + "?update=false";
+    return "redirect:/courses/" + course.getCourseId() + "?update=true";
+  }
+
   @GetMapping("view-students")
   public String displayStudentsInCourse(Model model, @RequestParam(value = "courseId", required = true) String courseId, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "enrolled", required = false) String enrolled, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error) {
     Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
@@ -228,7 +248,7 @@ public class AdminController {
 
   @PostMapping("add-student-to-course")
   public String addStudentToCourse(User user, @RequestParam(value = "courseId", required = true) String courseId) {
-    user = userService.getUserByEmail(user.getEmail());
+    user = userService.findUserByEmail(user.getEmail());
     Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
     if (user != null && user.getUserId() > 0) {
       // user existed.

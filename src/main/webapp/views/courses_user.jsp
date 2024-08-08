@@ -20,137 +20,79 @@
 <div class="w3l-grids-block-5 py-5">
     <div class="container py-md-5 py-4">
         <div class="title-main text-center mx-auto mb-md-5 mb-4" style="max-width:500px;">
-            <p class="text-uppercase">Best Courses</p>
             <h3 class="title-style">Find The Right Course For You</h3>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c1.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a>Education</a>
+        <div class="row justify-content-center" style="row-gap: 2rem;">
+            <c:forEach items="${courses}" var="course">
+                <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
+                    <div class="coursecard-single" style="height: 500px">
+                        <div class="grids5-info position-relative">
+                            <img src="${course.img}" alt="" class="img-fluid" style="min-height: 270px" />
+                            <div class="meta-list">
+                                <a>${course.category}</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 43 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 4.9</li>
-                            </ul>
+                        <div class="content-main-top">
+                            <div class="content-top mb-4 mt-3">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-between">
+                                    <li> <i class="fas fa-book-open"></i> ${course.lessons} Lesson</li>
+                                    <li> <i class="fas fa-star"></i> ${course.vote != 0 ? course.vote: 5}</li>
+                                </ul>
+                            </div>
+                            <h4><a href="/courses/${course.courseId}">${course.name}</a></h4>
+                            <p>${course.introduction}</p>
                         </div>
-                        <h4><a>Educational Programs</a></h4>
-                        <p>Educations programmes covering core concepts of Maths,
-                            English, Science.</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mt-md-0 mt-4">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c2.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a class="sec-2">Meditation</a>
-                        </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 72 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 4.6</li>
-                            </ul>
-                        </div>
-                        <h4><a>Best Meditation Classes</a></h4>
-                        <p>Special program focusing the meditation to encourage students
-                            from early age.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mt-lg-0 mt-4">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c3.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a class="sec-3">Games</a>
-                        </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 14 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 5.0</li>
-                            </ul>
-                        </div>
-                        <h4><a>Games Program in a Week</a></h4>
-                        <p> Games program encouraging the children on the physical
-                            activities.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mt-4">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c4.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a href="courses.html">Development</a>
-                        </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 23 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 5.0</li>
-                            </ul>
-                        </div>
-                        <h4><a>Development Programs</a></h4>
-                        <p>Special development courses for special needs children to improve their confidence.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mt-4">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c5.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a class="sec-2">Audio & Music</a>
-                        </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 40 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 4.6</li>
-                            </ul>
-                        </div>
-                        <h4><a href="courses.html">Best Music Classes</a></h4>
-                        <p>Music dedicated programmes for the music interested students.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mt-4">
-                <div class="coursecard-single">
-                    <div class="grids5-info position-relative">
-                        <img src="../assets/images/c6.jpg" alt="" class="img-fluid" />
-                        <div class="meta-list">
-                            <a class="sec-3">Art & Design</a>
-                        </div>
-                    </div>
-                    <div class="content-main-top">
-                        <div class="content-top mb-4 mt-3">
-                            <ul class="list-unstyled d-flex align-items-center justify-content-between">
-                                <li> <i class="fas fa-book-open"></i> 20 Lesson</li>
-                                <li> <i class="fas fa-star"></i> 4.8</li>
-                            </ul>
-                        </div>
-                        <h4><a>Painting Programs</a></h4>
-                        <p>Art & Design programmes for the children to improve their drawing skills.</p>
-                    </div>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 </div>
 <!-- //courses section -->
+
+<!-- pagination section -->
+<div class="pagination-style text-center mt-5">
+    <ul>
+        <li>
+            <c:if test="${page > 1}">
+                <a href="/courses?page=${page - 1}&pageSize=6&sortField=${sortField}&sortDir${sortDir}">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+            </c:if>
+            <c:if test="${page <= 1}">
+                <a class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+            </c:if>
+        </li>
+        <span>
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <li>
+                    <c:if test="${page == i}">
+                        <a class="active"
+                           href="/courses?page=${i}&pageSize=6&sortField${sortField}&sortDir=${sortDir}">${i}</a>
+                    </c:if>
+                    <c:if test="${page != i}">
+                        <a href="/courses?page=${i}&pageSize=6&sortField=${sortField}&sortDir=${sortDir}">${i}</a>
+                    </c:if>
+                </li>
+            </c:forEach>
+        </span>
+        <li>
+            <c:if test="${page < totalPages}">
+                <a href="/courses?page=${page + 1}&pageSize=6&&sortField=${sortField}&sortDir=${sortDir}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
+            </c:if>
+            <c:if test="${page >= totalPages}">
+                <a class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
+            </c:if>
+        </li>
+    </ul>
+</div>
+<!--// pagination section -->
 
 <!-- footer block -->
 <%@include file="footer.jsp"%>

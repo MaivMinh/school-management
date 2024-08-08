@@ -1,5 +1,6 @@
 package com.foolish.schoolmanagement.service;
 
+import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.PassioClass;
 import com.foolish.schoolmanagement.model.Roles;
 import com.foolish.schoolmanagement.model.User;
@@ -38,7 +39,7 @@ public class UserService {
     return false;
   }
 
-  public User getUserByEmail(String email) {
+  public User findUserByEmail(String email) {
     return userRepo.getUserByEmail(email);
   }
 

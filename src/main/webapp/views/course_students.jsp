@@ -118,7 +118,7 @@
         </table>
     </div>
     <div class="col-md-2 login-center text-start">
-        <a href="/admin/display-courses">
+        <a href="/admin/courses">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>
         </a>
     </div>

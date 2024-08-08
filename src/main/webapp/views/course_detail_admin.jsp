@@ -7,7 +7,7 @@
             <ul class="breadcrumbs-custom-path">
                 <li><a href="/home">Home</a></li>
                 <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
-                <li><i class="fas fa-angle-right"></i><a href="/courses">Courses</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/admin/courses">Courses</a></li>
                 <li class="active"><i class="fas fa-angle-right"></i>Courses Detail</li>
             </ul>
         </div>
@@ -19,6 +19,15 @@
     <div class="row justify-content-center">
 
         <div class="col-lg-4 col-md-6">
+            <ul>
+                <c:if test="${update != null && update == true}">
+                    <li class="alert alert-success">Updated course successfully!</li>
+                </c:if>
+                <c:if test="${update != null && update == false}">
+                    <li class="alert alert-danger">Failed to update course!</li>
+                </c:if>
+            </ul>
+
             <div class="coursecard-single">
                 <div class="grids5-info position-relative">
                     <c:if test="${course.img != null}">
@@ -31,31 +40,70 @@
                         <a>${course.category}</a>
                     </div>
                 </div>
+            </div>
+            <form action="/admin/update-course" method="post" class="signin-form" enctype="multipart/form-data">
                 <div class="content-main-top">
                     <div class="content-top mb-4 mt-3">
                         <ul class="list-unstyled d-flex align-items-center justify-content-start"
                             style="column-gap: 1rem">
-                            <li><i class="fas fa-book-open"></i> ${course.lessons} Lesson</li>
-                            <li><i class="fas fa-star"></i> 5.0</li>
+                            <input type="number" name="courseId" value="${course.courseId}" hidden>
+                            <div>
+                                <label class="control-label" for="lessons">Lessons</label>
+                                <input type="text" class="form-control" id="lessons" name="lessons"
+                                       value="${course.lessons}" required>
+                            </div>
+                            <div>
+                                <label class="control-label" for="vote">Star</label>
+                                <input type="text" class="form-control" id="vote" name="vote"
+                                       value="${course.vote != 0 ? course.vote: 5}" required>
+                            </div>
                         </ul>
                     </div>
-                    <h3 class="mb-3"><a>${course.name}</a></h3>
-                    <h5 class="mb-4">${course.introduction}</h5>
-                    <p>${course.description}</p>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">Image</label>
-                        <input class="form-control" type="file" id="formFile" name="file">
+                    <div class="content-top mb-4 mt-3">
+                        <ul class="list-unstyled d-flex align-items-center justify-content-start" style="column-gap: 1rem" >
+                            <div>
+                                <label for="lecturerId">Lecturer ID</label>
+                                <input type="text" id="lecturerId" name="lecturer" class="form-control" value="${course.lecturer.userId}" required>
+                            </div>
+                            <div>
+                                <label class="control-label" for="lecturer">Lecturer Name</label>
+                                <input class="form-control" type="text" id="lecturer" name="lecturerName" value="${course.lecturer.name}" readonly>
+                            </div>
+                        </ul>
+                    </div>
+                    <div class="input-grids">
+                        <div class="mb-4">
+                            <label class="control-label" for="name">Name </label>
+                            <input type="text" name="name" value="${course.name}" id="name" class="form-control"
+                                   required/>
+                        </div>
+                        <div class="mb-4">
+                            <label for="introduction" class="control-label">Introduction </label>
+                            <textarea type="text" name="introduction" id="introduction" cols="30" rows="3"
+                                      class="form-control" required>${course.introduction}</textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="control-label" for="description">Description</label>
+                            <textarea class="form-control w-100" name="description" id="description" cols="50"
+                                      rows="6" required>${course.description}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Image</label>
+                            <input class="form-control" type="file" id="formFile" name="file">
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-md-8 login-center text-start">
+                    <a href="/admin/courses" class="new-user text-right">
+                        <button class="btn btn-style btn-style-1 text-left">BACK</button>
+                    </a>
+                    <button class="btn btn-style btn-style-3 text-left">SUBMIT CHANGES</button>
+                </div>
+                <security:csrfInput/>
+            </form>
         </div>
     </div>
-
-    <div class="col-md-2 login-center text-start">
-        <a href="/dashboard">
-            <button class="btn btn-style btn-style-3 text-left">BACK</button>
-        </a>
-    </div>
+</div>
 </div>
 <%@include file="footer.jsp" %>
 

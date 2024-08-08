@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class NewCourse {
+  private int courseId;
   private String name;
   private String fee;
   private String category;
@@ -16,6 +17,8 @@ public class NewCourse {
   private java.sql.Date begin;
   private java.sql.Date end;
   private String lecturer;
+  private String introduction;
   private String description;
+  private String vote;
   private String lessons;
 }

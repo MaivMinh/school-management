@@ -1,6 +1,7 @@
 package com.foolish.schoolmanagement.service;
 
 import com.foolish.schoolmanagement.model.Courses;
+import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.repo.CoursesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,10 +21,6 @@ public class CoursesService {
     this.repo = repo;
   }
 
-  public List<Courses> findAll(Sort sort) {
-    return repo.findAll(sort);
-  }
-
   public Courses save(Courses courses) {
     return repo.save(courses);
   }
@@ -32,8 +29,8 @@ public class CoursesService {
     return repo.findByCourseId(courseId);
   }
 
-  public Page<Courses> findAll(int pageNum, int pageSizeNum, String field, String dir) {
-    Pageable pageable = PageRequest.of(pageNum - 1, pageSizeNum, dir.equalsIgnoreCase("asc") ? Sort.by(field).ascending() : Sort.by(field).descending());
+  public Page<Courses> displayCourses(int pageNum, int pageSizeNum, String field, String dir) {
+    Pageable pageable = PageRequest.of(pageNum - 1, pageSizeNum, (dir.equals("asc") ? Sort.by(field).ascending() : Sort.by(field).descending() ));
     return repo.findAll(pageable);
   }
 

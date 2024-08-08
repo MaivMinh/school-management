@@ -18,7 +18,6 @@
 <div class="site-section py-5">
 
     <div class="table-responsive-md">
-
         <div class="row mb-4">
             <div class="overview-wrap">
                 <h3 class="heading-21921"> ${user.name} Enrolled Courses</h3>
@@ -27,14 +26,20 @@
         <table class="table table-striped dataTable table-hover">
             <thead class="table-dark">
             <tr>
-                <th class="sorting" scope="col">Course ID</th>
-                <th class="sorting" scope="col">Course Name</th>
-                <th class="sorting" scope="col">Fees</th>
+                <th class="sorting" scope="col">
+                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=courseId">Course ID</a>
+                </th>
+                <th class="sorting" scope="col">
+                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=name">Course Name</a>
+                </th>
+                <th class="sorting" scope="col">
+                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=fees">Fee</a>
+                </th>
             </tr>
             </thead>
             <tbody>
-            <c:if test="${user != null && user.courses != null}">
-                <c:forEach items="${user.courses}" var="course">
+            <c:if test="${courses != null}">
+                <c:forEach items="${courses}" var="course">
                     <tr>
                         <td>${course.courseId}</td>
                         <td>${course.name}</td>
@@ -45,6 +50,48 @@
             </tbody>
         </table>
     </div>
+    <div class="pagination-style text-center mt-5">
+        <ul>
+            <li>
+                <c:if test="${page > 1}">
+                    <a href="/student/courses?page=${page - 1}&pageSize=10&sortField=${sortField}&sortDir${sortDir}">
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
+                </c:if>
+                <c:if test="${page <= 1}">
+                    <a class="not-allowed" disabled="">
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
+                </c:if>
+            </li>
+            <span>
+            <c:forEach var="i" begin="1" end="${totalPages}">
+                <li>
+                    <c:if test="${page == i}">
+                        <a class="active"
+                           href="/student/courses?page=${i}&pageSize=10&sortField${sortField}&sortDir=${sortDir}">${i}</a>
+                    </c:if>
+                    <c:if test="${page != i}">
+                        <a href="/student/courses?page=${i}&pageSize=10&sortField=${sortField}&sortDir=${sortDir}">${i}</a>
+                    </c:if>
+                </li>
+            </c:forEach>
+        </span>
+            <li>
+                <c:if test="${page < totalPages}">
+                    <a href="/student/courses?page=${page + 1}&pageSize=10&&sortField=${sortField}&sortDir=${sortDir}">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                    </a>
+                </c:if>
+                <c:if test="${page >= totalPages}">
+                    <a class="not-allowed" disabled="">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                    </a>
+                </c:if>
+            </li>
+        </ul>
+    </div>
+    <!--// pagination section -->
     <div class="col-md-2 login-center text-start">
         <a href="/dashboard">
             <button class="btn btn-style btn-style-3 text-left">BACK</button>

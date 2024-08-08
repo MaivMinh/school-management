@@ -11,8 +11,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -50,7 +46,7 @@ public class ProfileController {
   public String displayProfile(HttpSession httpSession, Model model, @RequestParam(name = "success", required = false) boolean success, Authentication authentication) {
     User user = (User) httpSession.getAttribute("user");
     if (user == null || user.getUserId() <= 0) {
-      user = userService.getUserByEmail(authentication.getPrincipal().toString());  // Lấy thông tin user thông qua Email của user đã được xác thực.
+      user = userService.findUserByEmail(authentication.getPrincipal().toString());  // Lấy thông tin user thông qua Email của user đã được xác thực.
     }
     Profile profile = new Profile();
     profile.setName(user.getName());
