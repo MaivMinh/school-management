@@ -1,5 +1,8 @@
 package com.foolish.schoolmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,13 +32,14 @@ public class Courses extends BaseEntity {
   private String name;
 
   @Column(name = "fee")
-  private String fees;
+  private int fee;
 
   private String category;
   @Size(min = 20, message = "Capacity of Course at least 30 students")
   private int capacity;
   private int attendees;
   private String img;
+
   private java.sql.Date begin;
   private java.sql.Date end;
   private String introduction;
@@ -43,12 +47,6 @@ public class Courses extends BaseEntity {
   private int lessons;
   private double vote;
   private String state;
-
-
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, optional = false)
-  @JoinColumn(name = "lecturer", referencedColumnName = "userId", nullable = false)
-  @NotNull
-  private User lecturer;
 
   @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   private Set<User> users = new HashSet<>();
@@ -58,7 +56,8 @@ public class Courses extends BaseEntity {
     return "Courses{" +
             "courseId=" + courseId +
             ", name='" + name + '\'' +
-            ", fees='" + fees + '\'' +
+            ", fee=" + fee +
+            ", category='" + category + '\'' +
             '}';
   }
 }

@@ -177,7 +177,7 @@ public class AdminController {
     // Hàm thêm mới một khoá học vào danh sách.
     Courses course = new Courses();
     course.setName(newCourse.getName());
-    course.setFees(newCourse.getFee());
+    course.setFee(newCourse.getFee());
     course.setCapacity(newCourse.getCapacity());
     course.setBegin(newCourse.getBegin());
     course.setEnd(newCourse.getEnd());
@@ -191,7 +191,6 @@ public class AdminController {
       model.addAttribute("message", "Lecturer doesn't exist !");
       return "redirect:/admin/course?added=false";
     }
-    course.setLecturer(user);
     boolean isOpen = new Date().before(course.getBegin());
     if (isOpen) course.setState("OPEN");
     else course.setState("CLOSED");
@@ -221,7 +220,6 @@ public class AdminController {
     User lecturer = userService.findUserByUserId(Integer.parseInt(newCourse.getLecturer()));
     if (lecturer == null || lecturer.getUserId() <= 0)
       return "redirect:/courses/" + id + "?update=false";
-    course.setLecturer(lecturer);
     MultipartFile file = newCourse.getFile();
     if (file != null && !file.isEmpty()) {
       String url = cloudinaryService.uploadFile(file);

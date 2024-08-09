@@ -90,18 +90,6 @@
                                         <input type="date" id="end" name="end" required>
                                     </div>
                                 </div>
-                                <%--                                <div id="lecturer-desc">--%>
-                                <%--                                    <div class="flex flex-column justify-content-between align-items-start">--%>
-                                <%--                                        <div>--%>
-                                <%--                                            <label for="lecturer">Lecturer ID</label>--%>
-                                <%--                                            <input type="text" id="lecturer" name="lecturer" required>--%>
-                                <%--                                        </div>--%>
-                                <%--                                        <div>--%>
-                                <%--                                            <label for="lessons">Lessons</label>--%>
-                                <%--                                            <input type="text" id="lessons" name="lessons" required>--%>
-                                <%--                                        </div>--%>
-                                <%--                                    </div>--%>
-
                                 <div id="lecture-id-name">
                                     <div>
                                         <label for="lecturerId">Lecturer ID</label>
@@ -164,7 +152,7 @@
                             </svg>
                         </a>
                     </td>
-                    <td>${course.fees}</td>
+                    <td>${course.fee}$</td>
                     <td>${course.begin}</td>
                     <td>${course.end}</td>
                     <td>${course.attendees}/${course.capacity}</td>
