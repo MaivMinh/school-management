@@ -35,6 +35,12 @@
                 <th class="sorting" scope="col">
                     <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=fees">Fee</a>
                 </th>
+                <th class="sorting" scope="col">
+                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=begin">Begin Date</a>
+                </th>
+                <th class="sorting" scope="col">
+                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=end">End Date</a>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -43,7 +49,9 @@
                     <tr>
                         <td>${course.courseId}</td>
                         <td>${course.name}</td>
-                        <td>${course.fees}</td>
+                        <td>${course.fee}$</td>
+                        <td>${course.begin}$</td>
+                        <td>${course.end}$</td>
                     </tr>
                 </c:forEach>
             </c:if>

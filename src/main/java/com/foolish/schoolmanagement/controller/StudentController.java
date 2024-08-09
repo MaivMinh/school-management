@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/student")
@@ -50,6 +51,7 @@ public class StudentController {
     String reverseDir = (dir.equalsIgnoreCase("asc") ? "desc" : "asc");
 
 
+    for (Courses courses: user.getCourses()) System.out.println(courses);
     return "courses_enrolled";
   }
 }

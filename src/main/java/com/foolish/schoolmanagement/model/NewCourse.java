@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class NewCourse {
   private int courseId;
   private String name;
-  private String fee;
+  private int fee;
   private String category;
   private int capacity;
   private MultipartFile file;

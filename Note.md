@@ -90,3 +90,10 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
    2. Tạo CloudinaryService có chức năng là uploadFile lên Server, sau khi thực thi xong thì hàm này sẽ trả về cho chúng ta URL.
    3. Lưu ý, vì Form sẽ trả về MultipartFile, chúng ta phải chuyển đổi nó thành File. Xem lại trong ProjectConfiguration.
    4. Cuối cùng là lưu URL vào Table users.
+
+======================================== LƯU Ý QUAN TRỌNG KHI SỬ DỤNG SPRING DATA REST. ========================================
+1. Thông thường, khi thực hiện request một object có @ToMany annotations, chúng ta thường sử dụng FetchType.LAZY để tránh làm giảm hiểu suất của ứng dụng.
+2. Nhưng khi sử dụng SPRING DATA REST với @RestController thì nó sẽ Fetch toàn bộ data có liên quan cho dù đó có là LAZY hay EAGER. Vấn đề này là mặc định và gần như khó thay đổi. Nó bắt nguồn từ Jackson sẽ serializable toàn bộ data có liên quan. Việc Fetch toàn bộ dữ liệu như này sẽ dẫn tới infinite fetch hay còn được biết tới là _JSON infinite recursion Stackoverflow_. Do các đối tượng có quan hệ nhiều-nhiều, một-nhiều truy xuất ngược lại lẫn nhau. Có thể xem cụ thể ở class Course và class User.
+3. Do đó, để khắc phục vấn đề này thì chúng ta thường áp dụng 2 giải pháp.
+   1. Sử dụng @JsonManagedReference và @JsonBackReference. @JsonManagedReference nên được sử dụng ở bên định nghĩa @JoinTable.
+   2. Sử dụng DTOs để trả về cho client. 

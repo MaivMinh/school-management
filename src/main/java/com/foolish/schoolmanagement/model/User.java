@@ -1,5 +1,7 @@
 package com.foolish.schoolmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.foolish.schoolmanagement.annotations.FieldsValueMatch;
 import com.foolish.schoolmanagement.annotations.PasswordValidator;
 import jakarta.persistence.*;
@@ -67,16 +69,13 @@ public class User extends BaseEntity {
   @JoinColumn(name = "role_id", referencedColumnName = "roleId",nullable = false)
   private Roles roles;
 
-  @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
+  @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, targetEntity = Address.class)
   @JoinColumn(name = "address_id", referencedColumnName = "addressId",nullable = true)
   private Address address;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = true)
+  @ManyToOne(fetch = FetchType.LAZY, optional = true)
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
   private PassioClass passioClass;
-
-  @OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, targetEntity = Courses.class)
-  private Set<Courses> lecture_courses;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   @JoinTable(name = "user_courses",
@@ -85,15 +84,4 @@ public class User extends BaseEntity {
           inverseJoinColumns = {
                   @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
   private Set<Courses> courses = new HashSet<>();
-
-  @Override
-  public String toString() {
-    return "User{" +
-            "userId=" + userId +
-            ", name='" + name + '\'' +
-            ", mobileNum='" + mobileNum + '\'' +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            '}';
-  }
 }

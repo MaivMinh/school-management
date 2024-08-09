@@ -1,22 +1,31 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.User;
+import com.foolish.schoolmanagement.service.CoursesService;
 import com.foolish.schoolmanagement.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
 @RequestMapping("/public")
 public class PublicController {
   private final UserService userService;
+  private final CoursesService coursesService;
 
-  public PublicController(UserService service) {
+
+  public PublicController(UserService service, CoursesService coursesService) {
     this.userService = service;
+    this.coursesService = coursesService;
   }
 
   @RequestMapping("/register")
