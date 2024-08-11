@@ -62,9 +62,9 @@
                         <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
                             <li style="font-size: 1.5rem"><i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
                                 Created by <a style="font-size: 1.5rem;"
-                                              href="/user/${course.lecturer.userId}">${course.lecturer.name}</a></li>
+                                              href="#">Lecture name will present here</a></li>
                             <li style="font-size: 1rem"><i class="fas fa-address-book" style="font-size: 1rem"></i> <a
-                                    href="mailto: maiminh1307200@gmail.com">${course.lecturer.email}</a></li>
+                                    href="mailto: maiminh1307200@gmail.com">Lecture email will present here</a></li>
                         </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">

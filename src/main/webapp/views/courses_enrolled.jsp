@@ -19,27 +19,38 @@
 
     <div class="table-responsive-md">
         <div class="row mb-4">
-            <div class="overview-wrap">
+            <div class="overview-wrap" style="display: flex; flex-direction: row; justify-content: space-between">
                 <h3 class="heading-21921"> ${user.name} Enrolled Courses</h3>
+                <form action="/student/courses/search" class="input-group mb-3" style="width: 30%">
+                    <input type="text" class="form-control" placeholder="Enter course name"
+                           aria-label="Example text with button addon"
+                           aria-describedby="button-addon1">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon1">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25"
+                             viewBox="0 0 50 50">
+                            <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
         <table class="table table-striped dataTable table-hover">
             <thead class="table-dark">
             <tr>
                 <th class="sorting" scope="col">
-                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=courseId">Course ID</a>
+                    <a style="text-decoration: none">Course ID</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=name">Course Name</a>
+                    <a style="text-decoration: none">Course Name</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=fees">Fee</a>
+                    <a style="text-decoration: none">Begin Date</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=begin">Begin Date</a>
+                    <a style="text-decoration: none">End Date</a>
                 </th>
                 <th class="sorting" scope="col">
-                    <a style="text-decoration: none" href="/student/courses?page=${page}&pageSize=${pageSize}&sortDir=${reverseDir}&sortField=end">End Date</a>
+                    <a style="text-decoration: none">GRADE</a>
                 </th>
             </tr>
             </thead>
@@ -47,11 +58,11 @@
             <c:if test="${courses != null}">
                 <c:forEach items="${courses}" var="course">
                     <tr>
-                        <td>${course.courseId}</td>
-                        <td>${course.name}</td>
-                        <td>${course.fee}$</td>
-                        <td>${course.begin}$</td>
-                        <td>${course.end}$</td>
+                        <td>${course.courseId()}</td>
+                        <td>${course.name()}</td>
+                        <td>${course.begin()}</td>
+                        <td>${course.end()}</td>
+                        <td>${course.grade()}</td>
                     </tr>
                 </c:forEach>
             </c:if>
@@ -116,6 +127,9 @@
 <button onclick="topFunction()" id="movetop" title="Go to top">
     <span class="fas fa-level-up-alt" aria-hidden="true"></span>
 </button>
+<script>
+
+</script>
 <script>
     // When the user scrolls down 20px from the top of the document, show the button
     window.onscroll = function () {

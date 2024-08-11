@@ -1,19 +1,12 @@
 package com.foolish.schoolmanagement.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import jakarta.persistence.*;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +17,7 @@ public class Courses extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name = "native", strategy = "native")
+  @GenericGenerator(name = "native")
   private int courseId;
 
   @NotBlank
@@ -48,16 +41,9 @@ public class Courses extends BaseEntity {
   private double vote;
   private String state;
 
-  @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  private Set<User> users = new HashSet<>();
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "courses")
+  private Set<Registrations> registrations;
 
-  @Override
-  public String toString() {
-    return "Courses{" +
-            "courseId=" + courseId +
-            ", name='" + name + '\'' +
-            ", fee=" + fee +
-            ", category='" + category + '\'' +
-            '}';
-  }
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "courses")
+  private Set<Teach> teaches;
 }
