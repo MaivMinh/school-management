@@ -59,18 +59,22 @@
                         </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">
-                        <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
-                            <li style="font-size: 1.5rem"><i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
-                                Created by <a style="font-size: 1.5rem;"
-                                              href="#">Lecture name will present here</a></li>
-                            <li style="font-size: 1rem"><i class="fas fa-address-book" style="font-size: 1rem"></i> <a
-                                    href="mailto: maiminh1307200@gmail.com">Lecture email will present here</a></li>
-                        </ul>
+                        <c:if test="${lectures != null}">
+                            <c:forEach items="${lectures}" var="lecture">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
+                                    <li style="font-size: 1.3rem"><i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
+                                        Created by <a style="font-size: 1.5rem;"
+                                                      href="#">${lecture.name}</a></li>
+                                    <li style="font-size: 1rem"><i class="fas fa-address-book" style="font-size: 1rem"></i> <a
+                                            href="mailto: ${lecture.email}">${lecture.email}</a></li>
+                                </ul>
+                            </c:forEach>
+                        </c:if>
                     </div>
                     <div class="content-top mb-4 mt-3">
                         <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
                             <li style="font-size: 1.5rem;"><i class="fas fa-money-check-alt"
-                                                             style="font-size: 1.5rem"></i> ${course.fees}</li>
+                                                             style="font-size: 1.5rem"></i> ${course.fee}</li>
                         </ul>
                     </div>
                     <div class="mb-4 mt-3 content-top">

@@ -1,7 +1,10 @@
 package com.foolish.schoolmanagement.controller;
 
 import com.foolish.schoolmanagement.model.Courses;
+import com.foolish.schoolmanagement.model.Teach;
+import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.service.CoursesService;
+import com.foolish.schoolmanagement.service.TeachService;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,17 +16,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/courses")
 public class CourseController {
 
   private final CoursesService service;
   private final CoursesService coursesService;
+  private final TeachService teachService;
 
   @Autowired
-  public CourseController(CoursesService service, CoursesService coursesService) {
+  public CourseController(CoursesService service, CoursesService coursesService, TeachService teachService) {
     this.service = service;
     this.coursesService = coursesService;
+    this.teachService = teachService;
   }
 
   @GetMapping(value = {""})
@@ -48,6 +55,9 @@ public class CourseController {
     Courses course = service.findByCourseId(id);
     if (course != null && course.getCourseId() > 0) {
       model.addAttribute("course", course);
+      List<Teach> list = teachService.findAllByCourses(course);
+      List<User> lectures = list.stream().map(Teach::getLecture).toList();
+      model.addAttribute("lectures", lectures);
     } else {
       model.addAttribute("message", "Course ID Not Found!");
       return "error";

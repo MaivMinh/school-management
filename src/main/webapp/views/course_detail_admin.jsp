@@ -60,16 +60,24 @@
                         </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">
-                        <ul class="list-unstyled d-flex align-items-center justify-content-start" style="column-gap: 1rem" >
-                            <div>
-                                <label for="lecturerId">Lecturer ID</label>
-                                <input type="text" id="lecturerId" name="lecturer" class="form-control" value="Lecture ID will present here" required>
-                            </div>
-                            <div>
-                                <label class="control-label" for="lecturer">Lecturer Name</label>
-                                <input class="form-control" type="text" id="lecturer" name="lecturerName" value="Lecture name will present here" readonly>
-                            </div>
-                        </ul>
+                        <c:if test="${lectures != null}">
+                            <c:forEach items="${lectures}" var="lecture">
+                                <ul class="list-unstyled d-flex align-items-center justify-content-start"
+                                    style="column-gap: 1rem">
+                                    <div>
+                                        <label for="lecturer-id-${lecture.userId}">Lecturer ID</label>
+                                        <input type="text" id="lecturer-id-${lecture.userId}" name="lecturer"
+                                               class="form-control" value="${lecture.userId}" readonly required>
+                                    </div>
+                                    <div>
+                                        <label class="control-label" for="lecturer-name-${lecture.name}">Lecturer
+                                            Name</label>
+                                        <input class="form-control" type="text" id="lecturer-name-${lecture.name}"
+                                               name="lecturerName" value="${lecture.name}" readonly>
+                                    </div>
+                                </ul>
+                            </c:forEach>
+                        </c:if>
                     </div>
                     <div class="input-grids">
                         <div class="mb-4">
