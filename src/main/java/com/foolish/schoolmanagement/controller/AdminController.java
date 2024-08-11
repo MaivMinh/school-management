@@ -28,9 +28,10 @@ public class AdminController {
   private final Environment environment;
   private final CloudinaryService cloudinaryService;
   private final Validator validator;
+  private final RegistrationsService registrationsService;
 
   @Autowired
-  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, Environment environment, CloudinaryService cloudinaryService, Validator validator) {
+  public AdminController(ClassService classService, UserService userService, CoursesService coursesService, ContactMsgService contactMsgService, RegistrationsService registrationsService, Environment environment, CloudinaryService cloudinaryService, Validator validator) {
     super();
     this.classService = classService;
     this.userService = userService;
@@ -38,6 +39,7 @@ public class AdminController {
     this.contactMsgService = contactMsgService;
     this.environment = environment;
     this.cloudinaryService = cloudinaryService;
+    this.registrationsService = registrationsService;
     this.validator = validator;
   }
 
@@ -231,11 +233,23 @@ public class AdminController {
     return "redirect:/courses/" + course.getCourseId() + "?update=true";
   }
 
-  @GetMapping("view-students")
-  public String displayStudentsInCourse(Model model, @RequestParam(value = "courseId", required = true) String courseId, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "enrolled", required = false) String enrolled, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error) {
+  @GetMapping("/courses/{courseId}/students")
+  public String displayStudentsInCourse(Model model, @PathVariable(value = "courseId") String courseId, @RequestParam(value = "added", required = false) String added, @RequestParam(value = "enrolled", required = false) String enrolled, @RequestParam(value = "existed", required = false) String existed, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
     Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
-    System.out.println(courses.getUsers());
+
+    int pageNum = Integer.parseInt(page != null ? page: environment.getProperty("page"));
+    int pageSizeNum = Integer.parseInt(pageSize != null ? pageSize: environment.getProperty("pageSize"));
+    String field = (sortField != null ? sortField: "id");
+    String dir = (sortDir != null ? sortDir: "asc");
+    Page<Registrations> result = registrationsService.findAllByCourses(courses, pageNum, pageSizeNum, field, dir);
+    List<User> users = result.getContent().stream().map(Registrations::getUser).toList();
     model.addAttribute("courses", courses);
+    model.addAttribute("users", users);
+    model.addAttribute("page", pageNum);
+    model.addAttribute("pageSize", pageSizeNum);
+    model.addAttribute("totalPages", result.getTotalPages());
+    model.addAttribute("sortField", field);
+    model.addAttribute("sortDir", dir);
     if (added != null) model.addAttribute("added", added.equalsIgnoreCase("true"));
     if (enrolled != null) model.addAttribute("enrolled", enrolled.equalsIgnoreCase("true"));
     if (existed != null) model.addAttribute("existed", existed.equalsIgnoreCase("true"));
@@ -244,47 +258,47 @@ public class AdminController {
     return "course_students";
   }
 
-  @PostMapping("add-student-to-course")
-  public String addStudentToCourse(User user, @RequestParam(value = "courseId", required = true) String courseId) {
-    user = userService.findUserByEmail(user.getEmail());
-    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
-    if (user != null && user.getUserId() > 0) {
-      // user existed.
-      if (courses != null && courses.getCourseId() > 0) {
-        // courses existed.
-        // check number of enrolled in.
-        if (courses.getAttendees() == courses.getCapacity())
-          return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
-        if (courses.getUsers().contains(user))
-          return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
-        courses.getUsers().add(user);
-        courses.setAttendees(courses.getAttendees() + 1);
-        user.getCourses().add(courses);
-        coursesService.save(courses);
-        return "redirect:/admin/view-students?courseId=" + courseId + "&added=true";
-      }
-    } else return "redirect:/admin/view-students?courseId=" + courseId + "&existed=false";
-    return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
-  }
+//  @PostMapping("add-student-to-course")
+//  public String addStudentToCourse(User user, @RequestParam(value = "courseId", required = true) String courseId) {
+//    user = userService.findUserByEmail(user.getEmail());
+//    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
+//    if (user != null && user.getUserId() > 0) {
+//      // user existed.
+//      if (courses != null && courses.getCourseId() > 0) {
+//        // courses existed.
+//        // check number of enrolled in.
+//        if (courses.getAttendees() == courses.getCapacity())
+//          return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
+//        if (courses.getUsers().contains(user))
+//          return "redirect:/admin/view-students?courseId=" + courseId + "&enrolled=true";
+//        courses.getUsers().add(user);
+//        courses.setAttendees(courses.getAttendees() + 1);
+//        user.getCourses().add(courses);
+//        coursesService.save(courses);
+//        return "redirect:/admin/courses/" + courseId + "/students" + "&added=true";
+//      }
+//    } else return "redirect:/admin/view-students?courseId=" + courseId + "&existed=false";
+//    return "redirect:/admin/view-students?courseId=" + courseId + "&added=false";
+//  }
 
-  @PostMapping("delete-student-from-course")
-  public String deleteStudentFromCourse(@RequestParam(value = "userId", required = true) String userId, @RequestParam(value = "courseId", required = true) String courseId) {
-    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
-    User user = userService.findUserByUserId(Integer.parseInt(userId));
-    if (courses != null && courses.getCourseId() > 0) {
-      // course existed.
-      if (user != null && user.getUserId() > 0) {
-        // user existed.
-        if (!courses.getUsers().contains(user) || !user.getCourses().contains(courses))
-          return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
-        courses.getUsers().remove(user);
-        user.getCourses().remove(courses);
-        coursesService.save(courses);
-        return "redirect:/admin/view-students?courseId=" + courseId + "&success=true";
-      }
-    }
-    return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
-  }
+//  @PostMapping("delete-student-from-course")
+//  public String deleteStudentFromCourse(@RequestParam(value = "userId", required = true) String userId, @RequestParam(value = "courseId", required = true) String courseId) {
+//    Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
+//    User user = userService.findUserByUserId(Integer.parseInt(userId));
+//    if (courses != null && courses.getCourseId() > 0) {
+//      // course existed.
+//      if (user != null && user.getUserId() > 0) {
+//        // user existed.
+//        if (!courses.getUsers().contains(user) || !user.getCourses().contains(courses))
+//          return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
+//        courses.getUsers().remove(user);
+//        user.getCourses().remove(courses);
+//        coursesService.save(courses);
+//        return "redirect:/admin/view-students?courseId=" + courseId + "&success=true";
+//      }
+//    }
+//    return "redirect:/admin/view-students?courseId=" + courseId + "&error=true";
+//  }
 
 
   @GetMapping(value = {"messages"})

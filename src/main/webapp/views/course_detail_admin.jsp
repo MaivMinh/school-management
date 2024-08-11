@@ -63,11 +63,11 @@
                         <ul class="list-unstyled d-flex align-items-center justify-content-start" style="column-gap: 1rem" >
                             <div>
                                 <label for="lecturerId">Lecturer ID</label>
-                                <input type="text" id="lecturerId" name="lecturer" class="form-control" value="${course.lecturer.userId}" required>
+                                <input type="text" id="lecturerId" name="lecturer" class="form-control" value="Lecture ID will present here" required>
                             </div>
                             <div>
                                 <label class="control-label" for="lecturer">Lecturer Name</label>
-                                <input class="form-control" type="text" id="lecturer" name="lecturerName" value="${course.lecturer.name}" readonly>
+                                <input class="form-control" type="text" id="lecturer" name="lecturerName" value="Lecture name will present here" readonly>
                             </div>
                         </ul>
                     </div>

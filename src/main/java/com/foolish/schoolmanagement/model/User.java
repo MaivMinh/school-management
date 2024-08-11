@@ -69,7 +69,7 @@ public class User extends BaseEntity {
   @JoinColumn(name = "role_id", referencedColumnName = "roleId",nullable = false)
   private Roles roles;
 
-  @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, targetEntity = Address.class)
+  @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
   @JoinColumn(name = "address_id", referencedColumnName = "addressId",nullable = true)
   private Address address;
 
@@ -77,11 +77,9 @@ public class User extends BaseEntity {
   @JoinColumn(name = "class_id", referencedColumnName = "classId", nullable = true)
   private PassioClass passioClass;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @JoinTable(name = "user_courses",
-          joinColumns = {
-                  @JoinColumn(name = "user_id", referencedColumnName = "userId")},
-          inverseJoinColumns = {
-                  @JoinColumn(name = "course_id", referencedColumnName = "courseId")})
-  private Set<Courses> courses = new HashSet<>();
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  private Set<Registrations> registrations;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "lecture")
+  private Set<Teach> teaches;
 }
