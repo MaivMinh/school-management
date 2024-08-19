@@ -97,3 +97,20 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
 3. Do đó, để khắc phục vấn đề này thì chúng ta thường áp dụng 2 giải pháp.
    1. Sử dụng @JsonManagedReference và @JsonBackReference. @JsonManagedReference nên được sử dụng ở bên định nghĩa @JoinTable.
    2. Sử dụng DTOs để trả về cho client. 
+
+
+======================================== KIẾN THỨC QUAN TRỌNG KHI CONTAINERIZE VỚI DOCKER. ========================================
+1. Thông thường, chúng ta có thể chỉ cần bỏ file jar vào trong Docker rồi chạy các commands để thực thi jar file đó. Nhưng điều này sẽ dẫn tới việc giảm performance. Bên cạnh đó, việc chạy jar file bên trong docker container sẽ gây khó khi fix các lỗi phát sinh trong quá trình chạy container. Vì code changes của chúng ta nằm trong jar và jar lại nằm trong container.
+2. Vì 2 lý do trên, chúng ta sẽ extract jar file, rồi thực thi command để chạy ứng dụng trực tiếp giống như ở local.
+   - Để extract được, chúng ta sẽ phải extract ở layertools(tools). Mà có một lưu ý quan trọng là layertools không thể sử dụng với _fully executable" (_https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html_). Vì _fully executable_ này bao gồm _launch script_. Do đó, để run ở chế độ layertools chúng ta phải cần disable _launch script_.
+      - Mà do trong file pom.xml trước đó, chúng ta đã vô tình cài đặt _fully executable_ bằng cách:
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+          <executable>true</executable>
+          </configuration>
+        </plugin>
+      - Nên điều này dẫn tới chúng ta đã cài đặt _fully executable_ rồi. Điều này dẫn tới lỗi trong một thời gian dài.
+      - Vì vậy để có thể disable launch script thì chúng ta chỉ cần xoá đi cấu hình này trong _pom.xml_
+3. Với việc disable launch script thì chúng ta đã có thể build image file thành công.
