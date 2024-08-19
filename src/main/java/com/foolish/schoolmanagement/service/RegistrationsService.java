@@ -29,4 +29,12 @@ public class RegistrationsService {
     Pageable pageable = PageRequest.of(page - 1, pageSize, (dir.equalsIgnoreCase("asc") ? Sort.by(field).ascending() : Sort.by(field).descending()));
     return registrationsRepo.findAllByCourses(courses, pageable);
   }
+
+  public void save(Registrations registrations) {
+    registrationsRepo.save(registrations);
+  }
+
+  public Registrations findAllByCoursesAndUser(Courses courses, User user ) {
+    return registrationsRepo.findAllByCoursesAndUser(courses, user);
+  }
 }

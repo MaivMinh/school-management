@@ -1,5 +1,6 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.DTOs.UserDTO;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.service.CoursesService;
@@ -28,14 +29,14 @@ public class PublicController {
     this.coursesService = coursesService;
   }
 
-  @RequestMapping("/register")
+  @GetMapping("/register")
   public String displayRegisterPage(Model model) {
     model.addAttribute("user", new User());
     return "register";
   }
 
 
-  @PostMapping("/create-user")
+  @PostMapping("/register")
   public String createUser(@Valid User user, Errors errors, Model model) {
     if (errors.hasErrors()) {
       model.addAttribute("errors", errors.getAllErrors());

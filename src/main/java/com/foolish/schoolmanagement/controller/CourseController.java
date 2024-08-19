@@ -1,11 +1,11 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.DTOs.CourseDTO;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.Teach;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.service.CoursesService;
 import com.foolish.schoolmanagement.service.TeachService;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -53,10 +53,12 @@ public class CourseController {
   public String displayDetailedCourse(Model model, @PathVariable(value = "courseId") String courseId, Authentication authentication, @RequestParam(value = "update", required = false) String update) {
     int id = Integer.parseInt(courseId);
     Courses course = service.findByCourseId(id);
+    List<Teach> list = null;
+    List<User> lectures = null;
     if (course != null && course.getCourseId() > 0) {
       model.addAttribute("course", course);
-      List<Teach> list = teachService.findAllByCourses(course);
-      List<User> lectures = list.stream().map(Teach::getLecture).toList();
+      list = teachService.findAllByCourses(course);
+      lectures = list.stream().map(Teach::getLecture).toList();
       model.addAttribute("lectures", lectures);
     } else {
       model.addAttribute("message", "Course ID Not Found!");
@@ -65,6 +67,19 @@ public class CourseController {
     if (update != null && update.equals("true"))   model.addAttribute("update", true);
     if (update != null && update.equals("false"))   model.addAttribute("update", false);
     if (authentication != null && authentication.getAuthorities().stream().toArray()[0].toString().equals("ROLE_ADMIN"))  {
+      CourseDTO updateCourse = new CourseDTO();
+      updateCourse.setCourseId(course.getCourseId());
+      updateCourse.setName(course.getName());
+      updateCourse.setBegin(course.getBegin());
+      updateCourse.setEnd(course.getEnd());
+      updateCourse.setCapacity(course.getCapacity());
+      updateCourse.setCategory(course.getCategory());
+      updateCourse.setDescription(course.getDescription());
+      updateCourse.setIntroduction(course.getIntroduction());
+      updateCourse.setImg(course.getImg());
+      updateCourse.setVote(course.getVote());
+      updateCourse.setLessons(course.getLessons());
+      model.addAttribute("course", updateCourse);
       return "course_detail_admin";
     }
     return "course_detail_user";

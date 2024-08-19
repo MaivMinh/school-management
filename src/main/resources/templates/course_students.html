@@ -1,5 +1,23 @@
-<%@include file="header.jsp" %>
-<!-- //header -->
+<!-- header -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PASSIO School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/cropped-favicon.webp">
+</head>
+<body>
+<!-- header -->
+<div th:replace="~{header :: header}"></div>
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
@@ -20,40 +38,22 @@
 
     <div class="table-responsive-md">
         <ul>
-            <c:if test="${added != null}">
-                <c:if test="${added == true}">
-                    <li class="alert alert-success">You have added student into the Course successfully !</li>
-                </c:if>
-                <c:if test="${added == false}">
-                    <li class="alert alert-danger">Failure to add student into this Course !</li>
-                </c:if>
-            </c:if>
-            <c:if test="${enrolled != null}">
-                <c:if test="${enrolled == true}">
-                    <li class="alert alert-info">Student have enrolled this Course !</li>
-                </c:if>
-            </c:if>
-            <c:if test="${existed != null}">
-                <c:if test="${existed == false}">
-                    <li class="alert alert-danger">Student doesn't exist in our School !</li>
-                </c:if>
-            </c:if>
-            <c:if test="${success != null}">
-                <c:if test="${success == true}">
-                    <li class="alert alert-success">You have deleted Student from this Course !</li>
-                </c:if>
-            </c:if>
-            <c:if test="${error != null}">
-                <c:if test="${error == true}">
-                    <li class="alert alert-danger">Failure to delete Student from this Course !</li>
-                </c:if>
-            </c:if>
+            <li th:if="${error != null && error == true}" class="alert alert-danger">
+                <span th:text="${message}"></span>
+            </li>
+            <li th:if="${added != null && added == true}" class="alert alert-success">
+                <span th:text="${message}"></span>
+            </li>
+            <li th:if="${attended != null && attended == true}" class="alert alert-info"><span
+                    th:text="${message}"></span>
+            </li>
         </ul>
         <div class="row mb-4">
             <div class="overview-wrap">
-                <c:if test="${courses != null}">
-                    <h3 class="heading-21921">${courses.name} Course Students Details</h3>
-                </c:if>
+                <h3 th:if="${courses != null}" class="heading-21921">
+                    <span th:text="${courses.name}"></span>
+                    Course Students Details
+                </h3>
                 <button class="btn btn-style btn-style-3 text-left" type="button"
                         data-bs-toggle="modal" data-bs-target="#addStudent">ADD STUDENT
                 </button>
@@ -70,7 +70,7 @@
                         </button>
                     </div>
                     <form action="/admin/add-student-to-course" method="post" class="signin-form">
-                        <input type="text" value="${courses.courseId}" name="courseId" hidden>
+                        <input type="text" th:value="${courses.courseId}" name="courseId" hidden>
                         <div class="modal-body">
                             <div class="input-grids">
                                 <label class="control-label" for="email">Student Email </label>
@@ -81,7 +81,7 @@
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
                             <button type="submit" class="btn btn-style btn-style-3">Submit</button>
                         </div>
-                        <security:csrfInput/>
+                        <input type="text" th:name="${_csrf.getParameterName()}" th:value="${_csrf.token}" hidden>
                     </form>
                 </div>
             </div>
@@ -95,65 +95,52 @@
                 <th scope="col"></th>
             </tr>
             </thead>
-            <tbody>
-            <c:if test="${users != null}">
-                <c:forEach items="${users}" var="user">
-                    <tr>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${user.mobileNum}</td>
-                        <td>
-                            <form action="/admin/delete-student-from-course" method="post">
-                                <input type="text" value="${user.userId}" name="userId" hidden>
-                                <input type="text" value="${courses.courseId}" name="courseId" hidden>
-                                <button class="btn btn-warning">DELETE</button>
-                                <security:csrfInput/>
-                            </form>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:if>
+            <tbody th:if="${students != null}">
+            <tr th:each="student : ${students}">
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.email}"></td>
+                <td th:text="${student.mobileNum}"></td>
+                <td>
+                    <form action="/admin/delete-student-from-course" method="post">
+                        <input type="text" th:value="${student.userId}" name="userId" hidden>
+                        <input type="text" th:value="${courses.courseId}" name="courseId" hidden>
+                        <button class="btn btn-warning">DELETE</button>
+                        <input type="text" th:name="${_csrf.getParameterName()}" th:value="${_csrf.token}" hidden>
+                    </form>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
     <div class="pagination-style text-center mt-5">
         <ul>
             <li>
-                <c:if test="${page > 1}">
-                    <a href="/admin/courses?page=${page - 1}&pageSize=10&sortField=${sortField}&sortDir${sortDir}">
-                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-                <c:if test="${page <= 1}">
-                    <a class="not-allowed" disabled="">
-                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                    </a>
-                </c:if>
+                <a th:if="${page > 1}"
+                   th:href="@{/admin/courses(page=${page - 1}, pageSize=10, sortField=${sortField}, sortDir=${sortDir})}">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+                <a th:if="${page <= 1}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
             </li>
-            <span>
-            <c:forEach var="i" begin="1" end="${totalPages}">
+            <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
                 <li>
-                    <c:if test="${page == i}">
-                        <a class="active"
-                           href="/admin/courses?page=${i}&pageSize=10&sortField${sortField}&sortDir=${sortDir}">${i}</a>
-                    </c:if>
-                    <c:if test="${page != i}">
-                        <a href="/admin/courses?page=${i}&pageSize=10&sortField=${sortField}&sortDir=${sortDir}">${i}</a>
-                    </c:if>
+                    <a th:if="${page == i}" class="active"
+                       th:href="@{/admin/courses(page=${i}, pageSize=10, sortField=${sortField}, sortDir=${sortDir})}"
+                       th:text="${i}"></a>
+                    <a th:if="${page != i}"
+                       th:href="@{/admin/courses(page=${i}, pageSize=10, sortField=${sortField}, sortDir=${sortDir})}"
+                       th:text="${i}"></a>
                 </li>
-            </c:forEach>
-        </span>
+            </th:block>
             <li>
-                <c:if test="${page < totalPages}">
-                    <a href="/admin/courses?page=${page + 1}&pageSize=10&sortField=${sortField}&sortDir=${sortDir}">
-                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    </a>
-                </c:if>
-                <c:if test="${page >= totalPages}">
-                    <a class="not-allowed" disabled="">
-                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    </a>
-                </c:if>
+                <a th:if="${page < totalPages}"
+                   th:href="@{/admin/courses(page=${page + 1}, pageSize=10, sortField=${sortField}, sortDir=${sortDir})}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
+                <a th:if="${page >= totalPages}" class="not-allowed" disabled="">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                </a>
             </li>
         </ul>
     </div>
@@ -164,8 +151,7 @@
     </div>
 </div>
 
-<!-- footer block -->
-<%@include file="footer.jsp" %>
+<div th:replace="~{footer :: footer}">...</div>
 <!-- //footer block -->
 
 <!-- Js scripts -->
@@ -196,11 +182,11 @@
 <!-- //move top -->
 
 <!-- common jquery plugin -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<script src="/assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
 
 <!-- theme switch js (light and dark)-->
-<script src="../assets/js/theme-change.js"></script>
+<script src="/assets/js/theme-change.js"></script>
 <!-- //theme switch js (light and dark)-->
 
 <!-- MENU-JS -->
@@ -215,7 +201,7 @@
         }
     });
 
-    //Main navigation Active Class Add Remove
+    //Main navigation Active PassioClass Add Remove
     $(".navbar-toggler").on("click", function () {
         $("header").toggleClass("active");
     });
@@ -243,8 +229,10 @@
 <!-- //disable body scroll which navbar is in active -->
 
 <!-- bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
 </html>
+
+<!-- //footer block -->

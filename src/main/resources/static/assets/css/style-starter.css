@@ -21677,7 +21677,6 @@ body > div.site-section > div.row.justify-content-center .coursecard-single > di
 }
 
 
-
 body > div.site-section > div.row.justify-content-center .coursecard-single > div:nth-child(1):hover #img-hover-zoom {
     filter: brightness(100%);
     transform: scale(2.5);
@@ -21688,4 +21687,8 @@ body > div.site-section > div.row.justify-content-center .coursecard-single > di
     transform-origin: 50% 65%;
     transition: transform 3s, filter 2s ease-in-out;
     filter: brightness(120%);
+}
+
+body > section > div > div > div > div {
+    margin: auto;
 }
