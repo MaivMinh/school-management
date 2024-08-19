@@ -13,4 +13,5 @@ public interface ContactMsgRepo extends JpaRepository<ContactMsg, Integer> {
   ContactMsg findByContactId(int id);
 
   Page<ContactMsg> findAllByStatus(String status, Pageable pageable);
+  Page<ContactMsg> findAll(Pageable pageable);
 }

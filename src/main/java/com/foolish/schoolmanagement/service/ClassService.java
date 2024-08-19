@@ -45,4 +45,8 @@ public class ClassService {
     Pageable pageable = PageRequest.of(pageNum - 1, pageSizeNum, (sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending() ));
     return repo.findAll(pageable);
   }
+
+  public void delete(PassioClass passioClass) {
+    this.repo.delete(passioClass);
+  }
 }

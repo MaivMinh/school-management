@@ -8,6 +8,7 @@ import com.foolish.schoolmanagement.service.CloudinaryService;
 import com.foolish.schoolmanagement.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class ProfileController {
     this.userService = userService;
   }
 
-  @GetMapping(value = "/display-profile")
+  @GetMapping(value = "/profile")
   public String displayProfile(HttpSession httpSession, Model model, @RequestParam(name = "success", required = false) boolean success, Authentication authentication) {
     User user = (User) httpSession.getAttribute("user");
     if (user == null || user.getUserId() <= 0) {
@@ -67,8 +68,8 @@ public class ProfileController {
     return "profile";
   }
 
-  @PostMapping(value = "/update-profile")
-  public String updateProfile(Profile profile, HttpSession httpSession, Model model) {
+  @PostMapping(value = "/profile")
+  public String updateProfile(Profile profile, HttpSession httpSession, Model model, Authentication authentication) {
     Set<ConstraintViolation<Profile>> result = validator.validate(profile);
     if (!result.isEmpty()) {
       List<String> errors = new ArrayList<>();
@@ -80,13 +81,15 @@ public class ProfileController {
       return "profile";
     }
     User user = (User) httpSession.getAttribute("user");
+    if (user == null || user.getUserId() <= 0) {
+      user = userService.findUserByEmail(authentication.getPrincipal().toString());  // Lấy thông tin user thông qua Email của user đã được xác thực.
+    }
     //  Lưu thông tin profile mới cập nhật vào database.
     user.setName(profile.getName());
     user.setEmail(profile.getEmail());
     user.setMobileNum(profile.getMobileNum());
-
     MultipartFile file = profile.getFile();
-    if (file != null) {
+    if (file != null && !file.isEmpty()) {
       String url = cloudinaryService.uploadFile(file);
       user.setImg(url);
     }
@@ -101,7 +104,7 @@ public class ProfileController {
     user.getAddress().setZipcode(profile.getZipcode());
     user = userRepo.save(user);
     httpSession.setAttribute("user", user);
-    return "redirect:/display-profile?success=true";
+    return "redirect:/profile?success=true";
   }
 
 }

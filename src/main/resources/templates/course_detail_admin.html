@@ -1,4 +1,23 @@
-<%@include file="header.jsp" %>
+<!-- header -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PASSIO School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/cropped-favicon.webp">
+</head>
+<body>
+<!-- header -->
+<div th:replace="~{header :: header}"></div>
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
@@ -20,100 +39,97 @@
 
         <div class="col-lg-4 col-md-6">
             <ul>
-                <c:if test="${update != null && update == true}">
-                    <li class="alert alert-success">Updated course successfully!</li>
-                </c:if>
-                <c:if test="${update != null && update == false}">
-                    <li class="alert alert-danger">Failed to update course!</li>
-                </c:if>
+                <li th:if="${update != null && update == true}" class="alert alert-success">Updated course
+                    successfully!
+                </li>
+                <li th:if="${update != null && update == false}" class="alert alert-danger">Failed to update course!
+                </li>
             </ul>
-
             <div class="coursecard-single">
                 <div class="grids5-info position-relative">
-                    <c:if test="${course.img != null}">
-                        <img src="${course.img}" alt="" class="img-fluid" id="img-hover-zoom">
-                    </c:if>
-                    <c:if test="${course.img == null}">
-                        <img src="../assets/images/bg1.jpg" class="img-fluid" id="img-hover-zoom" alt="">
-                    </c:if>
+                    <img th:if="${course.img != null}" th:src="${course.img}" alt="" class="img-fluid"
+                         id="img-hover-zoom" style="width: 100%">
+                    <img th:if="${course.img == null}" th:src="../assets/images/bg1.jpg" class="img-fluid"
+                         id="img-hover-zoom"
+                         style="width: 100%"
+                         alt="">
                     <div class="meta-list">
-                        <a>${course.category}</a>
+                        <a th:href="${course.category}" th:text="${course.category}"></a>
                     </div>
                 </div>
             </div>
-            <form action="/admin/update-course" method="post" class="signin-form" enctype="multipart/form-data">
+            <form action="/admin/update-course" method="post" class="signin-form" enctype="multipart/form-data"
+                  th:object="${course}">
                 <div class="content-main-top">
                     <div class="content-top mb-4 mt-3">
                         <ul class="list-unstyled d-flex align-items-center justify-content-start"
                             style="column-gap: 1rem">
-                            <input type="number" name="courseId" value="${course.courseId}" hidden>
+                            <input type="number" th:field="*{courseId}" hidden>
                             <div>
                                 <label class="control-label" for="lessons">Lessons</label>
-                                <input type="text" class="form-control" id="lessons" name="lessons"
-                                       value="${course.lessons}" required>
+                                <input type="text" class="form-control" id="lessons" th:value="${course.lessons}" th:field="*{lessons}" required>
                             </div>
                             <div>
                                 <label class="control-label" for="vote">Star</label>
-                                <input type="text" class="form-control" id="vote" name="vote"
-                                       value="${course.vote != 0 ? course.vote: 5}" required>
+                                <input type="text" class="form-control" id="vote" name="vote" th:field="*{vote}"
+                                       th:value="${course.vote != 0 ? course.vote: 5}" readonly required>
                             </div>
                         </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">
-                        <c:if test="${lectures != null}">
-                            <c:forEach items="${lectures}" var="lecture">
-                                <ul class="list-unstyled d-flex align-items-center justify-content-start"
-                                    style="column-gap: 1rem">
-                                    <div>
-                                        <label for="lecturer-id-${lecture.userId}">Lecturer ID</label>
-                                        <input type="text" id="lecturer-id-${lecture.userId}" name="lecturer"
-                                               class="form-control" value="${lecture.userId}" readonly required>
-                                    </div>
-                                    <div>
-                                        <label class="control-label" for="lecturer-name-${lecture.name}">Lecturer
-                                            Name</label>
-                                        <input class="form-control" type="text" id="lecturer-name-${lecture.name}"
-                                               name="lecturerName" value="${lecture.name}" readonly>
-                                    </div>
-                                </ul>
-                            </c:forEach>
-                        </c:if>
+                        <ul th:if="${lectures}"
+                            class="list-unstyled d-flex align-items-center justify-content-start"
+                            th:each="lecture: ${lectures}"
+                            style="column-gap: 1rem">
+                            <div>
+                                <label for="lecturer-id-${lecture.userId}">Lecturer ID</label>
+                                <input type="text" id="lecturer-id-${lecture.userId}" name="lecturer"
+                                       class="form-control" th:value="${lecture.getUserId()}" readonly required>
+                            </div>
+                            <div>
+                                <label class="control-label" for="lecturer-name-${lecture.name}">Lecturer
+                                    Name</label>
+                                <input class="form-control" type="text" id="lecturer-name-${lecture.name}"
+                                       name="lecturerName" th:value="${lecture.getName()}" readonly required>
+                            </div>
+                        </ul>
                     </div>
                     <div class="input-grids">
                         <div class="mb-4">
                             <label class="control-label" for="name">Name </label>
-                            <input type="text" name="name" value="${course.name}" id="name" class="form-control"
+                            <input type="text" th:field="*{name}" id="name" class="form-control"
                                    required/>
                         </div>
                         <div class="mb-4">
                             <label for="introduction" class="control-label">Introduction </label>
                             <textarea type="text" name="introduction" id="introduction" cols="30" rows="3"
-                                      class="form-control" required>${course.introduction}</textarea>
+                                      class="form-control" required th:text="${course.introduction}"></textarea>
                         </div>
                         <div class="mb-4">
                             <label class="control-label" for="description">Description</label>
                             <textarea class="form-control w-100" name="description" id="description" cols="50"
-                                      rows="6" required>${course.description}</textarea>
+                                      rows="6" required th:text="${course.description}"></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Image</label>
-                            <input class="form-control" type="file" id="formFile" name="file">
+                            <input class="form-control" type="file" id="formFile" th:field="*{file}">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8 login-center text-start">
-                    <a href="/admin/courses" class="new-user text-right">
+                    <a href="@{/admin/courses}" class="new-user text-right">
                         <button class="btn btn-style btn-style-1 text-left">BACK</button>
                     </a>
                     <button class="btn btn-style btn-style-3 text-left">SUBMIT CHANGES</button>
                 </div>
-                <security:csrfInput/>
+                <input type="text" th:name="${_csrf.getParameterName()}" th:value="${_csrf.token}" hidden>
             </form>
         </div>
     </div>
 </div>
 </div>
-<%@include file="footer.jsp" %>
+<div th:replace="~{footer :: footer}">...</div>
+<!-- //footer block -->
 
 <!-- Js scripts -->
 <!-- move top -->
@@ -143,11 +159,11 @@
 <!-- //move top -->
 
 <!-- common jquery plugin -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<script src="/assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
 
 <!-- theme switch js (light and dark)-->
-<script src="../assets/js/theme-change.js"></script>
+<script src="/assets/js/theme-change.js"></script>
 <!-- //theme switch js (light and dark)-->
 
 <!-- MENU-JS -->
@@ -162,7 +178,7 @@
         }
     });
 
-    //Main navigation Active Class Add Remove
+    //Main navigation Active PassioClass Add Remove
     $(".navbar-toggler").on("click", function () {
         $("header").toggleClass("active");
     });
@@ -190,8 +206,10 @@
 <!-- //disable body scroll which navbar is in active -->
 
 <!-- bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
 </html>
+
+<!-- //footer block -->

@@ -1,25 +1,25 @@
 package com.foolish.schoolmanagement.mappers;
 
-import com.foolish.schoolmanagement.DTOs.RegistrationsDTO;
+import com.foolish.schoolmanagement.DTOs.RegistrationDTO;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.Registrations;
 
 public class RegistrationsMapper {
-  public static RegistrationsDTO convertToDTO(Registrations registrations) {
-    return new RegistrationsDTO(registrations.getCourses().getCourseId(), registrations.getCourses().getName(), registrations.getGrade() != null ? registrations.getGrade() : 0, registrations.getRating() != null ? registrations.getRating() : 0, registrations.getCourses().getFee(), registrations.getCourses().getBegin(), registrations.getCourses().getEnd());
+  public static RegistrationDTO convertToDTO(Registrations registrations) {
+    return new RegistrationDTO(registrations.getCourses().getCourseId(), registrations.getCourses().getName(), null, null, registrations.getCourses().getFee(), registrations.getCourses().getBegin(), registrations.getCourses().getEnd());
   }
 
-  public static Registrations convertToRegistrations(RegistrationsDTO registrationsDTO) {
-    Registrations registrations = new Registrations();
+  public static Registrations convertToRegistrations(RegistrationDTO registrationDTO) {
+    Registrations registration = new Registrations();
     Courses courses = new Courses();
-    courses.setCourseId(registrationsDTO.courseId());
-    courses.setName(registrationsDTO.name());
-    courses.setFee(registrationsDTO.fee());
-    courses.setBegin(registrationsDTO.begin());
-    courses.setEnd(registrationsDTO.end());
-    registrations.setCourses(courses);
-    registrations.setGrade(registrationsDTO.grade());
-    registrations.setRating(registrationsDTO.rating());
-    return registrations;
+    courses.setCourseId(registrationDTO.courseId);
+    courses.setName(registrationDTO.name);
+    courses.setFee(registrationDTO.fee);
+    courses.setBegin(registrationDTO.begin);
+    courses.setEnd(registrationDTO.end);
+    registration.setCourses(courses);
+    registration.setGrade(registrationDTO.grade);
+    registration.setRating(registrationDTO.rating);
+    return registration;
   }
 }

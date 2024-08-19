@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface RegistrationsRepo extends JpaRepository<Registrations, Integer> {
   Page<Registrations> findAllByUser(User user, Pageable pageable);
   Page<Registrations> findAllByCourses(Courses courses, Pageable pageable);
+  Registrations findAllByCoursesAndUser(Courses courses, User user  );
 }

@@ -40,6 +40,7 @@ public class ContactMsgController {
   public String displayContactPage(@RequestParam(name = "success", required = false) boolean success, Model model) {
     if (success)  {
       model.addAttribute("message", "You submitted successfully!");
+      model.addAttribute("contact", new ContactMsg());
       return "contact";
     }
     model.addAttribute("errors", null);

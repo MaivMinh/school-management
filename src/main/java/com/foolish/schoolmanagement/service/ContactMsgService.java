@@ -24,8 +24,9 @@ public class ContactMsgService {
     this.repo = repo;
   }
 
-  public List<ContactMsg> findAll() {
-    return repo.findAll();
+  public Page<ContactMsg> findAll(int page, int pageSize, String sortField, String sortDir) {
+    Pageable pageable = PageRequest.of(page - 1, pageSize, (sortDir.equalsIgnoreCase("asc") ? (Sort.by(sortField).ascending()): (Sort.by(sortField).descending())));
+    return repo.findAll(pageable);
   }
 
   public ContactMsg findByContactID(int id) {

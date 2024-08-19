@@ -1,4 +1,23 @@
-<%@include file="header.jsp" %>
+<!-- header -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PASSIO School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/cropped-favicon.webp">
+</head>
+<body>
+<!-- header -->
+<div th:replace="~{header :: header}"></div>
 <!-- inner banner -->
 <section class="inner-banner py-5">
     <div class="w3l-breadcrumb py-lg-5">
@@ -19,75 +38,77 @@
     <div class="row justify-content-center">
 
         <div class="col-lg-4 col-md-6">
-            <ul>
-                <c:if test="${update != null && update == true}">
-                    <li class="alert alert-success">Updated course successfully!</li>
-                </c:if>
-                <c:if test="${update != null && update == false}">
-                    <li class="alert alert-danger">Failed to update course!</li>
-                </c:if>
-            </ul>
             <div style="display: flex; flex-direction: row; column-gap: 2rem;">
                 <div class="coursecard-single" style="width: 50%; display: block">
                     <div class="grids5-info position-relative" style="width: 100%">
-                        <c:if test="${course.img != null}">
-                            <img src="${course.img}" alt="" class="img-fluid" id="img-hover-zoom" style="width: 100%">
-                        </c:if>
-                        <c:if test="${course.img == null}">
-                            <img src="../assets/images/bg1.jpg" class="img-fluid" id="img-hover-zoom"
-                                 style="width: 100%"
-                                 alt="">
-                        </c:if>
+                        <img th:if="${course.img != null}" th:src="${course.img}" alt="" class="img-fluid"
+                             id="img-hover-zoom" style="width: 100%">
+                        <img th:if="${course.img == null}" th:src="../assets/images/bg1.jpg" class="img-fluid"
+                             id="img-hover-zoom"
+                             style="width: 100%"
+                             alt="">
                         <div class="meta-list">
-                            <a>${course.category}</a>
+                            <a th:href="${course.category}" th:text="${course.category}"></a>
                         </div>
                     </div>
                     <div style="width: 100%; margin-top: 1rem;">
-                        <p style="font-size: 32px; font-weight: 700; margin-bottom: 1rem">${course.name}</p>
-                        <p style="font-size: 19px; font-weight: 400; margin-bottom: 1.5rem; ">${course.introduction}</p>
+                        <p style="font-size: 32px; font-weight: 700; margin-bottom: 1rem" th:text="${course.name}"></p>
+                        <p style="font-size: 19px; font-weight: 400; margin-bottom: 1.5rem; "
+                           th:text="${course.introduction}"></p>
                     </div>
                 </div>
-                <div class="content-main-top">
+                <div class="content-main-top" style="width: 50%">
                     <div class="content-top mb-4 mt-3">
                         <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
-                            <li style="font-size: 1.5rem"><i class="fas fa-book-open"
-                                                             style="font-size: 1.5rem"></i> ${course.lessons} lessons
+                            <li style="font-size: 1.5rem">
+                                <i class="fas fa-book-open" style="font-size: 1.5rem"></i>
+                                <span th:text="${course.lessons}"></span>
+                                lessons
                             </li>
-                            <li style="font-size: 1.5rem"><i class="fas fa-star"
-                                                             style="font-size: 1.5rem"></i> ${course.vote != null ? course.vote: 5.0}
+                            <li style="font-size: 1.5rem">
+                                <i class="fas fa-star" style="font-size: 1.5rem"></i>
+                                <span th:text=" ${course.vote != null ? course.vote: 5.0}"></span>
                             </li>
                         </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">
-                        <c:if test="${lectures != null}">
-                            <c:forEach items="${lectures}" var="lecture">
-                                <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
-                                    <li style="font-size: 1.3rem"><i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
-                                        Created by <a style="font-size: 1.5rem;"
-                                                      href="#">${lecture.name}</a></li>
-                                    <li style="font-size: 1rem"><i class="fas fa-address-book" style="font-size: 1rem"></i> <a
-                                            href="mailto: ${lecture.email}">${lecture.email}</a></li>
-                                </ul>
-                            </c:forEach>
-                        </c:if>
+                        <ul th:if="${lectures != null}"
+                            class="list-unstyled d-flex align-items-center justify-content-start gap-4"
+                            th:each="lecture: ${lectures}">
+                            <li style="font-size: 1.3rem">
+                                <i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
+                                Created by
+                                <a style="font-size: 1.5rem;" th:href="@{/lectures/{id}(id=${lecture.userId})}" th:text="${lecture.name}"></a>
+                            </li>
+                            <li style="font-size: 1rem">
+                                <i class="fas fa-address-book" style="font-size: 1rem"></i>
+                                <a th:href="@{mailto: ${lecture.email}}" th:text="${lecture.email}"></a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="content-top mb-4 mt-3">
                         <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
-                            <li style="font-size: 1.5rem;"><i class="fas fa-money-check-alt"
-                                                             style="font-size: 1.5rem"></i> ${course.fee}</li>
+                            <li style="font-size: 1.5rem;">
+                                <i class="fas fa-money-check-alt" style="font-size: 1.5rem"></i>
+                                <span th:text="${course.fee}"></span>
+                                <span style="color: rgb(251, 176, 52)">$</span>
+                            </li>
                         </ul>
                     </div>
                     <div class="mb-4 mt-3 content-top">
                         <div style="width: 100%; margin-bottom: 1rem;">
-                            <a href="#">
-                                <button class="btn btn-info btn-lg" style="margin-right: 1rem; color: white">Add to card</button>
+                            <a href="@{/add-to-cart">
+                                <button class="btn btn-info btn-lg" style="margin-right: 1rem; color: white">Add to card
+                                </button>
                             </a>
-                            <a href="#">
-                                <button class="btn btn-danger btn-lg"><i class="fa fa-heart"></i></button>
+                            <a th:href="@{/favourite}">
+                                <button class="btn btn-danger btn-lg">
+                                    <i class="fa fa-heart"></i>
+                                </button>
                             </a>
                         </div>
                         <div style="width: 100%">
-                            <a href="#">
+                            <a th:href="@{/register}">
                                 <button class="btn btn-info btn-lg" style="width: 100%; color: white">REGISTER NOW
                                 </button>
                             </a>
@@ -96,11 +117,11 @@
                     <div class="mb-4 mt-3 content-top">
                         <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem">This course will
                             include: </p>
-                        ${course.description}
+                        <div th:text="${course.description}"></div>
                     </div>
                 </div>
             </div>
-            <div id="course-detail-comment" style="width: 80%">
+            <div id="course-detail-comment" style="width: 100%; margin: 1rem 0">
                 <div style="width: 100%; margin-left: auto; margin-right: auto;">
                     <label class="control-label" for="comment">Comment</label>
                     <input type="text" class="form-control" id="comment" name="comment">
@@ -115,7 +136,9 @@
     </div>
 </div>
 </div>
-<%@include file="footer.jsp" %>
+<!-- //footer block -->
+<div th:replace="~{footer :: footer}">...</div>
+<!-- //footer block -->
 
 <!-- Js scripts -->
 <!-- move top -->
@@ -145,11 +168,11 @@
 <!-- //move top -->
 
 <!-- common jquery plugin -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
+<script src="/assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
 
 <!-- theme switch js (light and dark)-->
-<script src="../assets/js/theme-change.js"></script>
+<script src="/assets/js/theme-change.js"></script>
 <!-- //theme switch js (light and dark)-->
 
 <!-- MENU-JS -->
@@ -164,7 +187,7 @@
         }
     });
 
-    //Main navigation Active Class Add Remove
+    //Main navigation Active PassioClass Add Remove
     $(".navbar-toggler").on("click", function () {
         $("header").toggleClass("active");
     });
@@ -192,8 +215,10 @@
 <!-- //disable body scroll which navbar is in active -->
 
 <!-- bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
 <!-- //bootstrap -->
 <!-- //Js scripts -->
 </body>
 </html>
+
+<!-- //footer block -->

@@ -1,8 +1,7 @@
 package com.foolish.schoolmanagement.controller;
 
-import com.foolish.schoolmanagement.DTOs.RegistrationsDTO;
+import com.foolish.schoolmanagement.DTOs.RegistrationDTO;
 import com.foolish.schoolmanagement.mappers.RegistrationsMapper;
-import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.Registrations;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.service.CoursesService;
@@ -56,7 +55,7 @@ public class StudentController {
 
     Page<Registrations> result = registrationsService.findAllByUser(user, pageNum, pageSizeNum, field, dir);
     List<Registrations> registrations = result.getContent();
-    List<RegistrationsDTO> courses = registrations.stream().map(RegistrationsMapper::convertToDTO).toList();
+    List<RegistrationDTO> courses = registrations.stream().map(RegistrationsMapper::convertToDTO).toList();
     model.addAttribute("page", pageNum);
     model.addAttribute("pageSize", pageSizeNum);
     model.addAttribute("totalPages", result.getTotalPages());
@@ -64,7 +63,7 @@ public class StudentController {
     model.addAttribute("dir", dir);
     model.addAttribute("reverseDir", reverseDir);
     model.addAttribute("courses", courses);
-
+    model.addAttribute("user", user);
 
     return "courses_enrolled";
   }
