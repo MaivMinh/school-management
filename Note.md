@@ -114,3 +114,7 @@ If you really want to use HTTP GET with logout, you can do so. However, remember
       - Nên điều này dẫn tới chúng ta đã cài đặt _fully executable_ rồi. Điều này dẫn tới lỗi trong một thời gian dài.
       - Vì vậy để có thể disable launch script thì chúng ta chỉ cần xoá đi cấu hình này trong _pom.xml_
 3. Với việc disable launch script thì chúng ta đã có thể build image file thành công.
+
+======================================== KIẾN THỨC QUAN TRỌNG CI/CD VỚI GITHUB ACTIONS - AZURE. ========================================
+1. Để có thể thực hiện CI(continuous integration) với Github Actions thì đọc article này: _https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven_
+2. Để có thể thực hiện CD(continuous deployment) với Github Actions và Azure App Service thì đọc article này(Lưu ý: Phần này là deploy container, nó sẽ khác với Deploy Java App bằng jar file): _https://docs.github.com/en/actions/use-cases-and-examples/deploying/deploying-java-to-azure-app-service_
