@@ -20,28 +20,26 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-@Profile("prod")
-public class UsernamePasswordAuthProvider implements AuthenticationProvider {
-
+@Profile("!prod")
+public class NonProdUsernamePasswordAuthProvider implements AuthenticationProvider {
   private final UserRepo userRepo;
-  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UsernamePasswordAuthProvider(UserRepo _userRepo, PasswordEncoder _passwordEncoder) {
+  public NonProdUsernamePasswordAuthProvider(UserRepo _userRepo, PasswordEncoder _passwordEncoder) {
     super();
     this.userRepo = _userRepo;
-    this.passwordEncoder = _passwordEncoder;
   }
 
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String email = authentication.getName();
-    String password = authentication.getCredentials().toString();
     User user = userRepo.getUserByEmail(email);
-    if (user != null && user.getUserId() > 0 && passwordEncoder.matches(password, user.getPassword())) {
-      return new UsernamePasswordAuthenticationToken(user.getEmail(), null, getGrantedAuthorities(user.getRoles()));
-    } else {
+    // Chỉ cần tồn tại user là đủ.
+    if(null != user && user.getUserId() > 0){
+      return new UsernamePasswordAuthenticationToken(
+              email, null, getGrantedAuthorities(user.getRoles()));
+    }else{
       throw new BadCredentialsException("Invalid credentials!");
     }
   }
