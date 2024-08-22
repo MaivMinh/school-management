@@ -117,7 +117,7 @@
                 <artifactId>spring-cloud-azure-dependencies</artifactId>
                 <version>${spring-cloud-azure.version}</version>
                 <type>pom</type>
-                <scope>pom</scope>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
