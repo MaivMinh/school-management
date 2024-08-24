@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### workflows -> azure-webapps-deploy.yml ###
+.github/workflows/azure-webapps-deploy.yml

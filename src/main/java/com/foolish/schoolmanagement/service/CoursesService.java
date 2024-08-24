@@ -1,5 +1,6 @@
 package com.foolish.schoolmanagement.service;
 
+import com.foolish.schoolmanagement.exceptions.CoursesNotFoundException;
 import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.repo.CoursesRepo;
@@ -30,7 +31,9 @@ public class CoursesService {
   }
 
   public Courses findByCourseId(int courseId) {
-    return repo.findByCourseId(courseId);
+    Courses courses = repo.findByCourseId(courseId);
+    if (courses != null)  return courses;
+    else throw new CoursesNotFoundException(courseId);
   }
 
   public Page<Courses> displayCourses(int pageNum, int pageSizeNum, String field, String dir) {

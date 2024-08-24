@@ -22,13 +22,11 @@ import java.util.List;
 @RequestMapping(value = "/courses")
 public class CourseController {
 
-  private final CoursesService service;
   private final CoursesService coursesService;
   private final TeachService teachService;
 
   @Autowired
-  public CourseController(CoursesService service, CoursesService coursesService, TeachService teachService) {
-    this.service = service;
+  public CourseController(CoursesService coursesService, TeachService teachService) {
     this.coursesService = coursesService;
     this.teachService = teachService;
   }
@@ -52,7 +50,7 @@ public class CourseController {
   @GetMapping(value = "/{courseId}")
   public String displayDetailedCourse(Model model, @PathVariable(value = "courseId") String courseId, Authentication authentication, @RequestParam(value = "update", required = false) String update) {
     int id = Integer.parseInt(courseId);
-    Courses course = service.findByCourseId(id);
+    Courses course = coursesService.findByCourseId(id);
     List<Teach> list = null;
     List<User> lectures = null;
     if (course != null && course.getCourseId() > 0) {
