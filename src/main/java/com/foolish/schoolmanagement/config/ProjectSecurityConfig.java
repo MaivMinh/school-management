@@ -31,6 +31,7 @@ public class ProjectSecurityConfig {
             )
             .passwordManagement(Customizer.withDefaults())
             .formLogin(loginConfig -> loginConfig.loginPage("/public/login").defaultSuccessUrl("/").failureUrl("/public/login?error=true").permitAll())
+            .oauth2Login(Customizer.withDefaults())
             .logout(logoutConfig -> logoutConfig.logoutSuccessUrl("/public/login?logout=true").invalidateHttpSession(true).permitAll())
             .httpBasic(Customizer.withDefaults());
     return http.build();
