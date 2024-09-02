@@ -262,7 +262,7 @@ public class AdminController {
   }
 
   @GetMapping("/courses/{courseId}/students")
-  public String displayStudentsInCourse(Model model, @PathVariable(value = "courseId") String courseId, @RequestParam(value = "added", required = false) Boolean added, @RequestParam(value = "attended", required = false) Boolean attended, @RequestParam(value = "error", required = false) Boolean error, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
+  public String displayStudentsInCourse(Model model, @PathVariable(value = "courseId") String courseId, @RequestParam(value = "added", required = false) Boolean added, @RequestParam(value = "attended", required = false) Boolean attended, @RequestParam(value = "error", required = false) Boolean error, @RequestParam(value = "deleted", required = false) Boolean deleted, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortField", required = false) String sortField, @RequestParam(value = "sortDir", required = false) String sortDir) {
     Courses courses = coursesService.findByCourseId(Integer.parseInt(courseId));
 
     int pageNum = Integer.parseInt(page != null ? page : environment.getProperty("page"));
@@ -291,6 +291,10 @@ public class AdminController {
       model.addAttribute("attended", true);
       model.addAttribute("message", "Student has existed in this Course!");
     }
+    if (deleted != null && !deleted) {
+      model.addAttribute("deleted", false);
+      model.addAttribute("message", "Failed to delete student!");
+    }
     return "course_students";
   }
 
@@ -315,6 +319,25 @@ public class AdminController {
     coursesService.save(courses);
     registrationsService.save(registrations);
     return "redirect:/admin/courses/" + courseId + "/students?added=true";
+  }
+
+  @PostMapping(value = "/delete-student-from-course")
+  public String deleteStudentFromCourse(@RequestParam(value = "userId") int userId, @RequestParam(value = "courseId") int courseId) {
+    User user = userService.findUserByUserId(userId);
+    Courses courses = coursesService.findByCourseId(courseId);
+    if (user == null || courses == null || user.getUserId() <= 0 || courses.getCourseId() <= 0) {
+      return "redirect:/admin/courses/" + courseId + "/students?deleted=false";
+    }
+    Registrations registrations = registrationsService.findAllByCoursesAndUser(courses, user);
+    if (registrations != null && registrations.getId() > 0) {
+      user.getRegistrations().remove(registrations);
+      courses.getRegistrations().remove(registrations);
+      registrationsService.delete(registrations);
+      userService.save(user);
+      coursesService.save(courses);
+      return "redirect:/admin/courses/" + courseId + "/students?deleted=true";
+    }
+    return "redirect:/admin/courses/" + courseId + "/students?deleted=false";
   }
 
   @GetMapping(value = {"messages"})

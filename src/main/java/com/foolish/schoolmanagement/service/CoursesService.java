@@ -63,4 +63,9 @@ public class CoursesService {
     }
     return this.repo.findAll(specs);
   }
+
+  public Page<Courses> findAllByCategory(String category, int page, int pageSize) {
+    Pageable pageable = PageRequest.of(page -1, pageSize);
+    return repo.findAllByCategory(category, pageable);
+  }
 }

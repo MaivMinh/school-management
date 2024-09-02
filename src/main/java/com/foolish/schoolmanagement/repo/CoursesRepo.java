@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface CoursesRepo extends JpaRepository<Courses, Integer>, JpaSpecificationExecutor<Courses> {
   Courses findByCourseId(int courseId);
   Page<Courses> findAll(Pageable pageable);
+  Page<Courses> findAllByCategory(String category, Pageable pageable);
 }

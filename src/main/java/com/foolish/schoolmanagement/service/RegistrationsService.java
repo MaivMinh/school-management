@@ -4,6 +4,7 @@ import com.foolish.schoolmanagement.model.Courses;
 import com.foolish.schoolmanagement.model.Registrations;
 import com.foolish.schoolmanagement.model.User;
 import com.foolish.schoolmanagement.repo.RegistrationsRepo;
+import jakarta.servlet.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,5 +37,9 @@ public class RegistrationsService {
 
   public Registrations findAllByCoursesAndUser(Courses courses, User user ) {
     return registrationsRepo.findAllByCoursesAndUser(courses, user);
+  }
+
+  public void delete(Registrations registrations) {
+    registrationsRepo.delete(registrations);
   }
 }

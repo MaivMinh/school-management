@@ -47,6 +47,9 @@
             <li th:if="${attended != null && attended == true}" class="alert alert-info"><span
                     th:text="${message}"></span>
             </li>
+            <li th:if="${deleted != null && deleted == false}" class="alert alert-info"><span
+                    th:text="${message}"></span>
+            </li>
         </ul>
         <div class="row mb-4">
             <div class="overview-wrap">

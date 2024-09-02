@@ -1,11 +1,8 @@
 package com.foolish.schoolmanagement.controller;
 
 import com.foolish.schoolmanagement.DTOs.CourseDTO;
-import com.foolish.schoolmanagement.model.Courses;
-import com.foolish.schoolmanagement.model.Teach;
-import com.foolish.schoolmanagement.model.User;
-import com.foolish.schoolmanagement.service.CoursesService;
-import com.foolish.schoolmanagement.service.TeachService;
+import com.foolish.schoolmanagement.model.*;
+import com.foolish.schoolmanagement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -20,15 +17,21 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/courses")
-public class CourseController {
+public class CoursesController {
 
   private final CoursesService coursesService;
   private final TeachService teachService;
+  private final UserService userService;
+  private final RegistrationsService registrationsService;
+  private final VideoService videoService;
 
   @Autowired
-  public CourseController(CoursesService coursesService, TeachService teachService) {
+  public CoursesController(CoursesService coursesService, TeachService teachService, UserService userService, RegistrationsService registrationsService, VideoService videoService) {
     this.coursesService = coursesService;
     this.teachService = teachService;
+    this.userService = userService;
+    this.registrationsService = registrationsService;
+    this.videoService = videoService;
   }
 
   @GetMapping(value = {""})
@@ -80,6 +83,25 @@ public class CourseController {
       model.addAttribute("course", updateCourse);
       return "course_detail_admin";
     }
-    return "course_detail_user";
+    // Kiểm tra xem user đã đăng kí khoá học này chưa.
+    User user = userService.findUserByEmail(authentication.getName());
+    if (user != null && user.getUserId() > 0) {
+      Registrations registrations = registrationsService.findAllByCoursesAndUser(course, user);
+      if (registrations == null || registrations.getId() <= 0) {
+        // Sinh viên chưa đăng kí khoá học này. Hiển thị trang để user có thể thực hiện Add to cart, Add to favourite or Register now.
+        return "course_detail_user";
+      } else {
+        // User đã đăng kí khoá học này. Hiển thị trang web để họ có thể thực hiện xem khoá học, xem các khoá học liên quan... Comment.
+        List<Video> videos = videoService.findAllByCourses(course);
+        String category = course.getCategory();
+        Page<Courses> result = coursesService.findAllByCategory(category, 1, 10);
+        List<Courses> relateCourses = result.getContent();
+        model.addAttribute("relatedCourses", relateCourses);
+        model.addAttribute("videos", videos);
+        return "course_attended_user";
+      }
+    }
+    model.addAttribute("message", "Internal Server Error!");
+    return "error";
   }
 }
