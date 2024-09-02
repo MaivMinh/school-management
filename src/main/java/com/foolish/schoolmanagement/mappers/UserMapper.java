@@ -2,23 +2,26 @@ package com.foolish.schoolmanagement.mappers;
 
 import com.foolish.schoolmanagement.DTOs.UserDTO;
 import com.foolish.schoolmanagement.model.User;
-import jakarta.validation.Valid;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+@Mapper(componentModel = "spring")
+@Component
+public interface UserMapper {
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "name", target = "name")
+  @Mapping(source = "mobileNum", target = "mobileNum")
+  @Mapping(source = "email", target = "email")
+  @Mapping(source = "img", target = "img")
+  @Mapping(source = "roles", target = "roles")
+  UserDTO toUserDTO(User user);
 
-public class UserMapper {
-  public static UserDTO convertToDTO(@Valid User user) {
-    return new UserDTO(user.getUserId(), user.getName(), user.getMobileNum(), user.getEmail(), user.getImg(), null, user.getRoles(), user.getPassioClass().getClassId(), user.getPassioClass().getName());
-  }
-
-  public static User convertToUser(UserDTO userDTO) {
-    User user = new User();
-    user.setUserId(userDTO.userId);
-    user.setName(userDTO.name);
-    user.setMobileNum(userDTO.mobileNum);
-    user.setEmail(userDTO.email);
-    user.setImg(userDTO.img);
-    user.setRoles(userDTO.roles);
-    return user;
-  }
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "name", target = "name")
+  @Mapping(source = "mobileNum", target = "mobileNum")
+  @Mapping(source = "email", target = "email")
+  @Mapping(source = "img", target = "img")
+  @Mapping(source = "roles", target = "roles")
+  User toUser(UserDTO userDTO);
 }

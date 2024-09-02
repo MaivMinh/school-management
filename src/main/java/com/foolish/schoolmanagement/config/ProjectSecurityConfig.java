@@ -20,7 +20,7 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/display-profile").authenticated()
                     .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/v1/student/**").hasRole("STUDENT")
-                    .requestMatchers("/api/v1/**").authenticated()
+                    .requestMatchers("/api/v1/user/**").permitAll()
                     .requestMatchers("/update-profile").authenticated()
                     .requestMatchers("/display-msg").hasRole("ADMIN")
                     .requestMatchers("/admin/**").hasRole("ADMIN")

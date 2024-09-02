@@ -1,8 +1,12 @@
 package com.foolish.schoolmanagement.controller;
 
+import com.foolish.schoolmanagement.DTOs.CommentDTO;
 import com.foolish.schoolmanagement.DTOs.CourseDTO;
+import com.foolish.schoolmanagement.DTOs.UserDTO;
 import com.foolish.schoolmanagement.model.*;
 import com.foolish.schoolmanagement.service.*;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -13,10 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.net.HttpCookie;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/courses")
+@RequiredArgsConstructor
 public class CoursesController {
 
   private final CoursesService coursesService;
@@ -24,15 +30,8 @@ public class CoursesController {
   private final UserService userService;
   private final RegistrationsService registrationsService;
   private final VideoService videoService;
+  private final CommentService commentService;
 
-  @Autowired
-  public CoursesController(CoursesService coursesService, TeachService teachService, UserService userService, RegistrationsService registrationsService, VideoService videoService) {
-    this.coursesService = coursesService;
-    this.teachService = teachService;
-    this.userService = userService;
-    this.registrationsService = registrationsService;
-    this.videoService = videoService;
-  }
 
   @GetMapping(value = {""})
   public String displayCourses(Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
@@ -98,6 +97,8 @@ public class CoursesController {
         List<Courses> relateCourses = result.getContent();
         model.addAttribute("relatedCourses", relateCourses);
         model.addAttribute("videos", videos);
+        List<CommentDTO> comments = commentService.findAllByCourse(course);
+        model.addAttribute("comments", comments);
         return "course_attended_user";
       }
     }
