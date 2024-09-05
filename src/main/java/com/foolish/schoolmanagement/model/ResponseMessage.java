@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ResponseMessage {
   private Integer sender;           // Id của người gửi.
   private String content;           // Nội dung của comment.
+  private String name;
   private LocalDateTime createdAt;  // Thời gian viết comment. Có ngày/tháng/năm và giờ cụ thể.
   private Enum type;           // Là một comment mới hay là một reply.
   private Integer courseId;         // Khoá học mà chứa comment.
@@ -25,6 +26,7 @@ public class ResponseMessage {
   public ResponseMessage(Message message) {
     this.sender = message.getSender();
     this.content = message.getContent();
+    this.name = message.getName();
     this.createdAt = message.getCreatedAt();
     this.type = message.getType();
     this.courseId = message.getCourseId();

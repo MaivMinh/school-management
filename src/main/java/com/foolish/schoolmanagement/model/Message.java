@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class Message {
   private Integer sender;           // Id của người gửi.
   private String content;           // Nội dung của comment.
+  private String name;
   private LocalDateTime createdAt;  // Thời gian viết comment. Có ngày/tháng/năm và giờ cụ thể.
   private MessageType type;           // Là một comment mới hay là một reply.
   private Integer courseId;         // Khoá học mà chứa comment.

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ResponseMessageController {
-  @MessageMapping("/create-comment")
+  @MessageMapping("/comment")
   @SendTo("/topic/comments")
   public ResponseMessage createComment(Message message) throws Exception {
     return new ResponseMessage(message);
