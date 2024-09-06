@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface CommentRepo extends JpaRepository<Comment, Integer> {
   List<Comment> findAllByCourse(Courses courses);
+  Comment findAllById(Integer id);
+
+  List<Comment> findAllByParentComment(Comment parent);
 }

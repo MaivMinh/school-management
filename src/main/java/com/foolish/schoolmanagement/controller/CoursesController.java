@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.HttpCookie;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/courses")
@@ -37,9 +38,9 @@ public class CoursesController {
   public String displayCourses(Model model, @RequestParam(value = "page", required = false) String page, @RequestParam(value = "pageSize", required = false) String pageSize, @RequestParam(value = "sortDir", required = false) String sortDir, @RequestParam(value = "sortField", required = false) String sortField) {
 
     int pageNum = Integer.parseInt(page != null ? page : "1");
-    int pageSizeNum = Integer.parseInt(pageSize != null ? pageSize: "6");
-    String dir = sortDir != null ? sortDir: "asc";
-    String field = sortField != null ? sortField: "courseId";
+    int pageSizeNum = Integer.parseInt(pageSize != null ? pageSize : "6");
+    String dir = sortDir != null ? sortDir : "asc";
+    String field = sortField != null ? sortField : "courseId";
     Page<Courses> result = coursesService.displayCourses(pageNum, pageSizeNum, field, dir);
     model.addAttribute("courses", result.getContent());
     model.addAttribute("page", result.getNumber() + 1);
@@ -64,9 +65,9 @@ public class CoursesController {
       model.addAttribute("message", "Course ID Not Found!");
       return "error";
     }
-    if (update != null && update.equals("true"))   model.addAttribute("update", true);
-    if (update != null && update.equals("false"))   model.addAttribute("update", false);
-    if (authentication != null && authentication.getAuthorities().stream().toArray()[0].toString().equals("ROLE_ADMIN"))  {
+    if (update != null && update.equals("true")) model.addAttribute("update", true);
+    if (update != null && update.equals("false")) model.addAttribute("update", false);
+    if (authentication != null && authentication.getAuthorities().stream().toArray()[0].toString().equals("ROLE_ADMIN")) {
       CourseDTO updateCourse = new CourseDTO();
       updateCourse.setCourseId(course.getCourseId());
       updateCourse.setName(course.getName());
@@ -83,6 +84,7 @@ public class CoursesController {
       return "course_detail_admin";
     }
     // Kiểm tra xem user đã đăng kí khoá học này chưa.
+    if (authentication == null || !authentication.isAuthenticated()) return "course_detail_user";
     User user = userService.findUserByEmail(authentication.getName());
     if (user != null && user.getUserId() > 0) {
       Registrations registrations = registrationsService.findAllByCoursesAndUser(course, user);
@@ -97,7 +99,9 @@ public class CoursesController {
         List<Courses> relateCourses = result.getContent();
         model.addAttribute("relatedCourses", relateCourses);
         model.addAttribute("videos", videos);
-        List<CommentDTO> comments = commentService.findAllByCourse(course);
+        List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> {
+          return comment.getParentId() == null;
+        }).collect(Collectors.toList());
         model.addAttribute("comments", comments);
         return "course_attended_user";
       }

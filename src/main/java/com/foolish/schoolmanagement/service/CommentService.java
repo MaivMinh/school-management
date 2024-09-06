@@ -21,4 +21,17 @@ public class CommentService {
     List<Comment> comments = commentRepo.findAllByCourse(courses);
     return comments.stream().map(CommentMapper::toCommentDTO).toList();
   }
+
+  public Comment findAllById(Integer id) {
+    return  commentRepo.findAllById(id);
+  }
+
+  public Comment save(Comment comment) {
+    return commentRepo.save(comment);
+  }
+
+  public List<CommentDTO> findAllByParentComment(Comment parent) {
+    return commentRepo.findAllByParentComment(parent).stream().map(CommentMapper::toCommentDTO).toList();
+  }
+
 }

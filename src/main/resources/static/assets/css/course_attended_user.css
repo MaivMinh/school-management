@@ -77,3 +77,11 @@
         margin-bottom: 1rem;
     }
 }
+
+.spinner-hidden {
+    display: none;
+}
+
+.spinner-display {
+    display: block;
+}
