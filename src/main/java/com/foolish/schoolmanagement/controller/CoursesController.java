@@ -3,6 +3,7 @@ package com.foolish.schoolmanagement.controller;
 import com.foolish.schoolmanagement.DTOs.CommentDTO;
 import com.foolish.schoolmanagement.DTOs.CourseDTO;
 import com.foolish.schoolmanagement.DTOs.UserDTO;
+import com.foolish.schoolmanagement.mappers.CommentMapper;
 import com.foolish.schoolmanagement.model.*;
 import com.foolish.schoolmanagement.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -84,9 +85,17 @@ public class CoursesController {
       return "course_detail_admin";
     }
     // Kiểm tra xem user đã đăng kí khoá học này chưa.
-    if (authentication == null || !authentication.isAuthenticated()) return "course_detail_user";
+    if (authentication == null || !authentication.isAuthenticated()) {
+      List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> comment.getParentCommentId() == null).toList();
+      model.addAttribute("comments", comments);
+      System.out.println(comments.size());
+      return "course_detail_user";
+    }
     User user = userService.findUserByEmail(authentication.getName());
     if (user != null && user.getUserId() > 0) {
+      model.addAttribute("user", user);
+      List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> comment.getParentCommentId() == null).toList();
+      model.addAttribute("comments", comments);
       Registrations registrations = registrationsService.findAllByCoursesAndUser(course, user);
       if (registrations == null || registrations.getId() <= 0) {
         // Sinh viên chưa đăng kí khoá học này. Hiển thị trang để user có thể thực hiện Add to cart, Add to favourite or Register now.
@@ -99,11 +108,6 @@ public class CoursesController {
         List<Courses> relateCourses = result.getContent();
         model.addAttribute("relatedCourses", relateCourses);
         model.addAttribute("videos", videos);
-        List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> {
-          return comment.getParentCommentId() == null;
-        }).collect(Collectors.toList());
-        model.addAttribute("comments", comments);
-        model.addAttribute("user", user);
         return "course_attended_user";
       }
     }

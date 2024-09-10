@@ -10,6 +10,7 @@ if (currentTheme) {
 }
 
 function switchTheme(e) {
+    console.log('switching');
     if (e.target.checked) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
@@ -35,14 +36,23 @@ function processingBackground() {
     })
 
     let commentSection = document.querySelector(".comment-section");
-    if (localStorage.getItem("theme") === 'dark') {
-        commentSection.classList.remove("related-course-light");
-        commentSection.classList.add("related-course-dark");
-    } else {
-        commentSection.classList.remove("related-course-dark");
-        commentSection.classList.add("related-course-light");
+    if (commentSection != null) {
+        if (localStorage.getItem("theme") === 'dark') {
+            commentSection.classList.remove("related-course-light");
+            commentSection.classList.add("related-course-dark");
+        } else {
+            commentSection.classList.remove("related-course-dark");
+            commentSection.classList.add("related-course-light");
+        }
     }
 }
 
 processingBackground();
 toggleSwitch.addEventListener('change', switchTheme, false);
+
+let user = sessionStorage.getItem('user');
+if (user != null) {
+    let headerImage = document.querySelector('#header-image');
+    user = JSON.parse(user);
+    headerImage.setAttribute('src', user.img);
+}
