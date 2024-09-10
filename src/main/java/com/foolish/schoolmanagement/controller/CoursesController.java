@@ -100,9 +100,10 @@ public class CoursesController {
         model.addAttribute("relatedCourses", relateCourses);
         model.addAttribute("videos", videos);
         List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> {
-          return comment.getParentId() == null;
+          return comment.getParentCommentId() == null;
         }).collect(Collectors.toList());
         model.addAttribute("comments", comments);
+        model.addAttribute("user", user);
         return "course_attended_user";
       }
     }

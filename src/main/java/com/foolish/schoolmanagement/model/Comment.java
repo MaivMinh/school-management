@@ -34,4 +34,11 @@ public class Comment {
   @ManyToOne
   @JoinColumn(name = "parent_id")
   private Comment parentComment;
+
+  private String type;
+  private Integer likes;
+
+  @Column(name = "dis_likes")
+  private Integer disLikes;
+  private Integer replies;
 }

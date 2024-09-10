@@ -31,8 +31,8 @@ public class ResponseMessageController {
     comment.setCreatedAt(message.getCreatedAt());
     Courses courses = coursesService.findByCourseId(message.getCourseId());
     comment.setCourse(courses);
-    commentService.save(comment);
-    return new ResponseMessage(message);
+    comment = commentService.save(comment);
+    return new ResponseMessage(comment);
   }
 
 }
