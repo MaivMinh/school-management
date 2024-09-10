@@ -33,6 +33,15 @@ function processingBackground() {
             element.classList.add("related-course-light");
         }
     })
+
+    let commentSection = document.querySelector(".comment-section");
+    if (localStorage.getItem("theme") === 'dark') {
+        commentSection.classList.remove("related-course-light");
+        commentSection.classList.add("related-course-dark");
+    } else {
+        commentSection.classList.remove("related-course-dark");
+        commentSection.classList.add("related-course-light");
+    }
 }
 
 processingBackground();

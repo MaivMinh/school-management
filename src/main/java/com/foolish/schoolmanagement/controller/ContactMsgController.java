@@ -2,6 +2,7 @@ package com.foolish.schoolmanagement.controller;
 
 import com.foolish.schoolmanagement.model.ContactMsg;
 import com.foolish.schoolmanagement.service.ContactMsgService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class ContactMsgController {
   }
 
   @GetMapping(value = {"/contact"})
-  public String displayContactPage(@RequestParam(name = "success", required = false) boolean success, Model model) {
+  public String displayContactPage(@RequestParam(name = "success", required = false) boolean success, Model model, HttpSession httpSession) {
     if (success)  {
       model.addAttribute("message", "You submitted successfully!");
       model.addAttribute("contact", new ContactMsg());
