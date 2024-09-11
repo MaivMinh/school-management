@@ -25,3 +25,4 @@ async function fetchUser() {
 fetchUser()
     .then(success => console.log('Success!'))
     .catch(error => console.log(error));
+

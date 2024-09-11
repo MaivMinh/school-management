@@ -42,9 +42,9 @@
             <div style="display: flex; flex-direction: row; column-gap: 2rem;">
                 <div class="coursecard-single" style="width: 50%; display: block">
                     <div class="grids5-info position-relative" style="width: 100%">
-                        <img th:if="${course.img != null}" th:src="${course.img}" alt="" class="img-fluid"
+                        <img th:if="${course.img != null}" th:src="${course.img}" alt="" class="img-fluid course-img"
                              id="img-hover-zoom" style="width: 100%">
-                        <img th:if="${course.img == null}" th:src="../assets/images/bg1.jpg" class="img-fluid"
+                        <img th:if="${course.img == null}" th:src="../assets/images/bg1.jpg" class="img-fluid course-img"
                              id="img-hover-zoom"
                              style="width: 100%"
                              alt="">
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div style="width: 100%; margin-top: 1rem;">
-                        <p style="font-size: 32px; font-weight: 700; margin-bottom: 1rem" th:text="${course.name}"></p>
+                        <p style="font-size: 32px; font-weight: 700; margin-bottom: 1rem" id="course-name" th:text="${course.name}"></p>
                         <p style="font-size: 19px; font-weight: 400; margin-bottom: 1.5rem; "
                            th:text="${course.introduction}"></p>
                     </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="content-top mb-4 mt-3">
                         <ul th:if="${lectures != null}"
-                            class="list-unstyled d-flex align-items-center justify-content-start gap-4"
+                            class="list-unstyled d-flex align-items-center justify-content-start gap-4 list-lectures"
                             th:each="lecture: ${lectures}">
                             <li style="font-size: 1.3rem">
                                 <i class="fas fa-user-alt" style="font-size: 1.5rem"></i>
@@ -92,14 +92,14 @@
                         <ul class="list-unstyled d-flex align-items-center justify-content-start gap-4">
                             <li style="font-size: 1.5rem;">
                                 <i class="fas fa-money-check-alt" style="font-size: 1.5rem"></i>
-                                <span th:text="${course.fee}"></span>
+                                <span id="course-fee" th:text="${course.fee}"></span>
                                 <span style="color: rgb(251, 176, 52)">$</span>
                             </li>
                         </ul>
                     </div>
                     <div class="mb-4 mt-3 content-top">
                         <div style="width: 100%; margin-bottom: 1rem;">
-                            <button class="btn btn-info btn-lg" style="margin-right: 1rem; color: white">Add to card
+                            <button id="add-to-cart-button" class="btn btn-info btn-lg" style="margin-right: 1rem; color: white">Add to card
                             </button>
                             <button class="btn btn-danger btn-lg">
                                 <i class="fa fa-heart"></i>
@@ -201,7 +201,6 @@
         </div>
     </div>
 </div>
-</div>
 <!-- //footer block -->
 <div th:replace="~{footer :: footer}">...</div>
 <!-- //footer block -->
@@ -236,11 +235,9 @@
 <!-- common jquery plugin -->
 <script src="/assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
-
 <!-- theme switch js (light and dark)-->
-<script src="/assets/js/theme-change.js"></script>
+<script src="/assets/js/action-common.js"></script>
 <!-- //theme switch js (light and dark)-->
-
 <!-- MENU-JS -->
 <script>
     $(window).on("scroll", function () {
@@ -278,12 +275,9 @@
         })
     });
 </script>
-<!-- //disable body scroll which navbar is in active -->
-
 <!-- bootstrap -->
 <script src="/assets/js/bootstrap.min.js"></script>
 <!-- //bootstrap -->
-<!-- //Js scripts -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 <script type="module" src="/assets/js/course_detail_user.js"></script>

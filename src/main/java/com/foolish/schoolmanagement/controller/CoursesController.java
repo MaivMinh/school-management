@@ -66,6 +66,8 @@ public class CoursesController {
       model.addAttribute("message", "Course ID Not Found!");
       return "error";
     }
+
+
     if (update != null && update.equals("true")) model.addAttribute("update", true);
     if (update != null && update.equals("false")) model.addAttribute("update", false);
     if (authentication != null && authentication.getAuthorities().stream().toArray()[0].toString().equals("ROLE_ADMIN")) {
@@ -84,11 +86,12 @@ public class CoursesController {
       model.addAttribute("course", updateCourse);
       return "course_detail_admin";
     }
+
+
     // Kiểm tra xem user đã đăng kí khoá học này chưa.
     if (authentication == null || !authentication.isAuthenticated()) {
       List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> comment.getParentCommentId() == null).toList();
       model.addAttribute("comments", comments);
-      System.out.println(comments.size());
       return "course_detail_user";
     }
     User user = userService.findUserByEmail(authentication.getName());
@@ -97,10 +100,7 @@ public class CoursesController {
       List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> comment.getParentCommentId() == null).toList();
       model.addAttribute("comments", comments);
       Registrations registrations = registrationsService.findAllByCoursesAndUser(course, user);
-      if (registrations == null || registrations.getId() <= 0) {
-        // Sinh viên chưa đăng kí khoá học này. Hiển thị trang để user có thể thực hiện Add to cart, Add to favourite or Register now.
-        return "course_detail_user";
-      } else {
+      if (registrations != null && registrations.getId() > 0) {
         // User đã đăng kí khoá học này. Hiển thị trang web để họ có thể thực hiện xem khoá học, xem các khoá học liên quan... Comment.
         List<Video> videos = videoService.findAllByCourses(course);
         String category = course.getCategory();
@@ -111,7 +111,8 @@ public class CoursesController {
         return "course_attended_user";
       }
     }
-    model.addAttribute("message", "Internal Server Error!");
-    return "error";
+    List<CommentDTO> comments = commentService.findAllByCourse(course).stream().filter(comment -> comment.getParentCommentId() == null).toList();
+    model.addAttribute("comments", comments);
+    return "course_detail_user";
   }
 }
