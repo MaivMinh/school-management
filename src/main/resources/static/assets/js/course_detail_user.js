@@ -1,6 +1,7 @@
 import stompClient from "./socket-handling.js";
 
 let user = JSON.parse(sessionStorage.getItem("user"));
+
 function sendMessage(form, parentId) {
     let content = form.getElementsByTagName("input")[0].value;
     let courseId = document.getElementById("course-id").value;
@@ -55,6 +56,7 @@ function replyButtonLoader() {
         })
     })
 }
+
 replyButtonLoader();
 
 
@@ -200,7 +202,7 @@ showMoreButtons.forEach(button => {
             let input = button.previousElementSibling;  // Lấy được button HTML element.
             const id = input.value;
             button.remove();
-            const data = await fetchData(`http://localhost:8080/api/v1/comments/replies?id=${id}`, "GET", null);
+            const data = await fetchData(`https://passio-school.azurewebsites.net/api/v1/comments/replies?id=${id}`, "GET", null);
             if (data.length === 0) {
                 spinner.remove();
                 return;
@@ -258,18 +260,19 @@ function addCouresToCart() {
     if (courses != null) {
         courses = JSON.parse(courses);
         for (let _course of courses) {
-            if (_course.courseId === course.courseId)   return;
+            if (_course.courseId === course.courseId) return;
         }
         courses.push(course);
         // Push lại vào local.
         localStorage.removeItem('courses');
         localStorage.setItem('courses', JSON.stringify(courses));
-    }   else    {
+    } else {
         let courses = [];
         courses.push(course);
         courses = JSON.stringify(courses);
         localStorage.setItem('courses', courses);
     }
 }
+
 let addToCartButton = document.querySelector('#add-to-cart-button');
 addToCartButton.addEventListener('click', addCouresToCart);

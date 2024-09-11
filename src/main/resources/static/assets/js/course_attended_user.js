@@ -200,7 +200,7 @@ showMoreButtons.forEach(button => {
             let input = button.previousElementSibling;  // Lấy được button HTML element.
             const id = input.value;
             button.remove();
-            const data = await fetchData(`http://localhost:8080/api/v1/comments/replies?id=${id}`, "GET", null);
+            const data = await fetchData(`https://passio-school.azurewebsites.net/api/v1/comments/replies?id=${id}`, "GET", null);
             if (data.length === 0) {
                 spinner.remove();
                 return;

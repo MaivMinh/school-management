@@ -1,7 +1,7 @@
 // Khi user họ thực hiện login thành công thì chắc chắn sẽ có user bên trong session storage. user object này sẽ tồn tại đến hết session.
 async function fetchUser() {
     // Define the API URL
-    const apiUrl = 'http://localhost:8080/api/v1/user';
+    const apiUrl = 'https://passio-school.azurewebsites.net/api/v1/user';
     // Function to fetch user information
     try {
         const response = await fetch(apiUrl, {
@@ -19,7 +19,7 @@ async function fetchUser() {
         const userData = await response.json();
         sessionStorage.setItem("user", JSON.stringify(userData));
     } catch (error) {
-        console.error('Error fetching user information:', error);
+        return Promise.reject(error);
     }
 }
 fetchUser()
