@@ -1,5 +1,5 @@
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/websocket-comment-connect'
+    brokerURL: 'ws://https://passio-school.azurewebsites.net/websocket-comment-connect'
 });
 
 
