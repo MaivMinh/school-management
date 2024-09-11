@@ -81,7 +81,7 @@ function produceCourseComponent(courses) {
                     <img style="height: 100%; width: 30%; object-fit: cover" src="${course.img}" alt="course thumbnail">
                     <div style="display: flex; flex-direction: column; justify-content: start; align-items: start; height: 100%">
                         <a href="/courses/${course.courseId}">
-                            <h5>${course.name}</h5>
+                            <h5 style="color: black">${course.name}</h5>
                         </a>
                         <p style="font-size: 1rem; color: gray; font-weight: 500">${list}</p>
                         <p>
