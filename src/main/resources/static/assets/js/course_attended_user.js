@@ -1,6 +1,9 @@
 import stompClient from "./socket-handling.js";
 
 let user = JSON.parse(sessionStorage.getItem("user"));
+let localURL = 'http://localhost:8080';
+let azureURL = 'https://passio-school.azurewebsites.net';
+
 function sendMessage(form, parentId) {
     let content = form.getElementsByTagName("input")[0].value;
     let courseId = document.getElementById("course-id").value;
@@ -200,7 +203,7 @@ showMoreButtons.forEach(button => {
             let input = button.previousElementSibling;  // Lấy được button HTML element.
             const id = input.value;
             button.remove();
-            const data = await fetchData(`https://passio-school.azurewebsites.net/api/v1/comments/replies?id=${id}`, "GET", null);
+            const data = await fetchData(localURL + `/api/v1/comments/replies?id=${id}`, "GET", null);
             if (data.length === 0) {
                 spinner.remove();
                 return;
