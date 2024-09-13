@@ -49,5 +49,18 @@ function addCouresToCart() {
         localStorage.setItem('courses', courses);
     }
 }
-let addToCartButton = document.querySelector('#add-to-cart-button');
+let addToCartButton = document.querySelector('#liveToastBtn');
 addToCartButton.addEventListener('click', addCouresToCart);
+
+
+function triggerToast() {
+    const toastTrigger = document.getElementById('liveToastBtn')
+    const toastLiveExample = document.getElementById('liveToastAdd');
+    if (toastTrigger) {
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastTrigger.addEventListener('click', () => {
+            toastBootstrap.show()
+        })
+    }
+}
+triggerToast();

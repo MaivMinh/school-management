@@ -5,7 +5,7 @@ let azureURL = 'https://passio-school.azurewebsites.net';
 
 async function fetchUser() {
     // Define the API URL
-    const apiUrl = localURL + '/api/v1/user';
+    const apiUrl = azureURL + '/api/v1/user';
     // Function to fetch user information
     try {
         const response = await fetch(apiUrl, {

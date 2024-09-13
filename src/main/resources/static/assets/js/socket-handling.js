@@ -2,7 +2,7 @@ let brokenLocalURL = 'ws://localhost:8080/websocket-comment-connect';
 let brokenAzureURL = 'wss://passio-school.azurewebsites.net/websocket-comment-connect';
 
 const stompClient = new StompJs.Client({
-    brokerURL: brokenLocalURL
+    brokerURL: brokenAzureURL
 });
 
 

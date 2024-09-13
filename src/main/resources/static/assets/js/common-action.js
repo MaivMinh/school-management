@@ -58,7 +58,6 @@ if (user != null) {
 
 // Thực hiện thêm một khoá học vào local storage.
 
-
 // Thực hiện lấy danh sách khoá học từ giỏ hàng ở local storage rồi thêm vào sidebar.
 function produceCourseComponent(courses) {
     if (courses != null) {
@@ -69,24 +68,30 @@ function produceCourseComponent(courses) {
             for (let i = 0; i < course.lectures.length; i++) {
                 if (i !== course.lectures.length - 1) {
                     list += course.lectures[i].name + ' - ';
-                }   else    list += course.lectures[i].name;
+                } else list += course.lectures[i].name;
             }
-            if (list.length > 20)   {
+            if (list.length > 20) {
                 list = list.substring(0, 20);
                 list += '...';
             }
 
             component += `
-                <div style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: center; border-bottom: 2px solid gray; height: 100px; padding: 10px 0;">
+                <div style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: center; border-bottom: 2px solid gray; height: 100px; width: 100%; padding: 10px 0;">
                     <img style="height: 100%; width: 30%; object-fit: cover" src="${course.img}" alt="course thumbnail">
-                    <div style="display: flex; flex-direction: column; justify-content: start; align-items: start; height: 100%">
-                        <a href="/courses/${course.courseId}">
-                            <h5 style="color: black">${course.name}</h5>
-                        </a>
+                    <div style="display: flex; flex-direction: column; justify-content: start; align-items: start; height: 100%; width: 100%;">
+                        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
+                            <a href="/courses/${course.courseId}">
+                                <h6 style="color: black">${course.name}</h6>
+                            </a>
+                            <button class="delete-course-in-cart-button" style="border: none; background-color: transparent; ">
+                                <i class="fa fa-trash" style="font-size:1rem;color:red"></i>    
+                            </button>
+                            <input type="text" value="${course.courseId}" hidden>
+                        </div>
                         <p style="font-size: 1rem; color: gray; font-weight: 500">${list}</p>
                         <p>
                             <span style="color: rgb(251, 176, 52)">$</span>
-                            <span style="font-size: 1rem; font-weight: bold">${course.fee}</span>
+                            <span style="font-size: 1rem; font-weight: bold; color: black">${course.fee}</span>
                         </p>
                     </div>
                 </div>  
@@ -115,8 +120,38 @@ cartButton.addEventListener('click', () => {
         courses = JSON.parse(courses);
         // Tạo ra component chứa toàn bộ thông tin các coures.
         component = produceCourseComponent(courses);
-    } else  component = produceCourseComponent(null);
+    } else component = produceCourseComponent(null);
     let coursesComponent = document.querySelector('#courses-component');
     coursesComponent.innerHTML = component;
+    addEventForDeleteCourseButton();
 })
 
+function handleDeleteCourseAction(event) {
+    const button = event.target;
+    let courseId = parseInt(button.parentElement.nextElementSibling.value);
+    let courses = localStorage.getItem('courses');
+    courses = JSON.parse(courses);
+    for (let i = 0; i < courses.length; i++) {
+        if (parseInt(courses[i].courseId) === courseId) {
+            courses.splice(i, 1);
+            break;
+        }
+    }
+
+    // reload lại giỏ hàng.
+    let component = produceCourseComponent(courses);
+    let coursesComponent = document.querySelector('#courses-component');
+    coursesComponent.innerHTML = component;
+    addEventForDeleteCourseButton();
+
+    localStorage.removeItem('courses');
+    courses = JSON.stringify(courses);
+    localStorage.setItem('courses', courses);
+}
+
+function addEventForDeleteCourseButton() {
+    let deleteCourseButton = document.querySelectorAll('.delete-course-in-cart-button');
+    deleteCourseButton.forEach(button => {
+        button.addEventListener('click', handleDeleteCourseAction);
+    })
+}
