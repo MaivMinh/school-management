@@ -350,8 +350,6 @@
 <div th:replace="~{footer :: footer}">...</div>
 <!-- //footer block -->
 
-
-
 <!-- Js scripts -->
 <!-- move top -->
 <button onclick="topFunction()" id="movetop" title="Go to top">
@@ -382,10 +380,9 @@
 <!-- common jquery plugin -->
 <script src="/assets/js/jquery-3.3.1.min.js"></script>
 <!-- //common jquery plugin -->
-
-<!-- theme switch js (light and dark)-->
-<script src="/assets/js/action-common.js"></script>
-<!-- //theme switch js (light and dark)-->
+<!-- bootstrap -->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!-- //bootstrap -->
 
 <!-- MENU-JS -->
 <script>
@@ -425,11 +422,7 @@
     });
 </script>
 <!-- //disable body scroll which navbar is in active -->
-
-<!-- bootstrap -->
-<script src="/assets/js/bootstrap.min.js"></script>
-<!-- //bootstrap -->
-<!-- //Js scripts -->
-<script src="/assets/js/home.js"></script>
+<script type="module" src="/assets/js/common-action.js"></script>
+<script type="module" src="/assets/js/home.js"></script>
 </body>
 </html>

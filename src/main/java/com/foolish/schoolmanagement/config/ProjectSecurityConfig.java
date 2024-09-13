@@ -26,6 +26,7 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .requestMatchers("/student/**").hasRole("STUDENT")
                     .requestMatchers("/close-msg/**").hasRole("ADMIN")
+                    .requestMatchers("/cart").hasRole("STUDENT")
                     .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )
