@@ -27,6 +27,11 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/student/**").hasRole("STUDENT")
                     .requestMatchers("/close-msg/**").hasRole("ADMIN")
                     .requestMatchers("/cart").hasRole("STUDENT")
+                    .requestMatchers(
+                            "/swagger-ui/**",
+                            "/v1/api-docs/**",
+                            "v2/api-docs/**",
+                            "v3/api-docs/**").permitAll()
                     .requestMatchers("/public/**").permitAll()
                     .anyRequest().permitAll()
             )

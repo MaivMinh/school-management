@@ -1,0 +1,256 @@
+<!-- header -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PASSIO School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style-starter.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="stylesheet" href="/assets/css/course_attended_user.css">
+    <link rel="icon" type="image/x-icon" href="/assets/images/cropped-favicon.webp">
+</head>
+<body>
+<!-- header -->
+<div th:replace="~{header :: header}"></div>
+<!-- inner banner -->
+<section class="inner-banner py-5">
+    <div class="w3l-breadcrumb py-lg-5">
+        <div class="container pt-4 pb-sm-4">
+            <h4 class="inner-text-title pt-5">Course Details</h4>
+            <ul class="breadcrumbs-custom-path">
+                <li><a href="/home">Home</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/dashboard">Dashboard</a></li>
+                <li><i class="fas fa-angle-right"></i><a href="/courses">Courses</a></li>
+                <li class="active"><i class="fas fa-angle-right"></i>Attended Course</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- //inner banner -->
+
+<div class="site-section"
+     style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: center; align-items: start; margin-top: 3rem;">
+    <input id="course-id" type="text" th:value="${course.getCourseId()}" hidden>
+    <div class="row justify-content-center" style="width: 60%; margin-left: 10%; margin-top: 0%;">
+        <div id="content-view" class="col-lg-4 col-md-6">
+            <div>
+                <div id="course-view"
+                     style="width: 100%; height: 600px; padding: 50px 0; background-color: black; border-radius: 1rem; overflow-y: scroll;">
+                    <iframe id="video-course" th:each="video : ${videos}"
+                            th:src="'https://www.youtube.com/embed/' + ${video.getSrc()} + '?autoplay=1'"
+                            style="width: 100%; margin-bottom: 2rem;">
+                    </iframe>
+                </div>
+                <div>
+                    <h3 th:text="${course.getName()}" style="margin-top: 1rem"></h3>
+                </div>
+                <div style="display: flex; flex-direction: row; column-gap: 2rem; justify-content: start; align-items: center; margin-top: 2rem;">
+                    <!--                    Hiển thị danh sách các lecturer.-->
+                    <h5 style="margin: 1rem 0; color: #00a4f5">Lectured by:</h5>
+                    <ul th:if="${lectures != null}" class="list-unstyled"
+                        style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: center">
+                        <li th:each="lecture: ${lectures}"
+                            style="margin-right: 1rem;  width: 300px; height: 40px; display: inline-block">
+                            <div style="display: flex; flex-direction: row; column-gap: 1rem; width: 100%">
+                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 52px; border-radius: 50%; background-color: #00a4f5">
+                                    <i class="fa fa-user" style="color: white"></i>
+                                </div>
+                                <div>
+                                    <h5 th:text="${lecture.getName()}"></h5>
+                                    <a th:href="@{mailto: ${lecture.email}}" th:text="${lecture.email}"></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6" style="margin-top: 2rem; width: 100%">
+            <div style="width: 100%; margin-left: auto; margin-right: auto;">
+                <h5 class="control-label" style="font-size: 1.5rem; font-weight: 500; margin-bottom: 2rem;">Leave your
+                    comments</h5>
+            </div>
+
+            <div class="rounded-3" style="width: 100%; padding: 50px 25px;">
+                <!-- Khu vực load các bình luận liên quan tới khoá học này.-->
+                <div style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: start; padding: 1.5rem; border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #fff;"
+                     class="rounded-3 comment-box individual-comment post-individual-comment">
+                    <img style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #ddd;"
+                         th:src="${user.getImg()}" alt="user's avatar"
+                         class="rounded-circle">
+                    <div style="display: flex; flex-direction: column; row-gap: 0.5rem; justify-content: start; align-items: start; flex-grow: 1;"
+                         class="content-comment">
+                        <a th:href="'/users/' + ${user.getUserId()}" style="display: flex; flex-direction: row">
+                            <h5 style="margin: 0; font-size: 1.1rem; color: #333;"
+                                th:text="${user.getName()}"></h5>
+                            <p style="margin: 0 0 0 0.5rem; color: #666; font-size: 0.75rem; line-height: 1.75;">
+                                2 hours ago</p>
+                        </a>
+                        <form class="form-comment" style="padding: 0.5rem 0.25rem; width: 100%" action="/api/v1/comment" method="post">
+                            <input type="text" style="width: 100%; height: 60px; border: 1px solid gray; border-radius: 1rem; padding-left: 1rem" placeholder="Leave your comment here...">
+                        </form>
+                    </div>
+                </div>
+                <div id="comment-section" style="width: 100%">
+                    <div th:each="comment : ${comments}"
+                         style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: start; padding: 1.5rem; border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #fff;"
+                         class="rounded-3 comment-box individual-comment"
+                         th:id="'comment-box-' + ${comment.getId()}">
+
+                        <img style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #ddd;"
+                             class="rounded-circle" th:src="${comment.getImg()}" alt="User Avatar">
+
+                        <div style="display: flex; flex-direction: column; row-gap: 0.5rem; justify-content: start; align-items: start; flex-grow: 1;"
+                             class="content-comment" th:id="'content-comment-' + ${comment.getId()}">
+                            <a th:href="'/users/' + ${comment.getSender()}" style="display: flex; flex-direction: row">
+                                <h5 style="margin: 0; font-size: 1.1rem; color: #333;"
+                                    th:text="${comment.getName()}"></h5>
+                                <p style="margin: 0 0 0 0.5rem; color: #666; font-size: 0.75rem; line-height: 1.75;">
+                                    2 hours ago</p>
+                            </a>
+                            <p style="margin: 0; color: #666; font-size: 0.95rem; line-height: 1.5;"
+                               th:text="${comment.getContent()}"></p>
+                            <div class="reply-section"
+                                 style="display: flex; flex-direction: row; column-gap: 1rem; justify-content: start; align-items: center">
+                                <i class="fa fa-thumbs-up" style="width: 1rem; color: #0d6efd"></i>
+                                <button class="reply-button"
+                                        style="border: none; cursor: pointer; font-size: 1rem; font-style: italic; background-color: transparent">
+                                    Reply
+                                </button>
+                                <input type="text" th:value="${comment.getId()}" hidden>
+                            </div>
+                            <div class="show-more-comment-box">
+                                <input type="text" th:value="${comment.getId()}"
+                                       th:id="'show-more-comment-box-'+${comment.getId()}" hidden>
+                                <button class="show-more-comment-button"
+                                        style="border: none; background-color: transparent; font-size: 12px; color: #0c63e4">
+                                    Show more comments
+                                </button>
+                                <div class="spinner-border text-primary show-more-comment-spinner spinner-hidden"
+                                     style="width: 1rem; height: 1rem; border-width: 2px" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div th:id="'reply-comment-' + ${comment.getId()}" class="reply-comments">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 login-center text-center mt-4">
+            <a href="/courses">
+                <button class="btn btn-style btn-style-3 text-left">BACK</button>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-center" style="width: 25%; height: 1000px; margin-right: 2.5%; margin-top: 0;">
+        <!--        Khu vực giành cho danh sách các khoá học có liên quan.-->
+        <div class="related-course" th:each="relatedCourse: ${relatedCourses}"
+             style="width: 95%; margin: 0 2.5% 2rem;display: flex; flex-direction: row; justify-content: start; column-gap: 1.5rem; align-items: center; border-radius: 1rem">
+            <img th:src="${relatedCourse.getImg()}" alt="Thumbnail for course"
+                 style="width: 60px; height: 60px; border-radius: 30px; object-fit: cover; margin-left: 1rem">
+            <div style="width: auto">
+                <a th:href="'/courses/' + ${relatedCourse.getCourseId()}">
+                    <h5 th:text="${relatedCourse.getName()}"></h5>
+                </a>
+                <p>
+                    <span th:text="${relatedCourse.getVote()}"></span>
+                    <i class="fa fa-star" style="color: darkorange"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- //footer block -->
+<div th:replace="~{footer :: footer}">...</div>
+<!-- //footer block -->
+
+<!-- Js scripts -->
+<!-- move top -->
+<button onclick="topFunction()" id="movetop" title="Go to top">
+    <span class="fas fa-level-up-alt" aria-hidden="true"></span>
+</button>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+        scrollFunction()
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("movetop").style.display = "block";
+        } else {
+            document.getElementById("movetop").style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+<!-- MENU-JS -->
+<script>
+    $(window).on("scroll", function () {
+        var scroll = $(window).scrollTop();
+
+        if (scroll >= 80) {
+            $("#site-header").addClass("nav-fixed");
+        } else {
+            $("#site-header").removeClass("nav-fixed");
+        }
+    });
+
+    //Main navigation Active PassioClass Add Remove
+    $(".navbar-toggler").on("click", function () {
+        $("header").toggleClass("active");
+    });
+    $(document).on("ready", function () {
+        if ($(window).width() > 991) {
+            $("header").removeClass("active");
+        }
+        $(window).on("resize", function () {
+            if ($(window).width() > 991) {
+                $("header").removeClass("active");
+            }
+        });
+    });
+</script>
+<!-- //MENU-JS -->
+
+<!-- disable body scroll which navbar is in active -->
+<script>
+    $(function () {
+        $('.navbar-toggler').click(function () {
+            $('body').toggleClass('noscroll');
+        })
+    });
+</script>
+<!-- //disable body scroll which navbar is in active -->
+
+<!-- bootstrap -->
+<!-- //bootstrap -->
+<!-- //Js scripts -->
+</body>
+<!-- theme switch js (light and dark)-->
+<!-- //theme switch js (light and dark)-->
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+<script src="/assets/js/common-action.js"></script>
+<script type="module" src="/assets/js/socket-handling.js"></script>
+<script type="module" src="/assets/js/comment-feature.js"></script>
+</html>
+
+<!-- //footer block -->

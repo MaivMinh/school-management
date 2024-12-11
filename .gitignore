@@ -1,5 +1,4 @@
 HELP.md
-target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -32,6 +31,6 @@ build/
 ### VS Code ###
 .vscode/
 
-
+.DS_Store
 ### workflows -> azure-webapps-deploy.yml ###
 .github/workflows/azure-webapps-deploy.yml

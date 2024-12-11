@@ -1,0 +1,19 @@
+.course-detail {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 1.5rem;
+    max-height: 200px;
+}
+
+.area-1 {
+    grid-area: 1 / 1 / 4 / 2;
+}
+
+.area-2 {
+    grid-area: 1 / 2 / 4 / 4;
+}
+
+.area-3 {
+    grid-area: 1 / 4 / 4 / 5;
+}

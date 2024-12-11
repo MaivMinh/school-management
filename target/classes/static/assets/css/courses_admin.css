@@ -1,0 +1,15 @@
+
+#addCourse > div {
+    max-width: 700px;
+}
+
+#course-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#course-date > div {
+    width: 300px;
+}
+
